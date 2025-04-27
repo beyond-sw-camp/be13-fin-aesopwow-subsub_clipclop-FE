@@ -1,5 +1,5 @@
 // /presentation/pages/AnalyticsCohortPage.tsx
-import { CohortTabs } from "../components/molecules/CohortTabs";
+import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
 import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
 import { RetentionHeatmapPanel } from "../components/organisms/RetentionHeatmapPanel";
 import { InsightPanel } from "../components/organisms/InsightPanel";

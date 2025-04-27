@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function PageBreadcrumb() {
   return (
-    <div className="text-sm font-medium text-white space-x-1">
+    <div className="text-2xl font-medium text-white space-x-1">
       <Link
         to="/analytics"
         className="text-white font-bold hover:underline hover:decoration-white hover:font-extrabold hover:text-white"
