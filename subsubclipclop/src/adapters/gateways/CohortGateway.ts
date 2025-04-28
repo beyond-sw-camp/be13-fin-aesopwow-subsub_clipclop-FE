@@ -1,7 +1,6 @@
 // /adapters/gateways/CohortGateway.ts
+import { CohortRepository } from "@/ports/repositories/CohortRepository.ts";
+import { CohortRepositoryImpl } from "@/infrastructure/repositories/CohortRepositoryImpl.ts";
 
-import { CohortRepository } from "@/ports/repositories/CohortRepository";
-import { CohortRepositoryImpl } from "@/infrastructure/repositories/CohortRepositoryImpl";
-
-// 구현체를 인터페이스 타입으로 변환한 객체를 외부에 제공
-export const cohortRepository: CohortRepository = new CohortRepositoryImpl();
+// CohortRepositoryImpl 인스턴스를 인터페이스 타입으로 변환
+export const cohortGateway: CohortRepository = new CohortRepositoryImpl();

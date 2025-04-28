@@ -1,7 +1,7 @@
 // /presentation/pages/SegmentCohortPage.tsx
 import { useState } from "react";
-import { KeywordSelector } from "../components/molecules/KeywordSelector";
-import { SearchBar } from "../components/atoms/SearchBar";
+import { SegmentKeywordSelector } from "../components/molecules/SegmentKeywordSelector.tsx";
+import { SegmentSearchBar } from "../components/atoms/SegmentSearchBar.tsx";
 import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
 import { TopNav } from "@/utils/TopNav";
 import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
@@ -13,10 +13,12 @@ import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
 
 export default function SegmentCohortPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [keyword, setKeyword] = useState<string>("");
+  const [tag, setTag] = useState<string>("");
 
-  const handleSearch = () => {
-    setSearchResults(["예시 결과 1", "예시 결과 2", "예시 결과 3"]);
+  const handleSearch = (newKeyword: string, newTag: string) => {
+    setKeyword(newKeyword);
+    setTag(newTag);
     setIsModalOpen(true);
   };
 
@@ -47,10 +49,10 @@ export default function SegmentCohortPage() {
               <div className="bg-white p-6 rounded-2xl shadow-md">
                 <div className="flex flex-col md:flex-row gap-6">
                   <div className="w-full md:w-1/4">
-                    <KeywordSelector />
+                    <SegmentKeywordSelector />
                   </div>
                   <div className="w-full md:w-3/4 flex flex-col gap-4">
-                    <SearchBar onSearch={handleSearch} />
+                    <SegmentSearchBar onSearch={handleSearch} />
                     <BehaviorPatternPanel />
                   </div>
                 </div>
@@ -64,7 +66,8 @@ export default function SegmentCohortPage() {
         <SegmentSearchResultModal
           isOpen={isModalOpen}
           onClose={handleCloseModal}
-          searchResults={searchResults}
+          keyword={keyword}
+          tag={tag}
         />
       )}
     </>

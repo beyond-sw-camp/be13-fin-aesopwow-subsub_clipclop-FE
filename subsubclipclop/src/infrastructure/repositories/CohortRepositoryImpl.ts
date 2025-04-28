@@ -1,20 +1,22 @@
-// /infrastructure/repositories/CohortRepositoryImpl.ts
-
-import { CohortRepository } from "@/ports/repositories/CohortRepository";
-import { fetchCohortDataApi, fetchRetentionHeatmapApi } from "@/infrastructure/api/cohortApi";
-import { CohortMapper } from "@/adapters/mappers/CohortMapper";
-import { RetentionMapper } from "@/adapters/mappers/RetentionMapper";
-import { Cohort } from "@/core/user/Cohort";
-import { RetentionMatrix } from "@/core/user/RetentionMatrix";
+import { CohortRepository } from "@/ports/repositories/CohortRepository.ts";
+import { fetchBehaviorPatternApi, fetchRemainHeatmapApi, fetchInsightApi } from "@/infrastructure/api/cohortApi.ts";
+import { CohortBehaviorPatternMapper } from "@/adapters/mappers/CohortBehaviorPatternMapper";
+import { CohortRemainHeatmapMapper } from "@/adapters/mappers/CohortRemainHeatmapMapper";
+import { CohortInsightMapper } from "@/adapters/mappers/CohortInsightMapper";
 
 export class CohortRepositoryImpl implements CohortRepository {
-  async fetchCohorts(): Promise<Cohort[]> {
-    const rawData = await fetchCohortDataApi();
-    return rawData.map(CohortMapper);
+  async fetchBehaviorPattern() {
+    const rawData = await fetchBehaviorPatternApi();
+    return CohortBehaviorPatternMapper(rawData); // ✅ 매퍼 사용
   }
 
-  async fetchRetentionMatrix(): Promise<RetentionMatrix> {
-    const rawData = await fetchRetentionHeatmapApi();
-    return RetentionMapper(rawData);
+  async fetchRemainHeatmap() {
+    const rawData = await fetchRemainHeatmapApi();
+    return CohortRemainHeatmapMapper(rawData); // ✅ 매퍼 사용
+  }
+
+  async fetchInsight() {
+    const rawData = await fetchInsightApi();
+    return CohortInsightMapper(rawData); // ✅ 매퍼 사용
   }
 }

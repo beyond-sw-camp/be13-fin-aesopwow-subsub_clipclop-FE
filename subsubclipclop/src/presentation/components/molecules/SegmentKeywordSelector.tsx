@@ -1,8 +1,8 @@
-// /presentation/components/molecules/KeywordSelector.tsx
+// /presentation/components/molecules/SegmentKeywordSelector.tsx
 import { useState } from "react";
 import { X } from "lucide-react"; // x 아이콘
 
-export function KeywordSelector() {
+export function SegmentKeywordSelector() {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>(["Spring", "Smart", "Modern"]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
