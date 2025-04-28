@@ -1,12 +1,12 @@
-// /presentation/components/atoms/SearchBar.tsx
+// /presentation/components/atoms/SegmentSearchBar.tsx
 import { useState } from "react";
 import { Check } from "lucide-react";
 
 interface SearchBarProps {
-  onSearch: () => void;
+  onSearch: (keyword: string, tag: string) => void; // ✅ 수정: keyword, tag를 넘기도록 타입 변경
 }
 
-export function SearchBar({ onSearch }: SearchBarProps) {
+export function SegmentSearchBar({ onSearch }: SearchBarProps) {
   const [selectedTag, setSelectedTag] = useState("new");
   const [searchText, setSearchText] = useState("");
 
@@ -16,6 +16,10 @@ export function SearchBar({ onSearch }: SearchBarProps) {
     { label: "Price descending", value: "desc" },
     { label: "Rating", value: "rating" },
   ];
+
+  const handleSearchClick = () => {
+    onSearch(searchText, selectedTag); // ✅ 수정: 클릭 시 현재 검색어와 태그를 넘긴다
+  };
 
   return (
     <div className="flex items-center space-x-2">
@@ -30,7 +34,7 @@ export function SearchBar({ onSearch }: SearchBarProps) {
 
       {/* 검색 버튼 (따로 분리) */}
       <button
-        onClick={onSearch}
+        onClick={handleSearchClick}
         className="bg-gray-100 px-4 py-2 text-sm rounded-lg hover:bg-black hover:text-white"
       >
         Search

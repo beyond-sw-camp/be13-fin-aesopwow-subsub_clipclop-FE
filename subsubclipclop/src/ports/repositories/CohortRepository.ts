@@ -1,9 +1,10 @@
 // /ports/repositories/CohortRepository.ts
-
-import { Cohort } from "@/core/user/Cohort";
-import { RetentionMatrix } from "@/core/user/RetentionMatrix";
+import { CohortAnalysisBehaviorPatternResponseDto } from "@/core/cohort/CohortAnalysisBehaviorPatternResponseDto.ts";
+import { CohortAnalysisRemainHitmapResponseDto } from "@/core/cohort/CohortAnalysisRemainHitmapResponseDto";
+import { CohortAnalysisInsightResponseDto } from "@/core/cohort/CohortAnalysisInsightResponseDto";
 
 export interface CohortRepository {
-  fetchCohorts(): Promise<Cohort[]>;
-  fetchRetentionMatrix(): Promise<RetentionMatrix>;
+  fetchBehaviorPattern(): Promise<CohortAnalysisBehaviorPatternResponseDto>;
+  fetchRemainHeatmap(): Promise<CohortAnalysisRemainHitmapResponseDto>;
+  fetchInsight(): Promise<CohortAnalysisInsightResponseDto>;
 }
