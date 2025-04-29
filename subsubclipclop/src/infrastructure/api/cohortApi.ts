@@ -18,8 +18,9 @@ export async function fetchBehaviorPatternApi(companyNo: number) {
       return data;
     })
     .catch(err => {
-      console.error("API 요청 에러:", err);
-    });
+        console.error("API 요청 에러:", err);
+        throw err; // 오류를 호출자에게 전파
+      });
 }
 
 
