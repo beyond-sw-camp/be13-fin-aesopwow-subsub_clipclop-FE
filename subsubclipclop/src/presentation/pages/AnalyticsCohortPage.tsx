@@ -8,6 +8,7 @@ import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
 import { SideMenu } from "@/utils/SideMenu";
 import { ProjectLogo } from "@/utils/ProjectLogo";
 import { ProfileAvatar } from "@/utils/ProfileAvatar";
+import { FileUploadButton } from "@/presentation/components/atoms/FileUploadButton";
 
 export default function AnalyticsCohortPage() {
   return (
@@ -36,6 +37,9 @@ export default function AnalyticsCohortPage() {
               </div>
               <div className="mt-6">
                 <InsightPanel />
+                <div className="mt-6 flex justify-center">
+                  <FileUploadButton />
+                </div>
               </div>
             </div>
           </div>
