@@ -6,7 +6,7 @@ import { CohortInsightMapper } from "@/adapters/mappers/CohortInsightMapper";
 
 export class CohortRepositoryImpl implements CohortRepository {
   async fetchBehaviorPattern() {
-    const rawData = await fetchBehaviorPatternApi();
+    const rawData = await fetchBehaviorPatternApi(1);
     return CohortBehaviorPatternMapper(rawData); // ✅ 매퍼 사용
   }
 
