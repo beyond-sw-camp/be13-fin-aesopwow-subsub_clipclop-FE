@@ -1,11 +1,15 @@
 {
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    },
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
   "files": [],
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ],
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
-  }
+  ]
 }
