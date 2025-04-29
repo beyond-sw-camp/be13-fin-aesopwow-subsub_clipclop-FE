@@ -22,4 +22,13 @@ export default defineConfig({
       input: 'src/main.tsx', // main 진입점 위치
     },
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://localhost:8001", // 스프링 서버 주소
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  },
 });
