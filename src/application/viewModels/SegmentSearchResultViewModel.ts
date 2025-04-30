@@ -1,8 +1,8 @@
 // /application/viewModels/SegmentSearchResultViewModel.ts
 
 import { useState } from "react";
-import { fetchSegmentSearchResult } from "@/application/useCases/FetchSegmentSearchResultData";
-import { SegmentSearchResultResponseDto } from "@/core/segment/SegmentSearchResultResponseDto"; // ✅ DTO 가져오기
+import { fetchSegmentSearchResult } from "@/application/useCases/FetchSegmentSearchResultData.ts"; // ✅ useCase 가져오기
+import { SegmentSearchResultResponseDto } from "@/core/segment/SegmentSearchResultResponseDto.ts"; // ✅ DTO 가져오기
 
 export function useSegmentSearchResultViewModel() {
   const [data, setData] = useState<SegmentSearchResultResponseDto | null>(null); // ✅ 타입을 DTO로

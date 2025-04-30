@@ -1,7 +1,7 @@
 // src/App.tsx
 import { Route, Routes } from 'react-router-dom';
-import AnalyticsCohortPage from '@/presentation/pages/AnalyticsCohortPage';
-import SegmentCohortPage from '@/presentation/pages/SegmentCohortPage'; // 추가!
+import AnalyticsCohortPage from '@/presentation/pages/AnalyticsCohortPage.tsx';
+import SegmentCohortPage from '@/presentation/pages/SegmentCohortPage.tsx'; // 추가!
 
 function App() {
   return (
