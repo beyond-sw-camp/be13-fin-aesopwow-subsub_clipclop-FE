@@ -19,7 +19,7 @@ export default defineConfig({
   },
   build: {
     rollupOptions: {
-      input: 'src/main.tsx', // main 진입점 위치
+      // input: 'src/main.tsx', // main 진입점 위치
     },
   },
   base: './', // 여기에 base 설정을 추가합니다.
