@@ -1,13 +1,14 @@
 // /presentation/pages/AnalyticsCohortPage.tsx
-import { CohortTabs } from "../components/molecules/CohortSegmentSelector.tsx";
-import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel.tsx";
-import { RetentionHeatmapPanel } from "../components/organisms/RetentionHeatmapPanel.tsx";
-import { InsightPanel } from "../components/organisms/InsightPanel.tsx";
-import { TopNav } from "@/utils/TopNav.tsx";
-import { PageBreadcrumb } from "@/utils/PageBreadcrumb.tsx";
-import { SideMenu } from "@/utils/SideMenu.tsx";
-import { ProjectLogo } from "@/utils/ProjectLogo.tsx";
-import { ProfileAvatar } from "@/utils/ProfileAvatar.tsx";
+import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
+import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
+import { RemainHeatmapPanel } from "../components/organisms/RemainHeatmapPanel.tsx";
+import { InsightPanel } from "../components/organisms/InsightPanel";
+import { TopNav } from "@/utils/TopNav";
+import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
+import { SideMenu } from "@/utils/SideMenu";
+import { ProjectLogo } from "@/utils/ProjectLogo";
+import { ProfileAvatar } from "@/utils/ProfileAvatar";
+import { FileUploadButton } from "@/presentation/components/atoms/FileUploadButton";
 
 export default function AnalyticsCohortPage() {
   return (
@@ -32,10 +33,13 @@ export default function AnalyticsCohortPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <BehaviorPatternPanel />
-                <RetentionHeatmapPanel />
+                <RemainHeatmapPanel />
               </div>
               <div className="mt-6">
                 <InsightPanel />
+                <div className="mt-6 flex justify-center">
+                  <FileUploadButton />
+                </div>
               </div>
             </div>
           </div>
