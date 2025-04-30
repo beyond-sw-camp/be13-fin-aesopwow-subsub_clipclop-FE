@@ -11,7 +11,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
-  base: './', // 여기에 base 설정을 추가합니다.
+  base: '/', // 여기에 base 설정을 추가합니다.
   plugins: [react()],
   resolve: {
     alias: {
