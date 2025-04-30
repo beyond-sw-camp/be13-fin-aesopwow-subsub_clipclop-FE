@@ -1,7 +1,7 @@
 // /application/useCases/FetchCohortRemainHeatmapData.ts
 import { cohortGateway } from "@/adapters/gateways/CohortGateway";
-import { CohortAnalysisRemainHitmapResponseDto } from "@/core/cohort/CohortAnalysisRemainHitmapResponseDto";
+import { CohortAnalysisRemainHeatmapResponseDto } from "@/core/cohort/CohortAnalysisRemainHeatmapResponseDto.ts";
 
-export async function fetchCohortRemainHeatmap(): Promise<CohortAnalysisRemainHitmapResponseDto> {
+export async function fetchCohortRemainHeatmap(): Promise<CohortAnalysisRemainHeatmapResponseDto> {
   return await cohortGateway.fetchRemainHeatmap();
 }

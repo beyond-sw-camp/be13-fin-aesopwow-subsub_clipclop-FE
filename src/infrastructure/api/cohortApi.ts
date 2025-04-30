@@ -1,27 +1,57 @@
-// // /infrastructure/api/cohortApi.ts
+// /infrastructure/api/cohortApi.ts
+import { CohortAnalysisBehaviorPatternRequestDto } from "@/core/cohort/CohortAnalysisBehaviorPatternRequestDto";
+import { CohortAnalysisInsightRequestDto } from "@/core/cohort/CohortAnalysisInsightRequestDto";
+import { CohortAnalysisRemainHeatmapRequestDto } from "@/core/cohort/CohortAnalysisRemainHeatmapRequestDto.ts";
 
-// 행동 패턴 API
-export async function fetchBehaviorPatternApi(companyNo: number) {
+// ✅ 행동 패턴 API
+export async function fetchBehaviorPatternApi(dto: CohortAnalysisBehaviorPatternRequestDto) {
   return fetch("/api/cohorts/behavior-pattern", {
-    method: "POST", // ✅ POST 방식
+    method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ companyNo }) // ✅ 요청 바디에 JSON 전달
+    body: JSON.stringify(dto)
   })
-    .then(res => {
-      console.log("응답 상태:", res.status);
-      return res.json();
-    })
-    .then(data => {
-      console.log("받은 데이터:", data);
-      return data;
-    })
+    .then(res => res.json())
     .catch(err => {
-        console.error("API 요청 에러:", err);
-        throw err; // 오류를 호출자에게 전파
-      });
+      console.error("BehaviorPattern API 요청 에러:", err);
+      throw err;
+    });
 }
+
+// ✅ 인사이트 API
+export async function fetchInsightApi(dto: CohortAnalysisInsightRequestDto) {
+  return fetch("/api/cohorts/insight", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dto)
+  })
+    .then(res => res.json())
+    .catch(err => {
+      console.error("Insight API 요청 에러:", err);
+      throw err;
+    });
+}
+
+// ✅ 리텐션 히트맵 API
+export async function fetchRemainHeatmapApi(dto: CohortAnalysisRemainHeatmapRequestDto) {
+  return fetch("/api/cohorts/remain-heatmap", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(dto)
+  })
+    .then(res => res.json())
+    .catch(err => {
+      console.error("RemainHeatmap API 요청 에러:", err);
+      throw err;
+    });
+}
+
+
 
 
 
@@ -42,12 +72,12 @@ export async function fetchBehaviorPatternApi(companyNo: number) {
 //   return fetch("/mock/behavior-pattern.json").then(res => res.json());
 // }
 
-// 잔존율 히트맵 API
-export async function fetchRemainHeatmapApi() {
-  return fetch("/mock/remain-heatmap.json").then(res => res.json());
-}
+// // 잔존율 히트맵 API
+// export async function fetchRemainHeatmapApi() {
+//   return fetch("/mock/remain-heatmap.json").then(res => res.json());
+// }
 
-// 인사이트 API
-export async function fetchInsightApi() {
-  return fetch("/mock/insight.json").then(res => res.json());
-}
+// // 인사이트 API
+// export async function fetchInsightApi() {
+//   return fetch("/mock/insight.json").then(res => res.json());
+// }

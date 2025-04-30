@@ -1,7 +1,7 @@
 // /presentation/pages/AnalyticsCohortPage.tsx
 import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
 import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
-import { RetentionHeatmapPanel } from "../components/organisms/RetentionHeatmapPanel";
+import { RemainHeatmapPanel } from "../components/organisms/RemainHeatmapPanel.tsx";
 import { InsightPanel } from "../components/organisms/InsightPanel";
 import { TopNav } from "@/utils/TopNav";
 import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
@@ -33,7 +33,7 @@ export default function AnalyticsCohortPage() {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <BehaviorPatternPanel />
-                <RetentionHeatmapPanel />
+                <RemainHeatmapPanel />
               </div>
               <div className="mt-6">
                 <InsightPanel />

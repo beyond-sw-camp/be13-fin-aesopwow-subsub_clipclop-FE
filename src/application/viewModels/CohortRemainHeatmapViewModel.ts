@@ -1,10 +1,10 @@
 // /application/viewModels/CohortRemainHeatmapViewModel.ts
 import { useState, useEffect } from "react";
-import { CohortAnalysisRemainHitmapResponseDto } from "@/core/cohort/CohortAnalysisRemainHitmapResponseDto";
+import { CohortAnalysisRemainHeatmapResponseDto } from "@/core/cohort/CohortAnalysisRemainHeatmapResponseDto.ts";
 import { fetchCohortRemainHeatmap } from "@/application/useCases/FetchCohortRemainHeatmapData.ts";
 
 export function useCohortRemainHeatmapViewModel() {
-  const [data, setData] = useState<CohortAnalysisRemainHitmapResponseDto | null>(null);
+  const [data, setData] = useState<CohortAnalysisRemainHeatmapResponseDto | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 

@@ -1,8 +1,8 @@
-// /presentation/components/organisms/RetentionHeatmapPanel.tsx
+// /presentation/components/organisms/RemainHeatmapPanel.tsx
 import { PanelTitle } from "../atoms/PanelTitle";
 import { useCohortRemainHeatmapViewModel } from "@/application/viewModels/CohortRemainHeatmapViewModel";
 
-export function RetentionHeatmapPanel() {
+export function RemainHeatmapPanel() {
   const { data, loading, error } = useCohortRemainHeatmapViewModel();
 
   return (
@@ -17,7 +17,11 @@ export function RetentionHeatmapPanel() {
           <PanelTitle title={data.title} />
           <p className="text-sm text-gray-500">{data.content}</p>
           <div className="mt-4">
-            <img src={data.heatmapImageBase64} alt="히트맵" className="w-full h-auto rounded-md" />
+            <img
+              src={`data:image/png;base64,${data.heatmapImageBase64}`}
+              alt="히트맵"
+              className="w-full h-auto rounded-md"
+            />
           </div>
         </>
       )}
