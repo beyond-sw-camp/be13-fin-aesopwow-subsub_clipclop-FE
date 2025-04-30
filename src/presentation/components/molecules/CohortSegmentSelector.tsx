@@ -1,6 +1,6 @@
 // /presentation/components/molecules/CohortSegmentSelector.tsx
 import { useLocation, useNavigate } from "react-router-dom";
-import { TabItem } from "../atoms/TabItem";
+import { TabItem } from "../atoms/TabItem.tsx";
 
 export function CohortTabs() {
   const location = useLocation();

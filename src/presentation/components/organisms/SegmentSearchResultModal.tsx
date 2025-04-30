@@ -1,6 +1,6 @@
 // /presentation/components/organisms/SegmentSearchResultModal.tsx
 import { useEffect } from "react";
-import { useSegmentSearchResultViewModel } from "@/application/viewModels/SegmentSearchResultViewModel";
+import { useSegmentSearchResultViewModel } from "@/application/viewModels/SegmentSearchResultViewModel.ts"; // ✅ ViewModel 가져오기
 
 interface SegmentSearchResultModalProps {
   isOpen: boolean;

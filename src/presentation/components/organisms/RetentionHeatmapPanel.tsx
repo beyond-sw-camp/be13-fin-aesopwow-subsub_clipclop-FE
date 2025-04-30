@@ -1,6 +1,6 @@
 // /presentation/components/organisms/RetentionHeatmapPanel.tsx
-import { PanelTitle } from "../atoms/PanelTitle";
-import { useCohortRemainHeatmapViewModel } from "@/application/viewModels/CohortRemainHeatmapViewModel";
+import { PanelTitle } from "../atoms/PanelTitle.tsx";
+import { useCohortRemainHeatmapViewModel } from "@/application/viewModels/CohortRemainHeatmapViewModel.ts";
 
 export function RetentionHeatmapPanel() {
   const { data, loading, error } = useCohortRemainHeatmapViewModel();

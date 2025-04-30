@@ -1,13 +1,13 @@
 // /presentation/pages/AnalyticsCohortPage.tsx
-import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
-import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
-import { RetentionHeatmapPanel } from "../components/organisms/RetentionHeatmapPanel";
-import { InsightPanel } from "../components/organisms/InsightPanel";
-import { TopNav } from "@/utils/TopNav";
-import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
-import { SideMenu } from "@/utils/SideMenu";
-import { ProjectLogo } from "@/utils/ProjectLogo";
-import { ProfileAvatar } from "@/utils/ProfileAvatar";
+import { CohortTabs } from "../components/molecules/CohortSegmentSelector.tsx";
+import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel.tsx";
+import { RetentionHeatmapPanel } from "../components/organisms/RetentionHeatmapPanel.tsx";
+import { InsightPanel } from "../components/organisms/InsightPanel.tsx";
+import { TopNav } from "@/utils/TopNav.tsx";
+import { PageBreadcrumb } from "@/utils/PageBreadcrumb.tsx";
+import { SideMenu } from "@/utils/SideMenu.tsx";
+import { ProjectLogo } from "@/utils/ProjectLogo.tsx";
+import { ProfileAvatar } from "@/utils/ProfileAvatar.tsx";
 
 export default function AnalyticsCohortPage() {
   return (

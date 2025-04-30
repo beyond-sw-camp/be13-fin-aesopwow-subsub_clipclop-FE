@@ -1,6 +1,6 @@
 // /application/viewModels/CohortRemainHeatmapViewModel.ts
 import { useState, useEffect } from "react";
-import { CohortAnalysisRemainHitmapResponseDto } from "@/core/cohort/CohortAnalysisRemainHitmapResponseDto";
+import { CohortAnalysisRemainHitmapResponseDto } from "@/core/cohort/CohortAnalysisRemainHitmapResponseDto.ts";
 import { fetchCohortRemainHeatmap } from "@/application/useCases/FetchCohortRemainHeatmapData.ts";
 
 export function useCohortRemainHeatmapViewModel() {
