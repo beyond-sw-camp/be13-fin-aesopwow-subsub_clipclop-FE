@@ -1,6 +1,6 @@
 // /presentation/components/organisms/InsightPanel.tsx
-import { PanelTitle } from "../atoms/PanelTitle";
-import { useCohortInsightViewModel } from "@/application/viewModels/CohortInsightViewModel";
+import { PanelTitle } from "../atoms/PanelTitle.tsx";
+import { useCohortInsightViewModel } from "@/application/viewModels/CohortInsightViewModel.ts";
 
 export function InsightPanel() {
   const { data, loading, error } = useCohortInsightViewModel();

@@ -3,11 +3,11 @@ import { useState } from "react";
 import { SegmentKeywordSelector } from "../components/molecules/SegmentKeywordSelector.tsx";
 import { SegmentSearchBar } from "../components/atoms/SegmentSearchBar.tsx";
 import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel.tsx";
-import { TopNav } from "@/utils/TopNav";
-import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
-import { SideMenu } from "@/utils/SideMenu";
-import { ProjectLogo } from "@/utils/ProjectLogo";
-import { ProfileAvatar } from "@/utils/ProfileAvatar";
+import { TopNav } from "@/utils/TopNav.tsx";
+import { PageBreadcrumb } from "@/utils/PageBreadcrumb.tsx";
+import { SideMenu } from "@/utils/SideMenu.tsx";
+import { ProjectLogo } from "@/utils/ProjectLogo.tsx";
+import { ProfileAvatar } from "@/utils/ProfileAvatar.tsx";
 import { SegmentSearchResultModal } from "../components/organisms/SegmentSearchResultModal.tsx";
 import { CohortTabs } from "../components/molecules/CohortSegmentSelector.tsx";
 

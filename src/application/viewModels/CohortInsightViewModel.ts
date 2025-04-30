@@ -1,6 +1,6 @@
 // /application/viewModels/CohortInsightViewModel.ts
 import { useState, useEffect } from "react";
-import { CohortAnalysisInsightResponseDto } from "@/core/cohort/CohortAnalysisInsightResponseDto";
+import { CohortAnalysisInsightResponseDto } from "@/core/cohort/CohortAnalysisInsightResponseDto.ts";
 import { fetchCohortInsight } from "@/application/useCases/FetchCohortInsightData.ts"
 
 export function useCohortInsightViewModel() {

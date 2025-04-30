@@ -1,8 +1,8 @@
 import { CohortRepository } from "@/ports/repositories/CohortRepository.ts";
 import { fetchBehaviorPatternApi, fetchRemainHeatmapApi, fetchInsightApi } from "@/infrastructure/api/cohortApi.ts";
-import { CohortBehaviorPatternMapper } from "@/adapters/mappers/CohortBehaviorPatternMapper";
-import { CohortRemainHeatmapMapper } from "@/adapters/mappers/CohortRemainHeatmapMapper";
-import { CohortInsightMapper } from "@/adapters/mappers/CohortInsightMapper";
+import { CohortBehaviorPatternMapper } from "@/adapters/mappers/CohortBehaviorPatternMapper.ts";
+import { CohortRemainHeatmapMapper } from "@/adapters/mappers/CohortRemainHeatmapMapper.ts";
+import { CohortInsightMapper } from "@/adapters/mappers/CohortInsightMapper.ts";
 
 export class CohortRepositoryImpl implements CohortRepository {
   async fetchBehaviorPattern() {
