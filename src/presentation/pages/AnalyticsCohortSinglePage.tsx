@@ -4,7 +4,7 @@ import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
 import { SideMenu } from "@/utils/SideMenu";
 import { ProjectLogo } from "@/utils/ProjectLogo";
 import { ProfileAvatar } from "@/utils/ProfileAvatar";
-import { ClusterSelectionPanel } from "@/presentation/components/organisms/ClusterSelectionPanel";
+import { ClusterSelectionPanel } from "../components/organisms/ClusterSelectionPanel";
 
 export default function AnalyticsCohortSinglePage() {
   return (
@@ -27,11 +27,9 @@ export default function AnalyticsCohortSinglePage() {
               <div className="flex justify-center mb-6">
                 <CohortTabs />
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <ClusterSelectionPanel />
               </div>
-
             </div>
           </div>
         </div>
@@ -39,3 +37,4 @@ export default function AnalyticsCohortSinglePage() {
     </>
   );
 }
+

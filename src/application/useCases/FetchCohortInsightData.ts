@@ -1,7 +1,8 @@
 // /application/useCases/FetchCohortInsightData.ts
-import { cohortGateway } from "@/adapters/gateways/CohortGateway.ts";
-import { CohortAnalysisInsightResponseDto } from "@/core/cohort/CohortAnalysisInsightResponseDto.ts";
+import { CohortRepositoryImpl } from "@/infrastructure/repositories/CohortRepositoryImpl";
 
-export async function fetchCohortInsight(): Promise<CohortAnalysisInsightResponseDto> {
-  return await cohortGateway.fetchInsight();
+const repository = new CohortRepositoryImpl();
+
+export async function fetchCohortInsight() {
+  return await repository.fetchInsight();
 }

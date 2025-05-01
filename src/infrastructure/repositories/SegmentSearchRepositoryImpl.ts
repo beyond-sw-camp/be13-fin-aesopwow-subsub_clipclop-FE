@@ -1,11 +1,8 @@
 // /infrastructure/repositories/SegmentSearchRepositoryImpl.ts
-
-import { SegmentSearchRepository } from "@/ports/repositories/SegmentSearchRepository.ts";
 import { fetchSegmentSearchResultApi } from "@/infrastructure/api/segmentSearchApi.ts";
-import { SegmentSearchResultResponseDto } from "@/core/segment/SegmentSearchResultResponseDto.ts";
 
-export class SegmentSearchRepositoryImpl implements SegmentSearchRepository {
-  async fetchSegmentSearchResult(keyword: string, tag: string): Promise<SegmentSearchResultResponseDto> {
+export class SegmentSearchRepositoryImpl {
+  async fetchSegmentSearchResult(keyword: string, tag: string) {
     const rawData = await fetchSegmentSearchResultApi(keyword, tag);
     return {
       field: rawData.field,

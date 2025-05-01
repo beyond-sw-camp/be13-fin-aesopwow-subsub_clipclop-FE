@@ -1,43 +1,38 @@
-import { CohortRepository } from "@/ports/repositories/CohortRepository.ts";
+// /infrastructure/repositories/CohortRepositoryImpl.ts
 import {
   fetchBehaviorPatternApi,
   fetchInsightApi,
-  fetchRemainHeatmapApi
+  fetchRemainHeatmapApi,
 } from "@/infrastructure/api/cohortApi.ts";
-import { CohortBehaviorPatternMapper } from "@/adapters/mappers/CohortBehaviorPatternMapper";
-import { CohortInsightMapper } from "@/adapters/mappers/CohortInsightMapper";
-import { CohortRemainHeatmapMapper } from "@/adapters/mappers/CohortRemainHeatmapMapper";
 
 import { getUser } from "@/core/user/UserStore";
-import { CohortAnalysisBehaviorPatternRequestDto } from "@/core/cohort/CohortAnalysisBehaviorPatternRequestDto";
-import { CohortAnalysisInsightRequestDto } from "@/core/cohort/CohortAnalysisInsightRequestDto";
-import { CohortAnalysisRemainHeatmapRequestDto } from "@/core/cohort/CohortAnalysisRemainHeatmapRequestDto.ts";
 
-export class CohortRepositoryImpl implements CohortRepository {
+export class CohortRepositoryImpl {
   async fetchBehaviorPattern() {
-    const user = getUser();
-    const dto: CohortAnalysisBehaviorPatternRequestDto = {
-      companyNo: user.companyNo,
+    const { companyNo } = getUser();
+    const rawData = await fetchBehaviorPatternApi(companyNo);
+    return {
+      title: rawData.title,
+      content: rawData.content,
     };
-    const rawData = await fetchBehaviorPatternApi(dto);
-    return CohortBehaviorPatternMapper(rawData);
   }
 
   async fetchInsight() {
-    const user = getUser();
-    const dto: CohortAnalysisInsightRequestDto = {
-      companyNo: user.companyNo,
+    const { companyNo } = getUser();
+    const rawData = await fetchInsightApi(companyNo);
+    return {
+      title: rawData.title,
+      content: rawData.content,
     };
-    const rawData = await fetchInsightApi(dto);
-    return CohortInsightMapper(rawData);
   }
 
   async fetchRemainHeatmap() {
-    const user = getUser();
-    const dto: CohortAnalysisRemainHeatmapRequestDto = {
-      companyNo: user.companyNo,
+    const { companyNo } = getUser();
+    const rawData = await fetchRemainHeatmapApi(companyNo);
+    return {
+      title: rawData.title,
+      content: rawData.content,
+      heatmapImageBase64: rawData.heatmapImageBase64,
     };
-    const rawData = await fetchRemainHeatmapApi(dto);
-    return CohortRemainHeatmapMapper(rawData);
   }
 }

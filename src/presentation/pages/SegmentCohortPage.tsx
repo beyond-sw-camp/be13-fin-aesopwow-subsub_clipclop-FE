@@ -1,15 +1,16 @@
 // /presentation/pages/SegmentCohortPage.tsx
+
 import { useState } from "react";
-import { SegmentKeywordSelector } from "../components/molecules/SegmentKeywordSelector.tsx";
-import { SegmentSearchBar } from "../components/atoms/SegmentSearchBar.tsx";
-import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel.tsx";
-import { TopNav } from "@/utils/TopNav.tsx";
-import { PageBreadcrumb } from "@/utils/PageBreadcrumb.tsx";
-import { SideMenu } from "@/utils/SideMenu.tsx";
-import { ProjectLogo } from "@/utils/ProjectLogo.tsx";
-import { ProfileAvatar } from "@/utils/ProfileAvatar.tsx";
-import { SegmentSearchResultModal } from "../components/organisms/SegmentSearchResultModal.tsx";
-import { CohortTabs } from "../components/molecules/CohortSegmentSelector.tsx";
+import { SegmentKeywordSelector } from "../components/molecules/SegmentKeywordSelector";
+import { SegmentSearchBar } from "../components/atoms/SegmentSearchBar";
+import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
+import { TopNav } from "@/utils/TopNav";
+import { PageBreadcrumb } from "@/utils/PageBreadcrumb";
+import { SideMenu } from "@/utils/SideMenu";
+import { ProjectLogo } from "@/utils/ProjectLogo";
+import { ProfileAvatar } from "@/utils/ProfileAvatar";
+import { SegmentSearchResultModal } from "../components/organisms/SegmentSearchResultModal";
+import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
 
 export default function SegmentCohortPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);

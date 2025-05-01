@@ -1,10 +1,10 @@
 // /application/viewModels/CohortInsightViewModel.ts
+
 import { useState, useEffect } from "react";
-import { CohortAnalysisInsightResponseDto } from "@/core/cohort/CohortAnalysisInsightResponseDto.ts";
-import { fetchCohortInsight } from "@/application/useCases/FetchCohortInsightData.ts"
+import { fetchCohortInsight } from "@/application/useCases/FetchCohortInsightData";
 
 export function useCohortInsightViewModel() {
-  const [data, setData] = useState<CohortAnalysisInsightResponseDto | null>(null);
+  const [data, setData] = useState<{ title: string; content: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -12,12 +12,9 @@ export function useCohortInsightViewModel() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        setError(null);
-
-        const result = await fetchCohortInsight(); // ✅ useCase 호출
+        const result = await fetchCohortInsight();
         setData(result);
-
-      } catch (e) {
+      } catch {
         setError("인사이트 데이터를 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);

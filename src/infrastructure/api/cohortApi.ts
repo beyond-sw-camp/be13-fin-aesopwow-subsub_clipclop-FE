@@ -1,12 +1,10 @@
-import axiosInstance from "@/infrastructure/api/axios"; // axios 인스턴스를 import
-import { CohortAnalysisBehaviorPatternRequestDto } from "@/core/cohort/CohortAnalysisBehaviorPatternRequestDto";
-import { CohortAnalysisInsightRequestDto } from "@/core/cohort/CohortAnalysisInsightRequestDto";
-import { CohortAnalysisRemainHeatmapRequestDto } from "@/core/cohort/CohortAnalysisRemainHeatmapRequestDto";
+// /infrastructure/api/cohortApi.ts
+import axiosInstance from "@/infrastructure/api/axios";
 
 // ✅ 행동 패턴 API
-export async function fetchBehaviorPatternApi(dto: CohortAnalysisBehaviorPatternRequestDto) {
+export async function fetchBehaviorPatternApi(companyNo: number) {
   try {
-    const res = await axiosInstance.post("/cohorts/behavior-pattern", dto);
+    const res = await axiosInstance.post("/cohorts/behavior-pattern", { companyNo });
     return res.data;
   } catch (err) {
     console.error("BehaviorPattern API 요청 에러:", err);
@@ -15,9 +13,9 @@ export async function fetchBehaviorPatternApi(dto: CohortAnalysisBehaviorPattern
 }
 
 // ✅ 인사이트 API
-export async function fetchInsightApi(dto: CohortAnalysisInsightRequestDto) {
+export async function fetchInsightApi(companyNo: number) {
   try {
-    const res = await axiosInstance.post("/cohorts/insight", dto);
+    const res = await axiosInstance.post("/cohorts/insight", { companyNo });
     return res.data;
   } catch (err) {
     console.error("Insight API 요청 에러:", err);
@@ -26,12 +24,13 @@ export async function fetchInsightApi(dto: CohortAnalysisInsightRequestDto) {
 }
 
 // ✅ 리텐션 히트맵 API
-export async function fetchRemainHeatmapApi(dto: CohortAnalysisRemainHeatmapRequestDto) {
+export async function fetchRemainHeatmapApi(companyNo: number) {
   try {
-    const res = await axiosInstance.post("/cohorts/remain-heatmap", dto);
+    const res = await axiosInstance.post("/cohorts/remain-heatmap", { companyNo });
     return res.data;
   } catch (err) {
     console.error("RemainHeatmap API 요청 에러:", err);
     throw err;
   }
 }
+
