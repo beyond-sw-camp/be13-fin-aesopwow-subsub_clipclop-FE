@@ -1,5 +1,12 @@
 import { Checkbox } from "@material-tailwind/react";
- 
-export function LoginCheckbox() {
-  return <Checkbox label="Remember Me" />;
-}
+
+export const LoginCheckbox = () => {
+  return (
+    <Checkbox
+      label="Remember Me"
+      onPointerEnterCapture={() => {}}
+      onPointerLeaveCapture={() => {}}
+      crossOrigin=""
+    />
+  );
+};

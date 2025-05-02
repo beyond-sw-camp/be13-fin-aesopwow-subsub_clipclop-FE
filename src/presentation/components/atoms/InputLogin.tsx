@@ -7,7 +7,12 @@ export function InputLogin(
   }) {
   return (
     <div className="w-60">
-      <Input label={ label } placeholder={ placeholder }/>
+    <Input
+        label={label}
+        placeholder={placeholder}
+        onPointerEnterCapture={() => { } }
+        onPointerLeaveCapture={() => { } } 
+        crossOrigin={undefined} />
     </div>
   );
 }
