@@ -6,16 +6,18 @@ interface InputTextBoxProps {
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  width?: string;
 }
 
 
-export function InputTextBox({ type, label, placeholder, onChange}: InputTextBoxProps) {
+export function InputTextBox({ type, label, placeholder, value, onChange, width }: InputTextBoxProps) {
   return (
-    <div className="w-60">
+    <div className={width}>
       <Input
         type={type}
         label={label}
         placeholder={placeholder}
+        value={value}
         onChange={onChange}
         onPointerEnterCapture={() => { }}
         onPointerLeaveCapture={() => { }}

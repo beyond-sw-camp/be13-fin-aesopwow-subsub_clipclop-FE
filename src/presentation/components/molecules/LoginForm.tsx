@@ -21,14 +21,14 @@ export const LoginForm = () => {
                 label="Email"
                 placeholder="Email"
                 value={email}
-                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
             />
             <InputTextBox
                 type="password"
                 label="Password"
                 placeholder="Password"
                 value={password}
-                onChange={(e: { target: { value: React.SetStateAction<string>; }; }) => setPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
 
             <LoginCheckbox />
