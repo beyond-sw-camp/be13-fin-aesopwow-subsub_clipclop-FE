@@ -1,4 +1,4 @@
-import { TopNav } from "@/utils/TopNav";
+import { TopNav } from "@/presentation/components/molecules/TopNav.tsx";
 import { LoginCard } from "../components/organisms/LoginCard";
 import { ProjectLogo } from "@/utils/ProjectLogo";
 

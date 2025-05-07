@@ -11,6 +11,7 @@ function App() {
       <Route path="/analytics/cohorts" element={<AnalyticsCohortPage />} />
       <Route path="/analytics/singlecohorts" element={<AnalyticsCohortSinglePage />} />
       <Route path="/analytics/segment" element={<SegmentCohortPage />} /> {/* 추가! */}
+      <Route path="/analytics/single/:stepId" element={<AnalyticsCohortSinglePage />} />
       <Route path="/" element={<LoginPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
     </Routes>

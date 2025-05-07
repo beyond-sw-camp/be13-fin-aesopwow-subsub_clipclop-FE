@@ -1,7 +1,7 @@
 // /application/viewModels/CohortBehaviorPatternViewModel.ts
 
 import { useState, useEffect } from "react";
-import { fetchCohortBehaviorPattern } from "@/application/useCases/FetchCohortBehaviorPatternData";
+import { fetchCohortBehaviorPattern } from "@/application/useCases/FetchCohort";
 
 export function useCohortBehaviorPatternViewModel() {
   const [data, setData] = useState<{ title: string; content: string } | null>(null);

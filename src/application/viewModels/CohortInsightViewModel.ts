@@ -1,7 +1,7 @@
 // /application/viewModels/CohortInsightViewModel.ts
 
 import { useState, useEffect } from "react";
-import { fetchCohortInsight } from "@/application/useCases/FetchCohortInsightData";
+import { fetchCohortInsight } from "@/application/useCases/FetchCohort";
 
 export function useCohortInsightViewModel() {
   const [data, setData] = useState<{ title: string; content: string } | null>(null);

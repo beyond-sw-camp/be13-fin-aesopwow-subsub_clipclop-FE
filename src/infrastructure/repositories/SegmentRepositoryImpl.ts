@@ -1,7 +1,7 @@
-// /infrastructure/repositories/SegmentSearchRepositoryImpl.ts
-import { fetchSegmentSearchResultApi } from "@/infrastructure/api/segmentSearchApi.ts";
+// /infrastructure/repositories/SegmentRepositoryImpl.ts
+import { fetchSegmentSearchResultApi } from "@/infrastructure/api/segmentApi.ts";
 
-export class SegmentSearchRepositoryImpl {
+export class SegmentRepositoryImpl {
   async fetchSegmentSearchResult(keyword: string, tag: string) {
     const rawData = await fetchSegmentSearchResultApi(keyword, tag);
     return {

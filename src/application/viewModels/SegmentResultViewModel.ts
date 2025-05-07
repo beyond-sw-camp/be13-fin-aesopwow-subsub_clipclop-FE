@@ -1,7 +1,7 @@
-// /application/viewModels/SegmentSearchResultViewModel.ts
+// /application/viewModels/SegmentResultViewModel.ts
 
 import { useState } from "react";
-import { fetchSegmentSearchResult } from "@/application/useCases/FetchSegmentSearchResultData";
+import { fetchSegmentSearchResult } from "@/application/useCases/FetchSegment";
 
 export function useSegmentSearchResultViewModel() {
   const [data, setData] = useState<{

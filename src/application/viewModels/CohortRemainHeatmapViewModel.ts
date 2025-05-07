@@ -1,16 +1,17 @@
 // /application/viewModels/CohortRemainHeatmapViewModel.ts
 
 import { useState, useEffect } from "react";
-import { fetchCohortRemainHeatmap } from "@/application/useCases/FetchCohortRemainHeatmapData";
+import { fetchCohortRemainHeatmap } from "@/application/useCases/FetchCohort";
 
 export function useCohortRemainHeatmapViewModel() {
   const [data, setData] = useState<{
     title: string;
     content: string;
     heatmapImageBase64: string;
-  } | null>(null);
+  } | null > (null);
+
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null > (null);
 
   useEffect(() => {
     const fetchData = async () => {

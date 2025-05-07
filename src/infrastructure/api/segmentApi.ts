@@ -1,4 +1,4 @@
-// /infrastructure/api/segmentSearchApi.ts
+// /infrastructure/api/segmentApi.ts
 export async function fetchSegmentSearchResultApi(keyword: string, tag: string) {
   const query = new URLSearchParams({ keyword, tag }).toString();
   return fetch(`/api/segment-search?${query}`)
@@ -6,7 +6,7 @@ export async function fetchSegmentSearchResultApi(keyword: string, tag: string) 
 }
 
 // (데이터 바인딩 테스트)
-// /infrastructure/api/segmentSearchApi.ts
+// /infrastructure/api/segmentApi.ts
 
 // export async function fetchSegmentSearchResultApi(keyword: string, tag: string) {
 //   const response = await fetch("/mock/segment-search-result.json");
