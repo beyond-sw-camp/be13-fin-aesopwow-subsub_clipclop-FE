@@ -1,10 +1,12 @@
 // /core/model/CohortModel.ts
 
-// MARK: - 행동 패턴 타입
-export interface CohortBehaviorPatternResponse {
+// MARK: - 시각화 타입
+export interface CohortVisualizationResponse {
     title: string;
-    content: string;
-}
+    visualizationImage1Base64: string;
+    visualizationImage2Base64: string;
+  }
+  
 
 // MARK: - 인사이트 타입
 export interface CohortInsightResponse {
@@ -16,5 +18,6 @@ export interface CohortInsightResponse {
 export interface CohortHeatmapResponse {
     title: string;
     content: string;
-    heatmapImageBase64: string;
-}
+    columnLabels: string[];
+    dataRows: string[][];
+  }

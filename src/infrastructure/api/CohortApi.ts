@@ -1,21 +1,27 @@
 // /infrastructure/api/CohortApi.ts
 import axiosInstance from "@/infrastructure/api/Axios.ts";
 
-// MARK: - 행동 패턴 API
-export async function fetchBehaviorPatternApi(companyNo: number) {
+// MARK: - 시각화 API
+export async function fetchVisualizationApi(companyNo: number, clusterType: string) {
   try {
-    const res = await axiosInstance.post("/cohorts/behavior-pattern", { companyNo });
+    const res = await axiosInstance.post("/analysis/cohort/single/visualization", {
+      companyNo,
+      clusterType,
+    });
     return res.data;
   } catch (err) {
-    console.error("BehaviorPattern API 요청 에러:", err);
+    console.error("Visualization API 요청 에러:", err);
     throw err;
   }
 }
 
 // MARK: - 인사이트 API
-export async function fetchInsightApi(companyNo: number) {
+export async function fetchInsightApi(companyNo: number, clusterType: string) {
   try {
-    const res = await axiosInstance.post("/cohorts/insight", { companyNo });
+    const res = await axiosInstance.post("/analysis/cohort/single/insight", {
+      companyNo,
+      clusterType,
+    });
     return res.data;
   } catch (err) {
     console.error("Insight API 요청 에러:", err);
@@ -24,9 +30,12 @@ export async function fetchInsightApi(companyNo: number) {
 }
 
 // MARK: - 리텐션 히트맵 API
-export async function fetchRemainHeatmapApi(companyNo: number) {
+export async function fetchRemainHeatmapApi(companyNo: number, clusterType: string) {
   try {
-    const res = await axiosInstance.post("/cohorts/remain-heatmap", { companyNo });
+    const res = await axiosInstance.post("/analysis/cohort/single/remain-heatmap", {
+      companyNo,
+      clusterType,
+    });
     return res.data;
   } catch (err) {
     console.error("RemainHeatmap API 요청 에러:", err);

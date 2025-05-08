@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { SegmentKeywordSelector } from "../components/molecules/SegmentKeywordSelector";
 import { SegmentSearchBar } from "../components/atoms/SegmentSearchBar";
-import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
+import { VisualizationPanel } from "../components/organisms/VisualizationPanel";
 import { PageBreadcrumb } from "@/presentation/components/molecules/PageBreadcrumb.tsx";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 import { SegmentSearchResultModal } from "../components/organisms/SegmentSearchResultModal";
 import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
-import { Header } from "@/presentation/layout/Header"; // ✅ Header 컴포넌트
+import { Header } from "@/presentation/layout/Header";
 
 export default function SegmentCohortPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,8 +26,8 @@ export default function SegmentCohortPage() {
   };
 
   return (
-      <div className="min-h-screen w-screen bg-primary text-gray-800"> {/* ✅ 전체 배경 적용 */}
-        <Header /> {/* ✅ 흰 여백 제거됨 */}
+      <div className="min-h-screen w-screen bg-primary text-gray-800">
+        <Header />
         <main className="flex">
           {/* Sidebar */}
           <div className="pt-4 pl-4">
@@ -55,7 +55,7 @@ export default function SegmentCohortPage() {
                     </div>
                     <div className="w-full md:w-3/4 flex flex-col gap-4">
                       <SegmentSearchBar onSearch={handleSearch} />
-                      <BehaviorPatternPanel />
+                      {/* <VisualizationPanel /> */}
                     </div>
                   </div>
                 </div>

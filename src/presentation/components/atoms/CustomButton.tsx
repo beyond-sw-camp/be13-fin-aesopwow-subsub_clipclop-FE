@@ -1,25 +1,28 @@
-// CustomButton.tsx
-import { Button } from "@material-tailwind/react";
-
+// /presentation/components/atoms/CustomButton.tsx
 interface CustomButtonProps {
   title: string;
   loading: boolean;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-
-export function CustomButton({ title, loading, onClick, type = "button" }: CustomButtonProps) {
+export function CustomButton({
+  title,
+  loading,
+  onClick,
+  type = "button",
+  disabled = false,
+}: CustomButtonProps) {
   return (
-    <Button
-      loading={loading}
-      onClick={onClick}
+    <button
       type={type}
-      onPointerEnterCapture={() => { }}
-      onPointerLeaveCapture={() => { }}
-      placeholder=""
+      onClick={onClick}
+      disabled={loading || disabled}
+      className={`bg-blue-500 hover:bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg shadow transition 
+        ${loading || disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     >
-      {title}
-    </Button>
+      {loading ? "처리 중..." : title}
+    </button>
   );
 }
