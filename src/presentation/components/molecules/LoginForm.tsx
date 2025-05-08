@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { InputTextBox } from "../atoms/InputTextBox";
 import { CustomButton } from "../atoms/CustomButton";
-import { LoginCheckbox } from "../atoms/LoginCheckBox";
+import { CheckBox } from "../atoms/CheckBox";
 import { useLoginViewModel } from "../../../application/viewModels/LoginViewModel";
 
 export const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { loading, onClickSignInButton } = useLoginViewModel();
+    const { loading, onClickLoginButton } = useLoginViewModel();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onClickSignInButton(email, password);
+        onClickLoginButton(email, password);
     };
+    const [rememberMe, setRememberMe] = useState(false);
 
     return (
         <form className="flex flex-col space-y-4 w-full" onSubmit={handleSubmit}>
@@ -31,10 +32,15 @@ export const LoginForm = () => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
             />
 
-            <LoginCheckbox />
+            <CheckBox
+                label="Remember Me"
+                checked={rememberMe}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setRememberMe(e.target.checked)}
+                />
+                
             <div className="pt-4">
                 <CustomButton
-                    title="로그인 하기"
+                    title="Sign In"
                     loading={loading}
                     type="submit" // submit 타입으로 지정
                 />
