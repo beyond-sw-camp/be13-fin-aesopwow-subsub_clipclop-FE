@@ -1,6 +1,6 @@
 // /core/model/SegmentModel.ts
 
-// MARK: - 세그먼트 검색 결과 타입
+// MARK: - 세그먼트 검색 타입
 export interface SegmentSearchResult {
     field: string;
     problem: string;

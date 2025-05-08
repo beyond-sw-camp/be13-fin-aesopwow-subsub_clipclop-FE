@@ -1,5 +1,5 @@
-// /infrastructure/api/cohortApi.ts
-import axiosInstance from "@/infrastructure/api/axios";
+// /infrastructure/api/CohortApi.ts
+import axiosInstance from "@/infrastructure/api/Axios.ts";
 
 // MARK: - 행동 패턴 API
 export async function fetchBehaviorPatternApi(companyNo: number) {

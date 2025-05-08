@@ -1,9 +1,9 @@
 // /application/viewModels/SegmentViewModel.ts
 
 import { useState } from "react";
-import { fetchSegmentSearchResult } from "@/application/useCases/FetchSegment";
+import { fetchSegmentSearchResult } from "@/application/useCases/SegmentUsecase";
 
-// MARK: - 세그먼트 검색 결과 ViewModel
+// MARK: - 세그먼트 검색 결과
 export function useSegmentSearchResultViewModel() {
   const [data, setData] = useState<{
     field: string;

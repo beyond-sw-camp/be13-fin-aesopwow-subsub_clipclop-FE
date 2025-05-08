@@ -3,7 +3,7 @@ import {
   fetchBehaviorPatternApi,
   fetchInsightApi,
   fetchRemainHeatmapApi,
-} from "@/infrastructure/api/cohortApi.ts";
+} from "@/infrastructure/api/CohortApi.ts";
 
 import { getUser } from "@/application/stores/UserStore.ts";
 import {

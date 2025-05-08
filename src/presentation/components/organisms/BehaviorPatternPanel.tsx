@@ -1,7 +1,7 @@
 // /presentation/components/organisms/BehaviorPatternPanel.tsx
 
 import { PanelTitle } from "../atoms/PanelTitle";
-import { useCohortBehaviorPatternViewModel } from "@/application/viewModels/CohortViewModels";
+import { useCohortBehaviorPatternViewModel } from "@/application/viewModels/CohortViewModel";
 
 export function BehaviorPatternPanel() {
     const { data, loading, error } = useCohortBehaviorPatternViewModel();

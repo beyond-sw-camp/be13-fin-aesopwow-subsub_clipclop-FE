@@ -1,10 +1,10 @@
 // /infrastructure/repositories/SegmentRepository.ts
 
-import { fetchSegmentSearchResultApi } from "@/infrastructure/api/segmentApi.ts";
+import { fetchSegmentSearchResultApi } from "@/infrastructure/api/segmentApi";
 import { SegmentSearchResult } from "@/core/model/SegmentModel";
 
 export class SegmentRepository {
-  // MARK: - 세그먼트 검색 결과 조회
+  // MARK: - 세그먼트 검색 결과
   async fetchSegmentSearchResult(keyword: string, tag: string): Promise<SegmentSearchResult> {
     const rawData = await fetchSegmentSearchResultApi(keyword, tag);
     return {

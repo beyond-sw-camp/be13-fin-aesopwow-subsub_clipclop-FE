@@ -3,9 +3,9 @@ import {
     fetchCohortBehaviorPattern,
     fetchCohortInsight,
     fetchCohortRemainHeatmap,
-} from "@/application/useCases/FetchCohort";
+} from "@/application/useCases/CohortUsecase";
 
-// MARK: - CohortBehaviorPattern ViewModel
+// MARK: - BehaviorPattern 
 export function useCohortBehaviorPatternViewModel() {
     const [data, setData] = useState<{ title: string; content: string } | null>(null);
     const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export function useCohortBehaviorPatternViewModel() {
     return { data, loading, error };
 }
 
-// MARK: - CohortInsight ViewModel
+// MARK: - Insight
 export function useCohortInsightViewModel() {
     const [data, setData] = useState<{ title: string; content: string } | null>(null);
     const [loading, setLoading] = useState(false);
@@ -55,7 +55,7 @@ export function useCohortInsightViewModel() {
     return { data, loading, error };
 }
 
-// MARK: - CohortRemainHeatmap ViewModel
+// MARK: - RemainHeatmap
 export function useCohortRemainHeatmapViewModel() {
     const [data, setData] = useState<{
         title: string;
