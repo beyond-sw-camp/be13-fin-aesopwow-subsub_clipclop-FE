@@ -1,14 +1,20 @@
-// /infrastructure/repositories/CohortRepositoryImpl.ts
+// /infrastructure/repositories/CohortRepository.ts
 import {
   fetchBehaviorPatternApi,
   fetchInsightApi,
   fetchRemainHeatmapApi,
 } from "@/infrastructure/api/cohortApi.ts";
 
-import { getUser } from "@/core/user/UserStore";
+import { getUser } from "@/application/stores/UserStore.ts";
+import {
+  CohortBehaviorPatternResponse,
+  CohortInsightResponse,
+  CohortHeatmapResponse,
+} from "@/core/model/CohortModel";
 
-export class CohortRepositoryImpl {
-  async fetchBehaviorPattern() {
+export class CohortRepository {
+  // MARK: - 행동 패턴 조회
+  async fetchBehaviorPattern(): Promise<CohortBehaviorPatternResponse> {
     const { companyNo } = getUser();
     const rawData = await fetchBehaviorPatternApi(companyNo);
     return {
@@ -17,7 +23,8 @@ export class CohortRepositoryImpl {
     };
   }
 
-  async fetchInsight() {
+  // MARK: - 인사이트 조회
+  async fetchInsight(): Promise<CohortInsightResponse> {
     const { companyNo } = getUser();
     const rawData = await fetchInsightApi(companyNo);
     return {
@@ -26,7 +33,8 @@ export class CohortRepositoryImpl {
     };
   }
 
-  async fetchRemainHeatmap() {
+  // MARK: - 잔존율 히트맵 조회
+  async fetchRemainHeatmap(): Promise<CohortHeatmapResponse> {
     const { companyNo } = getUser();
     const rawData = await fetchRemainHeatmapApi(companyNo);
     return {

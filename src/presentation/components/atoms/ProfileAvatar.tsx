@@ -1,4 +1,4 @@
-// /utils/ProfileAvatar.tsx
+// @/presentation/components/atoms/ProfileAvatar.tsx
 import { Link } from "react-router-dom";
 import profileImage from "@/assets/profile.png"; // 사용자 아바타 이미지
 

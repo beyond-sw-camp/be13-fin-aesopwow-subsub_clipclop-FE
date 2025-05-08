@@ -1,14 +1,16 @@
-// /application/viewModels/SegmentResultViewModel.ts
+// /application/viewModels/SegmentViewModel.ts
 
 import { useState } from "react";
 import { fetchSegmentSearchResult } from "@/application/useCases/FetchSegment";
 
+// MARK: - 세그먼트 검색 결과 ViewModel
 export function useSegmentSearchResultViewModel() {
   const [data, setData] = useState<{
     field: string;
     problem: string;
     actions: string[];
   } | null>(null);
+
   const [error, setError] = useState<string | null>(null);
 
   const search = async (keyword: string, tag: string) => {
@@ -23,3 +25,4 @@ export function useSegmentSearchResultViewModel() {
 
   return { data, error, search };
 }
+

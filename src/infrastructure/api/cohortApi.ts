@@ -1,7 +1,7 @@
 // /infrastructure/api/cohortApi.ts
 import axiosInstance from "@/infrastructure/api/axios";
 
-// ✅ 행동 패턴 API
+// MARK: - 행동 패턴 API
 export async function fetchBehaviorPatternApi(companyNo: number) {
   try {
     const res = await axiosInstance.post("/cohorts/behavior-pattern", { companyNo });
@@ -12,7 +12,7 @@ export async function fetchBehaviorPatternApi(companyNo: number) {
   }
 }
 
-// ✅ 인사이트 API
+// MARK: - 인사이트 API
 export async function fetchInsightApi(companyNo: number) {
   try {
     const res = await axiosInstance.post("/cohorts/insight", { companyNo });
@@ -23,7 +23,7 @@ export async function fetchInsightApi(companyNo: number) {
   }
 }
 
-// ✅ 리텐션 히트맵 API
+// MARK: - 리텐션 히트맵 API
 export async function fetchRemainHeatmapApi(companyNo: number) {
   try {
     const res = await axiosInstance.post("/cohorts/remain-heatmap", { companyNo });
@@ -33,4 +33,3 @@ export async function fetchRemainHeatmapApi(companyNo: number) {
     throw err;
   }
 }
-

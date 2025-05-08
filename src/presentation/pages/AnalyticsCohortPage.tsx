@@ -4,11 +4,11 @@ import { CohortTabs } from "../components/molecules/CohortSegmentSelector";
 import { BehaviorPatternPanel } from "../components/organisms/BehaviorPatternPanel";
 import { RemainHeatmapPanel } from "../components/organisms/RemainHeatmapPanel";
 import { InsightPanel } from "../components/organisms/InsightPanel";
-import { TopNav } from "@/presentation/components/molecules/TopNav.tsx";
+import { TopNav } from "@/presentation/components/atoms/TopNav.tsx";
 import { PageBreadcrumb } from "@/presentation/components/molecules/PageBreadcrumb.tsx";
-import { SideMenu } from "@/utils/SideMenu";
-import { ProjectLogo } from "@/utils/ProjectLogo";
-import { ProfileAvatar } from "@/utils/ProfileAvatar";
+import { SideMenu } from "@/presentation/layout/SideMenu";
+import { ProjectLogo } from "@/presentation/components/atoms/ProjectLogo.tsx";
+import { ProfileAvatar } from "@/presentation/components/atoms/ProfileAvatar.tsx";
 import { FileUploadButton } from "../components/atoms/FileUploadButton";
 
 export default function AnalyticsCohortPage() {
