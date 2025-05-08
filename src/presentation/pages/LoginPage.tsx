@@ -14,10 +14,8 @@ const LoginPage = () => {
         <div className="flex-grow flex items-center justify-center">
             <LoginCard />
         </div>
-        <div className="pb-6 flex justify-center space-x-12 text-sm">
-            <a style={{ color: 'purple' }} href="#">Forgot password?</a>
-            <a style={{ color: 'purple' }} href="#">Create new account</a>
-        </div>
+      
+
     </div>
   );
 };

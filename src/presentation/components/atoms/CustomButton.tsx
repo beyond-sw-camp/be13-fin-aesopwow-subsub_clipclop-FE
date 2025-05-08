@@ -15,9 +15,6 @@ export function CustomButton({ title, loading, onClick, type = "button" }: Custo
       loading={loading}
       onClick={onClick}
       type={type}
-      onPointerEnterCapture={() => { }}
-      onPointerLeaveCapture={() => { }}
-      placeholder=""
     >
       {title}
     </Button>

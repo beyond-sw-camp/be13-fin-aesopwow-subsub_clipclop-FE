@@ -1,20 +1,53 @@
+// import { useState } from "react";
+// import { UserRepository } from "../../infrastructure/repositories/UserRepository";
+// import { useUserStore } from "../../core/user/UserStore";
+
+// export function useLoginViewModel() {
+//   const [loading, setLoading] = useState(false);
+//   const setUser = useUserStore((state) => state.setUser);
+
+//   const onClickSignInButton = async (_email: string, _password: string) => {
+//     setLoading(true);
+//     try {
+//       const user = await UserRepository.login(_email, _password);
+//       setUser(user); 
+//       // await new Promise((resolve) => setTimeout(resolve, 2000)); // 예시: 2초 대기
+
+//     } catch (error) {
+//       console.error("로그인 실패", error);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return {
+//     loading,
+//     onClickSignInButton,
+//   };
+// }
+
+
 import { useState } from "react";
+import { LoginUseCase } from "../useCases/LoginUseCase";
+import type { UserDto } from "@/core/model/User";
 
-export function useLoginViewModel() {
+export const useLoginViewModel = () => {
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<UserDto | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  // email, password를 파라미터로 받음
-  const onClickSignInButton = async (_email: string, _password: string) => {
+  const loginUseCase = new LoginUseCase();
+
+  const onClickLoginButton = async (email: string, password: string) => {
     setLoading(true);
+    setError(null);
     try {
-      // 실제 로그인 usecase(API 호출 등) 작성
-
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 예시: 2초 대기
-
-      // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
-    } catch (error) {
-      // 에러 처리 (예: 에러 메시지 상태 업데이트)
-      console.error(error);
+      const userDto = await loginUseCase.execute(email, password);
+      setUser(userDto);
+      alert("로그인 성공!");
+    } catch (err) {
+      console.error("로그인 실패:", err);
+      setError("로그인에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -22,6 +55,8 @@ export function useLoginViewModel() {
 
   return {
     loading,
-    onClickSignInButton,
+    user,
+    error,
+    onClickLoginButton,
   };
-}
+};

@@ -1,11 +1,19 @@
-import { LoginForm } from "../molecules/LoginForm"
+import { LoginForm } from "../molecules/LoginForm";
+import { Text } from "../atoms/TextLabel";
+import { LinkText } from "../atoms/LinkText";
 
 export const LoginCard = () => {
-    return (
-        <div className="bg-white rounded-lg p-7 h-[400px] w-80 text-center text-black shadow-md">
-            <h2 className="text-sm text-gray-600 mb-3">Sign in with</h2>
-            <p className="text-sm text-gray-600 mb-6">Or sign up with credentials</p>
-            <LoginForm />
-        </div>
-    );
+  return (
+    <div className="bg-white rounded-lg p-7 h-[380px] w-80 text-center text-black shadow-md">
+      <Text size="sm" weight="normal" className="mb-3 text-gray-600">
+        Sign in with <br/> 
+        Or sign up with credentials  
+      </Text>
+      <LoginForm />
+      <div className="pb-6 flex justify-center space-x-2 mt-6">
+        <LinkText href="#">Forgot password?</LinkText>
+        <LinkText href="http://localhost:5173/signup">Create new account</LinkText>
+      </div>
+    </div>
+  );
 };
