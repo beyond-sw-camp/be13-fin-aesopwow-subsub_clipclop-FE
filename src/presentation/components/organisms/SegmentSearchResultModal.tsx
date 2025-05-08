@@ -1,6 +1,7 @@
 // /presentation/components/organisms/SegmentSearchResultModal.tsx
+
 import { useEffect } from "react";
-import { useSegmentSearchResultViewModel } from "@/application/viewModels/SegmentSearchResultViewModel.ts"; // ✅ ViewModel 가져오기
+import { useSegmentSearchResultViewModel } from "@/application/viewModels/SegmentViewModel.ts";
 
 interface SegmentSearchResultModalProps {
   isOpen: boolean;
@@ -31,26 +32,19 @@ export function SegmentSearchResultModal({ isOpen, onClose, keyword, tag }: Segm
         {error && <p className="text-red-500">{error}</p>}
 
         <div className="space-y-6 max-h-[60vh] overflow-y-auto">
-          {/* 선택한 필드 */}
           <div>
             <h3 className="text-xl font-bold mb-2 text-gray-800">선택한 필드</h3>
             <p className="text-gray-600 text-sm">{data?.field || "선택한 필드 설명이 없습니다."}</p>
           </div>
-
-          {/* 문제 */}
           <div>
             <h3 className="text-xl font-bold mb-2 text-gray-800">문제</h3>
             <p className="text-gray-600 text-sm">{data?.problem || "문제 설명이 없습니다."}</p>
           </div>
-
-          {/* 추천 액션 */}
           <div>
             <h3 className="text-xl font-bold mb-2 text-gray-800">추천 액션</h3>
-            {data?.actions && data.actions.length > 0 ? (
+            {data?.actions?.length ? (
               <ul className="list-disc list-inside text-gray-600 text-sm space-y-1">
-                {data.actions.map((action, index) => (
-                  <li key={index}>{action}</li>
-                ))}
+                {data.actions.map((action, i) => <li key={i}>{action}</li>)}
               </ul>
             ) : (
               <p className="text-gray-600 text-sm">추천 액션이 없습니다.</p>
