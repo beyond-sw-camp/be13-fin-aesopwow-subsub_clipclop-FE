@@ -1,4 +1,5 @@
 // /infrastructure/repositories/CohortRepository.ts
+
 import {
   fetchVisualizationApi,
   fetchInsightApi,
@@ -18,9 +19,8 @@ export class CohortRepository {
     const { companyNo } = getUser();
     const rawData = await fetchVisualizationApi(companyNo, clusterType);
     return {
-      title: rawData.title,
-      visualizationImage1Base64: rawData.visualizationImage1Base64,
-      visualizationImage2Base64: rawData.visualizationImage2Base64,
+      visualizationImage1Base64: rawData.imageBase64A,
+      visualizationImage2Base64: rawData.imageBase64B 
     };
   }
 
@@ -29,7 +29,6 @@ export class CohortRepository {
     const { companyNo } = getUser();
     const rawData = await fetchInsightApi(companyNo, clusterType);
     return {
-      title: rawData.title,
       content: rawData.content,
     };
   }
@@ -39,7 +38,6 @@ export class CohortRepository {
     const { companyNo } = getUser();
     const rawData = await fetchRemainHeatmapApi(companyNo, clusterType);
     return {
-      title: rawData.title,
       content: rawData.content,
       columnLabels: rawData.columnLabels,
       dataRows: rawData.dataRows,

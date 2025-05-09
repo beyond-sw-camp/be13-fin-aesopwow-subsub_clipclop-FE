@@ -8,7 +8,6 @@ import {
 // MARK: - Visualization
 export function useCohortVisualizationViewModel(clusterType: string) {
   const [data, setData] = useState<{
-    title: string;
     visualizationImage1Base64: string;
     visualizationImage2Base64: string;
   } | null>(null);
@@ -37,7 +36,7 @@ export function useCohortVisualizationViewModel(clusterType: string) {
 
 // MARK: - Insight
 export function useCohortInsightViewModel(clusterType: string) {
-  const [data, setData] = useState<{ title: string; content: string } | null>(null);
+  const [data, setData] = useState<{ content: string } | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,7 +62,6 @@ export function useCohortInsightViewModel(clusterType: string) {
 // MARK: - RemainHeatmap
 export function useCohortRemainHeatmapViewModel(clusterType: string) {
   const [data, setData] = useState<{
-    title: string;
     content: string;
     columnLabels: string[];
     dataRows: string[][];
