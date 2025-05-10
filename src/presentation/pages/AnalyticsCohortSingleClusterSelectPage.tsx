@@ -1,6 +1,6 @@
 import { PageBreadcrumb } from "@/presentation/components/molecules/PageBreadcrumb";
 import { SideMenu } from "@/presentation/layout/SideMenu";
-import { ClusterSelectionPanel } from "../components/organisms/ClusterSelectionPanel";
+import { SingleClusterSelectionPanel } from "../components/organisms/SingleClusterSelectionPanel";
 import { StepProgress } from "@/presentation/components/molecules/StepProgress";
 import { Header } from "@/presentation/layout/Header";
 
@@ -34,7 +34,7 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
 
             {/* 본문 콘텐츠 */}
             <div className="w-full mb-6">
-              <ClusterSelectionPanel />
+              <SingleClusterSelectionPanel />
             </div>
           </div>
         </div>

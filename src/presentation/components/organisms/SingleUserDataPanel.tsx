@@ -1,15 +1,15 @@
 // /presentation/components/organisms/UserDataPanel.tsx
-
 import { useEffect, useMemo, useState } from "react";
-import { useUserDataSearchResultViewModel } from "@/application/viewModels/UserDataViewModel";
+import { useSingleUserDataSearchResultViewModel } from "@/application/viewModels/CohortViewModel";
 import { UserDataKeywordSelector } from "@/presentation/components/molecules/UserDataKeywordSelector";
+import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 
-interface Props {
-  clusterType: string; // ✅ props 타입 선언
+interface SingleUserProps {
+  clusterType: string;
 }
 
-export function UserDataPanel({ clusterType }: Props) {
-  const [filters, setFilters] = useState<Record<string, boolean>>({
+export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
+  const [filters, setFilters] = useState<Record<keyof CohortSingleUserResponse, boolean>>({
     userId: true,
     name: true,
     age: true,
@@ -20,22 +20,24 @@ export function UserDataPanel({ clusterType }: Props) {
     favoriteGenre: true,
   });
 
-  const selectedFields = useMemo(() => {
+  const selectedFields = useMemo<(keyof CohortSingleUserResponse)[]>(() => {
     return Object.entries(filters)
       .filter(([_, checked]) => checked)
-      .map(([key]) => key);
+      .map(([key]) => key as keyof CohortSingleUserResponse);
   }, [filters]);
 
-  const { data, error, search } = useUserDataSearchResultViewModel();
+  const { data, error, search } = useSingleUserDataSearchResultViewModel();
 
   useEffect(() => {
-    search(clusterType, selectedFields); // ✅ props 사용
+    search(clusterType, selectedFields as string[]); // ✅ search 함수는 string[] 받음
   }, [clusterType, selectedFields]);
 
   const handleExport = () => {
     const csvContent = [
-      selectedFields.join(","),
-      ...data.map((row) => selectedFields.map((field) => row[field]).join(",")),
+      selectedFields.join(","), // 헤더
+      ...data.map((row) =>
+        selectedFields.map((field) => String(row[field])).join(",")
+      ),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -77,7 +79,9 @@ export function UserDataPanel({ clusterType }: Props) {
                 {data.map((row, rowIdx) => (
                   <tr key={rowIdx} className="text-center">
                     {selectedFields.map((field, colIdx) => (
-                      <td key={colIdx} className="border px-3 py-2">{row[field]}</td>
+                      <td key={colIdx} className="border px-3 py-2">
+                        {String(row[field])}
+                      </td>
                     ))}
                   </tr>
                 ))}

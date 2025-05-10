@@ -1,14 +1,14 @@
-// /presentation/components/organisms/InsightPanel.tsx
+// /presentation/components/organisms/SingleInsightPanel.tsx
 
-import { useCohortInsightViewModel } from "@/application/viewModels/CohortViewModel";
+import { useCohortSingleInsightViewModel } from "@/application/viewModels/CohortViewModel";
 import { PanelTitle } from "../atoms/PanelTitle";
 
-interface InsightPanelProps {
+interface SingleInsightPanelProps {
   clusterType: string;
 }
 
-export function InsightPanel({ clusterType }: InsightPanelProps) {
-  const { data, loading, error } = useCohortInsightViewModel(clusterType);
+export function SingleInsightPanel({ clusterType }: SingleInsightPanelProps) {
+  const { data, loading, error } = useCohortSingleInsightViewModel(clusterType);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px]">

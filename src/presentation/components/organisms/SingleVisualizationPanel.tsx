@@ -1,14 +1,14 @@
-// /presentation/components/organisms/VisualizationPanel.tsx
+// /presentation/components/organisms/SingleVisualizationPanel.tsx
 
-import { useCohortVisualizationViewModel } from "@/application/viewModels/CohortViewModel";
+import { useCohortSingleVisualizationViewModel } from "@/application/viewModels/CohortViewModel";
 import { PanelTitle } from "../atoms/PanelTitle";
 
-interface VisualizationPanelProps {
+interface SingleVisualizationPanelProps {
   clusterType: string;
 }
 
-export function VisualizationPanel({ clusterType }: VisualizationPanelProps) {
-  const { data, loading, error } = useCohortVisualizationViewModel(clusterType);
+export function SingleVisualizationPanel({ clusterType }: SingleVisualizationPanelProps) {
+  const { data, loading, error } = useCohortSingleVisualizationViewModel(clusterType);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow h-full min-h-[200px]">
@@ -20,12 +20,12 @@ export function VisualizationPanel({ clusterType }: VisualizationPanelProps) {
       {data && (
         <div className="mt-4 flex space-x-4">
           <img
-            src={data.visualizationImage1Base64}
+            src={data.imageBase64A}
             alt="시각화 이미지 1"
             className="w-1/2 h-auto rounded-md"
           />
           <img
-            src={data.visualizationImage2Base64}
+            src={data.imageBase64B}
             alt="시각화 이미지 2"
             className="w-1/2 h-auto rounded-md"
           />

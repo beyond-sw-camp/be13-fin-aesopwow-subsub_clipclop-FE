@@ -1,13 +1,13 @@
-// /presentation/components/organisms/RemainHeatmapPanel.tsx
+// /presentation/components/organisms/SingleRemainHeatmapPanel.tsx
 
-import { useCohortRemainHeatmapViewModel } from "@/application/viewModels/CohortViewModel";
+import { useCohortSingleRemainHeatmapViewModel } from "@/application/viewModels/CohortViewModel";
 import { PanelTitle } from "../atoms/PanelTitle";
 
-interface RemainHeatmapPanelProps {
+interface SingleRemainHeatmapPanelProps {
   clusterType: string;
 }
 
-function getHeatmapColor(value: string, colIndex: number): string {
+function getSingleHeatmapColor(value: string, colIndex: number): string {
   if (colIndex <= 1) return ""; // SEGMENT, USERS는 색상 제외
 
   const num = parseFloat(value.replace("%", ""));
@@ -22,8 +22,8 @@ function getHeatmapColor(value: string, colIndex: number): string {
   return "bg-white text-gray-500";
 }
 
-export function RemainHeatmapPanel({ clusterType }: RemainHeatmapPanelProps) {
-  const { data, loading, error } = useCohortRemainHeatmapViewModel(clusterType);
+export function SingleRemainHeatmapPanel({ clusterType }: SingleRemainHeatmapPanelProps) {
+  const { data, loading, error } = useCohortSingleRemainHeatmapViewModel(clusterType);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px]">
@@ -53,7 +53,7 @@ export function RemainHeatmapPanel({ clusterType }: RemainHeatmapPanelProps) {
                     {row.map((cell, cellIndex) => (
                       <td
                         key={cellIndex}
-                        className={`border px-4 py-2 ${getHeatmapColor(cell, cellIndex)}`}
+                        className={`border px-4 py-2 ${getSingleHeatmapColor(cell, cellIndex)}`}
                       >
                         {cell}
                       </td>

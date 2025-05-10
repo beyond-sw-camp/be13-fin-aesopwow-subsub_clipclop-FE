@@ -1,17 +1,29 @@
 import { useState, useEffect } from "react";
 import {
-  fetchCohortVisualization,
-  fetchCohortInsight,
-  fetchCohortRemainHeatmap,
+  fetchCohortSingleVisualization,
+  fetchCohortSingleInsight,
+  fetchCohortSingleRemainHeatmap,
+  fetchCohortSingleUserDataSearchResult,
+  fetchCohortDoubleInsight,
+  fetchCohortDoubleVisualization,
+  fetchCohortDoubleRemainHeatmap,
+  fetchCohortDoubleUserDataSearchResult
 } from "@/application/useCases/CohortUsecase";
 
-// MARK: - Visualization
-export function useCohortVisualizationViewModel(clusterType: string) {
-  const [data, setData] = useState<{
-    visualizationImage1Base64: string;
-    visualizationImage2Base64: string;
-  } | null>(null);
+import {
+  CohortSingleUserResponse,
+  CohortSingleInsightResponse,
+  CohortSingleHeatmapResponse,
+  CohortSingleVisualizationResponse,
+  CohortDoubleInsightResponse,
+  CohortDoubleVisualizationResponse,
+  CohortDoubleHeatmapResponse,
+  CohortDoubleUserResponse
+} from "@/core/model/CohortModel";
 
+// MARK: - Single 시각화
+export function useCohortSingleVisualizationViewModel(clusterType: string) {
+  const [data, setData] = useState<CohortSingleVisualizationResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,10 +31,10 @@ export function useCohortVisualizationViewModel(clusterType: string) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await fetchCohortVisualization(clusterType);
+        const result = await fetchCohortSingleVisualization(clusterType);
         setData(result);
       } catch {
-        setError("데이터를 불러오는 데 실패했습니다.");
+        setError("시각화 데이터를 불러오는 데 실패했습니다.");
       } finally {
         setLoading(false);
       }
@@ -34,9 +46,9 @@ export function useCohortVisualizationViewModel(clusterType: string) {
   return { data, loading, error };
 }
 
-// MARK: - Insight
-export function useCohortInsightViewModel(clusterType: string) {
-  const [data, setData] = useState<{ content: string } | null>(null);
+// MARK: - Single 인사이트
+export function useCohortSingleInsightViewModel(clusterType: string) {
+  const [data, setData] = useState<CohortSingleInsightResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,7 +56,7 @@ export function useCohortInsightViewModel(clusterType: string) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await fetchCohortInsight(clusterType);
+        const result = await fetchCohortSingleInsight(clusterType);
         setData(result);
       } catch {
         setError("인사이트 데이터를 불러오는 데 실패했습니다.");
@@ -59,14 +71,9 @@ export function useCohortInsightViewModel(clusterType: string) {
   return { data, loading, error };
 }
 
-// MARK: - RemainHeatmap
-export function useCohortRemainHeatmapViewModel(clusterType: string) {
-  const [data, setData] = useState<{
-    content: string;
-    columnLabels: string[];
-    dataRows: string[][];
-  } | null>(null);
-
+// MARK: - Single 히트맵
+export function useCohortSingleRemainHeatmapViewModel(clusterType: string) {
+  const [data, setData] = useState<CohortSingleHeatmapResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -74,7 +81,7 @@ export function useCohortRemainHeatmapViewModel(clusterType: string) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const result = await fetchCohortRemainHeatmap(clusterType);
+        const result = await fetchCohortSingleRemainHeatmap(clusterType);
         setData(result);
       } catch {
         setError("잔존율 히트맵 데이터를 불러오는 데 실패했습니다.");
@@ -87,4 +94,134 @@ export function useCohortRemainHeatmapViewModel(clusterType: string) {
   }, [clusterType]);
 
   return { data, loading, error };
+}
+
+// MARK: - Single 유저 데이터
+export function useSingleUserDataSearchResultViewModel() {
+  const [data, setData] = useState<CohortSingleUserResponse[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const search = async (clusterType: string, fields: string[]) => {
+    try {
+      const result = await fetchCohortSingleUserDataSearchResult(clusterType, fields);
+      setData(result);
+      setError(null);
+    } catch {
+      setError("유저 데이터를 불러오는 데 실패했습니다.");
+    }
+  };
+
+  return {
+    data,
+    error,
+    search,
+  };
+}
+
+// MARK: - Double 시각화
+export function useCohortDoubleVisualizationViewModel(firstClusterType: string, secondClusterType: string) {
+  const [data, setData] = useState<CohortDoubleVisualizationResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const result = await fetchCohortDoubleVisualization(firstClusterType, secondClusterType);
+        setData(result);
+      } catch {
+        setError("Double 시각화 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [firstClusterType, secondClusterType]);
+
+  return { data, error, loading };
+}
+
+// MARK: - Double 인사이트
+export function useCohortDoubleInsightViewModel(firstClusterType: string, secondClusterType: string) {
+  const [data, setData] = useState<CohortDoubleInsightResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const result = await fetchCohortDoubleInsight(firstClusterType, secondClusterType);
+        setData(result);
+      } catch {
+        setError("Double 인사이트 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [firstClusterType, secondClusterType]);
+
+  return { data, error, loading };
+}
+
+// MARK: - Double 히트맵
+export function useCohortDoubleRemainHeatmapViewModel(firstClusterType: string, secondClusterType: string) {
+  const [data, setData] = useState<CohortDoubleHeatmapResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const result = await fetchCohortDoubleRemainHeatmap(firstClusterType, secondClusterType);
+        setData(result);
+      } catch {
+        setError("Double 히트맵 데이터를 불러오는 데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [firstClusterType, secondClusterType]);
+
+  return { data, error, loading };
+}
+
+// MARK: - Double 유저 데이터 ViewModel
+export function useDoubleUserDataSearchResultViewModel() {
+  const [firstData, setFirstData] = useState<CohortDoubleUserResponse[]>([]);
+  const [secondData, setSecondData] = useState<CohortDoubleUserResponse[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const search = async (
+    firstClusterType: string,
+    secondClusterType: string,
+    fields: string[]
+  ) => {
+    try {
+      const result = await fetchCohortDoubleUserDataSearchResult(
+        firstClusterType,
+        secondClusterType,
+        fields
+      );
+      setFirstData(result.firstTableData);
+      setSecondData(result.secondTableData);
+      setError(null);
+    } catch {
+      setError("유저 데이터를 불러오는 데 실패했습니다.");
+    }
+  };
+
+  return {
+    firstData,
+    secondData,
+    error,
+    search,
+  };
 }

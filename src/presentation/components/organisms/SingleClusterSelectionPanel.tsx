@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const clusters = ["활동", "구독 유형", "장르", "접속"];
 
-export function ClusterSelectionPanel() {
+export function SingleClusterSelectionPanel() {
   const [selectedCluster, setSelectedCluster] = useState("");
   const navigate = useNavigate();
 
