@@ -1,4 +1,9 @@
 // /presentation/components/atoms/PanelTitle.tsx
-export function PanelTitle({ title }: { title: string }) {
-    return <h2 className="text-lg font-semibold mb-2">{title}</h2>;
-  }
+interface PanelTitleProps {
+  title: string;
+  className?: string;
+}
+
+export function PanelTitle({ title, className = "text-lg font-semibold mb-2" }: PanelTitleProps) {
+  return <h2 className={className}>{title}</h2>;
+}
