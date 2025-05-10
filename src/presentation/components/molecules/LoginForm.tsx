@@ -42,7 +42,7 @@ export const LoginForm = () => {
                 <CustomButton
                     title="Sign In"
                     loading={loading}
-                    type="submit" // submit 타입으로 지정
+                    type="submit"
                 />
             </div>
         </form>

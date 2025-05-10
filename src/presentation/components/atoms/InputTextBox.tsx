@@ -1,78 +1,14 @@
-// import { Input } from "@material-tailwind/react";
-
-// interface InputTextBoxProps {
-//   type: string;
-//   label: string;
-//   placeholder: string;
-//   value: string;
-//   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-//   width?: string;
-// }
-
-
-// export function InputTextBox({ type, label, placeholder, value, onChange, width }: InputTextBoxProps) {
-//   return (
-//     <div className={width}>
-//       <Input
-//         type={type}
-//         label={label}
-//         placeholder={placeholder}
-//         value={value}
-//         onChange={onChange}
-//       />
-//     </div>
-//   );
-// }
-// import { Input } from "@material-tailwind/react";
-
-// interface InputTextBoxProps {
-//   type: string;
-//   label: string;
-//   placeholder: string;
-//   value: string;
-//   onChange: (value: string) => void;
-//   width?: string;
-// }
-
-// export function InputTextBox({
-//   type,
-//   label,
-//   placeholder,
-//   value,
-//   onChange,
-//   width,
-// }: InputTextBoxProps) {
-//   return (
-//     <div className={width}>
-//       <Input
-//         type={type}
-//         label={label}
-//         placeholder={placeholder}
-//         value={value}
-//         onChange={onChange}
-//         {...({
-//           // 강제 무시
-//           onPointerEnterCapture: undefined,
-//           onPointerLeaveCapture: undefined,
-//           crossOrigin: undefined,
-//         } as any)}
-//       />
-//     </div>
-//   );
-// }
-
 interface InputTextBoxProps {
   type: string;
   label: string;
   placeholder: string;
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  width?: string; // tailwind width like "w-full" or "w-1/2"
+  width?: string;
 }
 
 export function InputTextBox({
   type,
-  label,
   placeholder,
   value,
   onChange,

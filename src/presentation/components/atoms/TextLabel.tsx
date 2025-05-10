@@ -1,24 +1,11 @@
-// interface TextProps {
-//     children: string;
-//     className?: string;
-//   }
-
 import { ReactNode } from "react";
-
-  
-//   export const Text = ({ children, className = "" }: TextProps) => {
-//     return (
-//       <p className={`text-sm text-gray-600 ${className}`}>
-//         {children}
-//       </p>
-//     );
-//   };
   
 interface TextProps {
     children: ReactNode;
     size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl';
     weight?: 'normal' | 'medium' | 'bold';
     className?: string;
+    onClick?: () => void;
   }
   
   export const Text = ({ children, size = 'base', weight = 'normal', className = '' }: TextProps) => {

@@ -1,4 +1,3 @@
-// CustomButton.tsx
 import { Button } from "@material-tailwind/react";
 
 interface CustomButtonProps {
