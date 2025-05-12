@@ -9,13 +9,13 @@ import AnalyticsCohortSingleUserDataPage from './presentation/pages/AnalyticsCoh
 import AnalyticsCohortDoubleClusterSelectPage from './presentation/pages/AnalyticsCohortDoubleClusterSelectPage';
 import AnalyticsCohortDoubleCohortResultPage from './presentation/pages/AnalyticsCohortDoubleCohortResultPage';
 import AnalyticsCohortDoubleUserDataPage from './presentation/pages/AnalyticsCohortDoubleUserDataPage';
-import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
+// import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
 
 function App() {
   return (
     <Routes>
-      <Route path="/analytics/cohorts" element={<AnalyticsCohortPage />} />
-      <Route path="/analytics/singlecohorts" element={<AnalyticsCohortPage />} />
+      {/* <Route path="/analytics/cohorts" element={<AnalyticsCohortPage />} /> */}
+      {/* <Route path="/analytics/singlecohorts" element={<AnalyticsCohortPage />} /> */}
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/mypage" element={<SignupPage />} />
