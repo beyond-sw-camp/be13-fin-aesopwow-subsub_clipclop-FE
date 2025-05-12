@@ -90,7 +90,7 @@ export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: Dou
       <div className="flex gap-6">
         <UserDataKeywordSelector filters={filters} onChange={setFilters} />
         <div className="flex-1 overflow-x-auto">
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-sm text-red-500">{error.message}</p>}
           {isLoading && <p className="text-gray-500">로딩 중...</p>}
           {!isLoading && activeData.length === 0 && !error && (
             <p className="text-gray-500">표시할 데이터가 없습니다.</p>

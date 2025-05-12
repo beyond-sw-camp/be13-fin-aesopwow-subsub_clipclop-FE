@@ -14,7 +14,7 @@ export function DoubleInsightPanel({ firstClusterType, secondClusterType }: Doub
       <PanelTitle title="인사이트 (양측 비교)" className="text-xl font-bold mb-2" />
 
       {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-red-500">{error.message}</p>}
 
       {data && (
         <div className="space-y-2 text-sm text-gray-600">

@@ -70,7 +70,7 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
       <div className="flex gap-6">
         <UserDataKeywordSelector filters={filters} onChange={setFilters} />
         <div className="flex-1 overflow-x-auto">
-          {error && <p className="text-red-500">{error}</p>}
+          {error && <p className="text-sm text-red-500">{error.message}</p>}
             {isLoading && <p className="text-gray-500">로딩 중...</p>}
             {!isLoading && data.length === 0 && !error && (
               <p className="text-gray-500">표시할 데이터가 없습니다.</p>

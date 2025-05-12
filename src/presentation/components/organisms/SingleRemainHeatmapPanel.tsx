@@ -28,7 +28,7 @@ export function SingleRemainHeatmapPanel({ clusterType }: SingleRemainHeatmapPan
       <PanelTitle title="잔존율 히트맵" className="text-xl font-bold mb-2" />
 
       {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-red-500">{error.message}</p>}
 
       {data && (
         <>

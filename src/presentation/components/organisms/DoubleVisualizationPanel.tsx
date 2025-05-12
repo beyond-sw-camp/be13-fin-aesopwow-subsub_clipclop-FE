@@ -37,7 +37,7 @@ export function DoubleVisualizationPanel({ firstClusterType, secondClusterType }
       </div>
 
       {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-red-500">{error.message}</p>}
 
       {data && (
         <div className="flex gap-4">

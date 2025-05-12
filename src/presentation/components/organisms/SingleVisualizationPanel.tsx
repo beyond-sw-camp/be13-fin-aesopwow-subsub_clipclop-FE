@@ -14,7 +14,7 @@ export function SingleVisualizationPanel({ clusterType }: SingleVisualizationPan
       <PanelTitle title="시각화 결과" className="text-xl font-bold mb-2" />
 
       {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && <p className="text-sm text-red-500">{error.message}</p>}
 
       {data && (
         <div className="mt-4 flex space-x-4">
