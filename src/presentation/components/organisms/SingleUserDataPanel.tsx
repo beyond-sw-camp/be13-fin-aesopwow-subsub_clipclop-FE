@@ -1,4 +1,4 @@
-// /presentation/components/organisms/UserDataPanel.tsx
+// /presentation/components/organisms/SingleUserDataPanel.tsx
 import { useEffect, useMemo, useState } from "react";
 import { useSingleUserDataSearchResultViewModel } from "@/application/viewModels/CohortViewModel";
 import { UserDataKeywordSelector } from "@/presentation/components/molecules/UserDataKeywordSelector";
@@ -26,18 +26,24 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
       .map(([key]) => key as keyof CohortSingleUserResponse);
   }, [filters]);
 
-  const { data, error, search } = useSingleUserDataSearchResultViewModel();
+  const { data, error, isLoading, search } = useSingleUserDataSearchResultViewModel();
 
   useEffect(() => {
-    search(clusterType, selectedFields as string[]); // ✅ search 함수는 string[] 받음
+    search(clusterType, selectedFields as string[]);
   }, [clusterType, selectedFields]);
 
   const handleExport = () => {
     const csvContent = [
-      selectedFields.join(","), // 헤더
-      ...data.map((row) =>
-        selectedFields.map((field) => String(row[field])).join(",")
-      ),
+      selectedFields.join(","),
+      ...data.map((row) => selectedFields.map((field) => {
+        const rawValue = row[field] ?? '';
+        const value = String(rawValue);
+
+        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+          return `"${value.replace(/"/g, '""')}"`;
+        }
+        return value;
+      }).join(",")),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -65,7 +71,10 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
         <UserDataKeywordSelector filters={filters} onChange={setFilters} />
         <div className="flex-1 overflow-x-auto">
           {error && <p className="text-red-500">{error}</p>}
-          {!data.length && <p className="text-gray-500">로딩 중...</p>}
+            {isLoading && <p className="text-gray-500">로딩 중...</p>}
+            {!isLoading && data.length === 0 && !error && (
+              <p className="text-gray-500">표시할 데이터가 없습니다.</p>
+            )}
           {data.length > 0 && (
             <table className="min-w-full text-sm border border-gray-200">
               <thead className="bg-gray-100">

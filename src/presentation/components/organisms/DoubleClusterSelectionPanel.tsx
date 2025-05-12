@@ -11,17 +11,21 @@ export function DoubleClusterSelectionPanel() {
   const [secondCluster, setSecondCluster] = useState("");
   const navigate = useNavigate();
 
-  const handleStartAnalysis = () => {
-    if (!firstCluster || !secondCluster) {
-      alert("두 개의 군집을 모두 선택하세요!");
-      return;
-    }
-    navigate(
-      `/analytics/double/cohortresult?firstClusterType=${encodeURIComponent(
-        firstCluster
-      )}&secondClusterType=${encodeURIComponent(secondCluster)}`
-    );
-  };
+const handleStartAnalysis = () => {
+  if (!firstCluster || !secondCluster) {
+    alert("두 개의 군집을 모두 선택하세요!");
+    return;
+  }
+  if (firstCluster === secondCluster) {
+    alert("서로 다른 군집을 선택해주세요!");
+    return;
+  }
+  navigate(
+    `/analytics/double/cohortresult?firstClusterType=${encodeURIComponent(
+      firstCluster
+    )}&secondClusterType=${encodeURIComponent(secondCluster)}`
+  );
+};
 
   const renderListbox = (
     value: string,

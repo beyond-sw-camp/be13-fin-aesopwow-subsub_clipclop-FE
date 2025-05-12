@@ -8,7 +8,7 @@ interface DoubleVisualizationPanelProps {
 }
 
 export function DoubleVisualizationPanel({ firstClusterType, secondClusterType }: DoubleVisualizationPanelProps) {
-  const { data, loading, error } = useCohortDoubleVisualizationViewModel(firstClusterType, secondClusterType);
+  const { data, isLoading, error } = useCohortDoubleVisualizationViewModel(firstClusterType, secondClusterType);
   const [activeCluster, setActiveCluster] = useState<'A' | 'B'>('A');
 
   const getButtonStyle = (cluster: 'A' | 'B') =>
@@ -36,7 +36,7 @@ export function DoubleVisualizationPanel({ firstClusterType, secondClusterType }
         </button>
       </div>
 
-      {loading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       {data && (

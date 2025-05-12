@@ -66,14 +66,14 @@ function renderTable(title: string, columns: string[], rows: string[][]) {
 }
 
 export function DoubleRemainHeatmapPanel({ firstClusterType, secondClusterType }: DoubleRemainHeatmapPanelProps) {
-  const { data, loading, error } = useCohortDoubleRemainHeatmapViewModel(firstClusterType, secondClusterType);
+  const { data, isLoading, error } = useCohortDoubleRemainHeatmapViewModel(firstClusterType, secondClusterType);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px] overflow-x-auto">
       <PanelTitle title="잔존율 히트맵 (양측 비교)" className="text-xl font-bold mb-2" />
       {data?.firstContent && <p className="text-sm text-gray-500 mb-4">{data.firstContent}</p>}
 
-      {loading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       {data ? (
@@ -82,7 +82,7 @@ export function DoubleRemainHeatmapPanel({ firstClusterType, secondClusterType }
           {renderTable("군집 B", data.secondColumnLabels, data.secondDataRows)}
         </div>
       ) : (
-        !loading && !error && <p className="text-sm text-gray-400">히트맵 데이터를 불러올 수 없습니다.</p>
+        !isLoading && !error && <p className="text-sm text-gray-400">히트맵 데이터를 불러올 수 없습니다.</p>
       )}
     </div>
   );

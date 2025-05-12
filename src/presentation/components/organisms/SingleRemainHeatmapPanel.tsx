@@ -1,5 +1,4 @@
 // /presentation/components/organisms/SingleRemainHeatmapPanel.tsx
-
 import { useCohortSingleRemainHeatmapViewModel } from "@/application/viewModels/CohortViewModel";
 import { PanelTitle } from "../atoms/PanelTitle";
 
@@ -8,8 +7,7 @@ interface SingleRemainHeatmapPanelProps {
 }
 
 function getSingleHeatmapColor(value: string, colIndex: number): string {
-  if (colIndex <= 1) return ""; // SEGMENT, USERS는 색상 제외
-
+  if (colIndex <= 1) return "";
   const num = parseFloat(value.replace("%", ""));
   if (isNaN(num)) return "bg-white text-gray-500";
 
@@ -23,13 +21,13 @@ function getSingleHeatmapColor(value: string, colIndex: number): string {
 }
 
 export function SingleRemainHeatmapPanel({ clusterType }: SingleRemainHeatmapPanelProps) {
-  const { data, loading, error } = useCohortSingleRemainHeatmapViewModel(clusterType);
+  const { data, isLoading, error } = useCohortSingleRemainHeatmapViewModel(clusterType);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px]">
       <PanelTitle title="잔존율 히트맵" className="text-xl font-bold mb-2" />
 
-      {loading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       {data && (

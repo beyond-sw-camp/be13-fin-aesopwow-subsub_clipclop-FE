@@ -1,5 +1,4 @@
 // /presentation/components/organisms/SingleVisualizationPanel.tsx
-
 import { useCohortSingleVisualizationViewModel } from "@/application/viewModels/CohortViewModel";
 import { PanelTitle } from "../atoms/PanelTitle";
 
@@ -8,13 +7,13 @@ interface SingleVisualizationPanelProps {
 }
 
 export function SingleVisualizationPanel({ clusterType }: SingleVisualizationPanelProps) {
-  const { data, loading, error } = useCohortSingleVisualizationViewModel(clusterType);
+  const { data, isLoading, error } = useCohortSingleVisualizationViewModel(clusterType);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow h-full min-h-[200px]">
       <PanelTitle title="시각화 결과" className="text-xl font-bold mb-2" />
 
-      {loading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
       {data && (
