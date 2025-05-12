@@ -1,21 +1,21 @@
-import { ProjectLogo } from "@/utils/ProjectLogo";
-import { SideMenu } from "@/utils/SideMenu";
-import { TopNav } from "@/utils/TopNav";
+import { ProjectLogo } from "@/presentation/components/atoms/ProjectLogo"
+import { SideMenu } from "@/presentation/layout/SideMenu";
+import { Header } from "@/presentation/layout/Header";
 import { ProfileButton } from "@/presentation/components/atoms/ProfileButton";
 import { ProfileCard } from "@/presentation/components/organisms/ProfileCard";
 import { UserDetailPanel } from "@/presentation/components/organisms/UserDetailPanel";
 import profileImg from '@/assets/profileimg.png';
 
-function Header() {
-  return (
-    <header className="w-full h-16 flex items-center justify-between px-8 bg-primary shadow z-10">
-      <div className="flex items-center gap-4">
-        <ProjectLogo />
-      </div>
-      <TopNav />
-    </header>
-  );
-}
+// function Header() {
+//   return (
+//     <header className="w-full h-16 flex items-center justify-between px-8 bg-primary shadow z-10">
+//       <div className="flex items-center gap-4">
+//         <Header />
+//       </div>
+//       <Header />
+//     </header>
+//   );
+// }
 
 
 export default function MyPage() {

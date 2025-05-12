@@ -1,39 +1,33 @@
 // /presentation/components/molecules/SegmentKeywordSelector.tsx
 import { useState } from "react";
-import { X } from "lucide-react"; // x 아이콘
+import { X } from "lucide-react";
 
 export function SegmentKeywordSelector() {
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>(["Spring", "Smart", "Modern"]);
+  const [selectedKeywords, setSelectedKeywords] = useState(["Spring", "Smart", "Modern"]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 100]);
   const [selectedLabels, setSelectedLabels] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
-  const labels = ["Label", "Label", "Label"];
-  const colors = ["Label", "Label", "Label"];
-  const sizes = ["Label", "Label", "Label"];
+  const labels = ["Eco", "Luxury", "Casual"];
+  const colors = ["Red", "Blue", "Green"];
+  const sizes = ["S", "M", "L", "XL"];
 
-  const toggleItem = (item: string, list: string[], setList: (list: string[]) => void) => {
-    if (list.includes(item)) {
-      setList(list.filter(i => i !== item));
-    } else {
-      setList([...list, item]);
-    }
+  const toggleItem = (item: string, list: string[], setList: (value: string[]) => void) => {
+    setList(list.includes(item) ? list.filter(i => i !== item) : [...list, item]);
   };
 
   return (
-    <div className="bg-white border border-gray-300 rounded-lg p-4 w-64 space-y-4">
+    <div className="bg-white border border-gray-300 rounded-lg p-4 w-72 space-y-4">
       <h3 className="font-semibold text-sm">Keywords</h3>
 
-      {/* 선택된 키워드들 */}
+      {/* 선택된 키워드 */}
       <div className="flex flex-wrap gap-2">
         {selectedKeywords.map((keyword) => (
           <div key={keyword} className="flex items-center bg-gray-100 px-2 py-1 rounded-md text-sm">
             {keyword}
             <button
-              onClick={() =>
-                setSelectedKeywords(prev => prev.filter(k => k !== keyword))
-              }
+              onClick={() => setSelectedKeywords(prev => prev.filter(k => k !== keyword))}
               className="ml-1 text-gray-500 hover:text-gray-700"
             >
               <X size={12} />
@@ -42,8 +36,9 @@ export function SegmentKeywordSelector() {
         ))}
       </div>
 
-      {/* Label 그룹 */}
+      {/* Label 필터 */}
       <div className="space-y-2">
+        <p className="text-sm font-semibold">Label</p>
         {labels.map((label, index) => (
           <div key={index} className="flex items-start space-x-2">
             <input
@@ -54,17 +49,17 @@ export function SegmentKeywordSelector() {
             />
             <div>
               <p className="text-sm">{label}</p>
-              <p className="text-xs text-gray-400">Description</p>
+              <p className="text-xs text-gray-400">제품 스타일 라벨</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Price Slider */}
+      {/* 가격 범위 */}
       <div>
         <div className="flex justify-between text-xs mb-1">
-          <span>Label</span>
-          <span>${priceRange[0]}-${priceRange[1]}</span>
+          <span>Price</span>
+          <span>${priceRange[0]} - ${priceRange[1]}</span>
         </div>
         <input
           type="range"
@@ -76,7 +71,7 @@ export function SegmentKeywordSelector() {
         />
       </div>
 
-      {/* Color 그룹 */}
+      {/* 색상 필터 */}
       <div className="space-y-2">
         <p className="text-sm font-semibold">Color</p>
         {colors.map((color, index) => (
@@ -91,7 +86,7 @@ export function SegmentKeywordSelector() {
         ))}
       </div>
 
-      {/* Size 그룹 */}
+      {/* 사이즈 필터 */}
       <div className="space-y-2">
         <p className="text-sm font-semibold">Size</p>
         {sizes.map((size, index) => (

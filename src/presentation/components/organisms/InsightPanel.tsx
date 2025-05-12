@@ -1,18 +1,22 @@
 // /presentation/components/organisms/InsightPanel.tsx
-import { PanelTitle } from "../atoms/PanelTitle.tsx";
-import { useCohortInsightViewModel } from "@/application/viewModels/CohortInsightViewModel.ts";
 
-export function InsightPanel() {
-  const { data, loading, error } = useCohortInsightViewModel();
+import { PanelTitle } from "../atoms/PanelTitle";
+import { useCohortInsightViewModel } from "@/application/viewModels/CohortViewModel";
+
+interface InsightPanelProps {
+  clusterType: string;
+}
+
+export function InsightPanel({ clusterType }: InsightPanelProps) {
+  const { data, loading, error } = useCohortInsightViewModel(clusterType);
 
   return (
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px]">
       <h2 className="text-xl font-bold mb-2">인사이트</h2>
-
       {loading && <p className="text-sm text-gray-500">로딩 중...</p>}
       {error && <p className="text-sm text-red-500">{error}</p>}
 
-      {!loading && !error && data && (
+      {data && (
         <>
           <PanelTitle title={data.title} />
           <p className="text-sm text-gray-500">{data.content}</p>
