@@ -14,7 +14,7 @@ interface EditableListModalProps {
     title: string;
     data: ItemData[];
     onClose: () => void;
-    onEdit: (id: number) => void;
+    onEdit: (id: number, title: string, subtitle: string) => void;
     onDelete: (id: number) => void;
     onAdd?: () => void; // 직원 관리에서만 사용
     addLabel?: string;  // 직원 관리에서만 사용
@@ -47,9 +47,10 @@ export function EditableListModal({
             {data.map((item) => (
                 <EditableInfoItem
                 key={item.id}
+                id={item.id}
                 title={item.title}
                 subtitle={item.subtitle}
-                onEdit={() => onEdit(item.id)}
+                onEdit={onEdit}
                 onDelete={() => onDelete(item.id)}
                 />
             ))}
