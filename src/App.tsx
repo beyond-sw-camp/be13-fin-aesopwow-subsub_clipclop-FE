@@ -2,6 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import SegmentCohortPage from '@/presentation/pages/SegmentCohortPage.tsx';
 import LoginPage from './presentation/pages/LoginPage';
+import MyPage from './presentation/pages/MyPage'; 
 import AnalyticsCohortSingleClusterSelectPage from './presentation/pages/AnalyticsCohortSingleClusterSelectPage';
 import AnalyticsCohortSingleCohortResultPage from './presentation/pages/AnalyticsCohortSingleCohortResultPage';
 
@@ -15,6 +16,7 @@ function App() {
       {/* <Route path="/analytics/single/userdata" element={<AnalyticsCohortSingleUserDataPage />} /> */}
 
       <Route path="/" element={<LoginPage />} />
+      <Route path="/profile" element={<MyPage />} />
     </Routes>
   );
 }
