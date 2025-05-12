@@ -1,6 +1,6 @@
-import { TopNav } from "@/utils/TopNav";
+import { TopNav } from "@/presentation/components/atoms/TopNav.tsx";
 import { LoginCard } from "../components/organisms/LoginCard";
-import { ProjectLogo } from "@/utils/ProjectLogo";
+import { ProjectLogo } from "@/presentation/components/atoms/ProjectLogo.tsx";
 
 const LoginPage = () => {
   return (
