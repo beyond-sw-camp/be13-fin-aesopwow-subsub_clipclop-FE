@@ -18,7 +18,9 @@ export function MyPageCompany() {
     };
 
     const handleDelete = (id: number) => {
+        if (window.confirm('정말로 이 회사 정보를 삭제하시겠습니까?')) {
         setCompanyList((prev) => prev.filter((item) => item.id !== id));
+        }
     };
 
     return (
