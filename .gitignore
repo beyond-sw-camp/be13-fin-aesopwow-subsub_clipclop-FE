@@ -394,7 +394,7 @@ pyrightconfig.json
 **/*.backup.*
 **/*.back.*
 
-node_modules
+node_modules/
 
 *.sublime*
 
@@ -435,36 +435,3 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/node,macos,linux,windows,java,python,vuejs,jsonnet,react
-
-node_modules/.vite/deps/_metadata.json
-node_modules/.vite/deps/@material-tailwind_react.js
-node_modules/.vite/deps/@material-tailwind_react.js.map
-node_modules/.vite/deps/axios.js.map
-node_modules/.vite/deps/chunk-E434T6SK.js
-node_modules/.vite/deps/chunk-E434T6SK.js.map
-node_modules/.vite/deps/chunk-ORYFNTKN.js
-node_modules/.vite/deps/chunk-ORYFNTKN.js.map
-node_modules/.vite/deps/lucide-react.js
-node_modules/.vite/deps/react_jsx-dev-runtime.js
-node_modules/.vite/deps/react_jsx-runtime.js
-node_modules/.vite/deps/react-dom_client.js
-node_modules/.vite/deps/react-dom.js
-node_modules/.vite/deps/react-router-dom.js
-node_modules/.vite/deps/react.js
-node_modules/.vite/deps/zustand.js
-node_modules/.vite/deps/_metadata.json
-node_modules/.vite/deps/@material-tailwind_react.js
-node_modules/.vite/deps/@material-tailwind_react.js.map
-node_modules/.vite/deps/axios.js.map
-node_modules/.vite/deps/chunk-E434T6SK.js
-node_modules/.vite/deps/chunk-E434T6SK.js.map
-node_modules/.vite/deps/chunk-ORYFNTKN.js
-node_modules/.vite/deps/chunk-ORYFNTKN.js.map
-node_modules/.vite/deps/lucide-react.js
-node_modules/.vite/deps/react_jsx-dev-runtime.js
-node_modules/.vite/deps/react_jsx-runtime.js
-node_modules/.vite/deps/react-dom_client.js
-node_modules/.vite/deps/react-dom.js
-node_modules/.vite/deps/react-router-dom.js
-node_modules/.vite/deps/react.js
-node_modules/.vite/deps/zustand.js
