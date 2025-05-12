@@ -72,11 +72,15 @@ export default function MyPage() {
 
   return (
     <div className="min-h-screen w-screen bg-primary flex flex-col">
-      <Header />
+      {/* Header에 mt-4 추가 */}
+      <div className="mt-4">
+        <Header />
+      </div>
       <div className="flex flex-1"></div>
   
       <div className="min-h-screen w-screen bg-primary text-gray-800 flex">
-        <div className="pt-4 pl-4">
+        {/* SideMenu에 mt-4 추가 */}
+        <div className="pt-4 pl-4 mt-4">
           <SideMenu />
         </div>
   
@@ -88,32 +92,33 @@ export default function MyPage() {
                 rounded-2xl
                 shadow-2xl
                 w-full
-                max-w-5xl
+                max-w-7xl   // 적당한 최대폭
+                mx-auto     // 가운데 정렬
                 flex flex-col
-                px-16
+                px-12       // 내부 패딩
                 py-12
                 gap-8
-                ml-8
-                mt-4
+                mt-8
               "
               style={{ boxSizing: "border-box" }}
             >
               {/* 버튼 2개 + 프로필카드 묶기 */}
-                <div className="flex flex-col gap-6 mb-8">
-                  {/* 버튼들을 좌우 끝으로 배치 */}
-                  <div className="flex justify-between w-full">
-                    <ProfileButton type="plan" label={userInfo.plan} />
-                    <ProfileButton type="days" label={`${userInfo.remainingDays} 남은 일수`} />
-                  </div>
-
-                  <ProfileCard
-                    src={profileImg}
-                    alt="프로필 이미지"
-                    name={userInfo.name}
-                    company={userInfo.company}
-                    imgClassName="w-56 h-56" // 이미지 크기 2배
-                  />
+              <div className="flex flex-col gap-6 mb-8">
+                {/* 버튼들을 좌우 끝으로 배치 */}
+                <div className="flex justify-between w-full">
+                  <ProfileButton type="plan" label={userInfo.plan} />
+                  <ProfileButton type="days" label={`${userInfo.remainingDays} 남은 일수`} />
                 </div>
+  
+                <ProfileCard
+                  src={profileImg}
+                  alt="프로필 이미지"
+                  name={userInfo.name}
+                  company={userInfo.company}
+                  imgClassName="w-56 h-56"
+                />
+              </div>
+  
               <UserDetailPanel />
             </div>
           </div>
@@ -121,4 +126,4 @@ export default function MyPage() {
       </div>
     </div>
   );
-}
+}  
