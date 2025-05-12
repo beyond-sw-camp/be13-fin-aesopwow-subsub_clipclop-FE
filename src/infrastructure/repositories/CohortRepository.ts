@@ -25,41 +25,51 @@ import { CustomError } from "@/error/CustomError";
 import { ErrorResponse } from "@/error/ErrorResponse";
 import { ErrorCode } from "@/error/ErrorCode";
 
-// MARK: - Repository 통일 에러 관리
 export class CohortRepository {
+  // MARK: - Single 시각화
   async fetchSingleVisualization(clusterType: string): Promise<CohortSingleVisualizationResponse> {
     if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
 
     try {
       const rawData = await fetchSingleVisualizationApi(clusterType);
-      return { imageBase64A: rawData.imageBase64A, imageBase64B: rawData.imageBase64B };
+      return {
+        imageBase64A: rawData?.imageBase64A ?? '',
+        imageBase64B: rawData?.imageBase64B ?? '',
+      };
     } catch (error) {
       throw new ErrorResponse(error);
     }
   }
 
+  // MARK: - Single 인사이트
   async fetchSingleInsight(clusterType: string): Promise<CohortSingleInsightResponse> {
     if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
 
     try {
       const rawData = await fetchSingleInsightApi(clusterType);
-      return { content: rawData.content };
+      return { content: rawData?.content ?? '' };
     } catch (error) {
       throw new ErrorResponse(error);
     }
   }
 
+  // MARK: - Single 히트맵
   async fetchSingleRemainHeatmap(clusterType: string): Promise<CohortSingleHeatmapResponse> {
     if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
 
     try {
       const rawData = await fetchSingleRemainHeatmapApi(clusterType);
-      return { content: rawData.content, columnLabels: rawData.columnLabels, dataRows: rawData.dataRows };
+      return {
+        content: rawData?.content ?? '',
+        columnLabels: rawData?.columnLabels ?? [],
+        dataRows: rawData?.dataRows ?? []
+      };
     } catch (error) {
       throw new ErrorResponse(error);
     }
   }
 
+  // MARK: - Single 유저 데이터
   async fetchSingleUserDataSearchResult(clusterType: string, fields: string[]): Promise<CohortSingleUserResponse[]> {
     if (!clusterType || !fields.length) throw new CustomError(ErrorCode.INVALID_PARAMS);
 
@@ -71,51 +81,58 @@ export class CohortRepository {
     }
   }
 
+  // MARK: - Double 시각화
   async fetchDoubleVisualization(firstClusterType: string, secondClusterType: string): Promise<CohortDoubleVisualizationResponse> {
     if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
 
     try {
       const rawData = await fetchDoubleVisualizationApi(firstClusterType, secondClusterType);
       return {
-        firstImageBase64A: rawData.firstImageBase64A,
-        firstImageBase64B: rawData.firstImageBase64B,
-        secondImageBase64A: rawData.secondImageBase64A,
-        secondImageBase64B: rawData.secondImageBase64B
+        firstImageBase64A: rawData?.firstImageBase64A ?? '',
+        firstImageBase64B: rawData?.firstImageBase64B ?? '',
+        secondImageBase64A: rawData?.secondImageBase64A ?? '',
+        secondImageBase64B: rawData?.secondImageBase64B ?? ''
       };
     } catch (error) {
       throw new ErrorResponse(error);
     }
   }
 
+  // MARK: - Double 인사이트
   async fetchDoubleInsight(firstClusterType: string, secondClusterType: string): Promise<CohortDoubleInsightResponse> {
     if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
 
     try {
       const rawData = await fetchDoubleInsightApi(firstClusterType, secondClusterType);
-      return { firstContent: rawData.firstContent, secondContent: rawData.secondContent };
+      return {
+        firstContent: rawData?.firstContent ?? '',
+        secondContent: rawData?.secondContent ?? ''
+      };
     } catch (error) {
       throw new ErrorResponse(error);
     }
   }
 
+  // MARK: - Double 히트맵
   async fetchDoubleRemainHeatmap(firstClusterType: string, secondClusterType: string): Promise<CohortDoubleHeatmapResponse> {
     if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
 
     try {
       const rawData = await fetchDoubleRemainHeatmapApi(firstClusterType, secondClusterType);
       return {
-        firstContent: rawData.firstContent,
-        firstColumnLabels: rawData.firstColumnLabels,
-        firstDataRows: rawData.firstDataRows,
-        secondContent: rawData.secondContent,
-        secondColumnLabels: rawData.secondColumnLabels,
-        secondDataRows: rawData.secondDataRows
+        firstContent: rawData?.firstContent ?? '',
+        firstColumnLabels: rawData?.firstColumnLabels ?? [],
+        firstDataRows: rawData?.firstDataRows ?? [],
+        secondContent: rawData?.secondContent ?? '',
+        secondColumnLabels: rawData?.secondColumnLabels ?? [],
+        secondDataRows: rawData?.secondDataRows ?? []
       };
     } catch (error) {
       throw new ErrorResponse(error);
     }
   }
 
+  // MARK: - Double 유저 데이터
   async fetchDoubleUserDataSearchResult(
     firstClusterType: string,
     secondClusterType: string,
@@ -126,8 +143,8 @@ export class CohortRepository {
     try {
       const rawData = await fetchDoubleUserDataSearchResultApi(firstClusterType, secondClusterType, fields);
       return {
-        firstTableData: rawData.firstTableData as CohortDoubleUserResponse[],
-        secondTableData: rawData.secondTableData as CohortDoubleUserResponse[]
+        firstTableData: (rawData?.firstTableData ?? []) as CohortDoubleUserResponse[],
+        secondTableData: (rawData?.secondTableData ?? []) as CohortDoubleUserResponse[]
       };
     } catch (error) {
       throw new ErrorResponse(error);
