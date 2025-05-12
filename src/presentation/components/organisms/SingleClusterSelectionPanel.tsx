@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const clusters = ["활동", "구독 유형", "장르", "접속"];
 
-export function ClusterSelectionPanel() {
+export function SingleClusterSelectionPanel() {
   const [selectedCluster, setSelectedCluster] = useState("");
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ export function ClusterSelectionPanel() {
   };
 
   return (
-    <div className="w-[90%] h-[500px] mx-auto my-12 bg-white rounded-2xl shadow-lg flex flex-col justify-center items-center">
+    <div className="w-[90%] h-[500px] mx-auto my-2 bg-white rounded-2xl shadow-lg flex flex-col justify-center items-center">
       <h2 className="text-3xl font-bold mb-10">분석 군집 선택</h2>
       <div className="flex items-center space-x-6">
         <div className="w-72">
