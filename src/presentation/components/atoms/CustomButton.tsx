@@ -1,4 +1,9 @@
+<<<<<<< HEAD
+import { Button } from "@material-tailwind/react";
+
+=======
 // /presentation/components/atoms/CustomButton.tsx
+>>>>>>> 023eb38831a727f58d169c8a49d518164e3dd44f
 interface CustomButtonProps {
   title: string;
   loading: boolean;
@@ -29,9 +34,12 @@ export function CustomButton({
   return (
     <button
       type={type}
+<<<<<<< HEAD
+=======
       onClick={onClick}
       disabled={loading || disabled}
       className={`${baseStyle} ${colorStyle} ${disabledStyle}`}
+>>>>>>> 023eb38831a727f58d169c8a49d518164e3dd44f
     >
       {loading ? "처리 중..." : title}
     </button>

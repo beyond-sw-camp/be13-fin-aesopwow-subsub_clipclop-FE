@@ -25,10 +25,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": {
-        target: "http://localhost:8001", // 스프링 서버 주소
+      '/api': {
+        target: 'http://localhost:8001',
         changeOrigin: true,
-        secure: false
+        secure: false,
       }
     }
   },
