@@ -19,9 +19,9 @@ function App() {
   return (
     <Routes>
 
-      <Route path="/analytics/cohorts" element={<AnalyticsCohortPage />} />
+      {/* <Route path="/analytics/cohorts" element={<AnalyticsCohortPage />} />
       <Route path="/analytics/singlecohorts" element={<AnalyticsCohortSinglePage />} />
-      <Route path="/analytics/segment" element={<SegmentCohortPage />} /> {/* 추가! */}
+      <Route path="/analytics/segment" element={<SegmentCohortPage />} /> 추가! */}
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/mypage" element={<SignupPage />} />
