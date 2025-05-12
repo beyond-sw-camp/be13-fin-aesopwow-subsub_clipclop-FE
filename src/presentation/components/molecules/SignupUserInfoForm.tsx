@@ -1,6 +1,6 @@
 import { InputTextBox } from "../atoms/InputTextBox";
 import { CustomButton } from "../atoms/CustomButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EmailCheckApi } from "@/infrastructure/api/auth";
 import type { CheckEmailResponse } from "@/core/model/CheckEmail";
 
@@ -10,21 +10,33 @@ interface Props {
     email: string;
   };
   setForm: React.Dispatch<React.SetStateAction<any>>;
+  setEmailCheckResult: React.Dispatch<React.SetStateAction<CheckEmailResponse | null>>;
+  emailCheckResult: CheckEmailResponse | null;
 }
 
-export const SignUpUserInfoForm = ({ form, setForm }: Props) => {
+export const SignUpUserInfoForm = ({ form, setForm, setEmailCheckResult, emailCheckResult }: Props) => {
   const [loading, setLoading] = useState(false);
-  const [emailCheckResult, setEmailCheckResult] = useState<CheckEmailResponse | null>(null);
+
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@(naver\.com|kakao\.com|gmail\.com)$/;
+
+
+  const isValidEmail = (email: string): boolean => {
+    return emailRegex.test(email);
+  };
 
   const handleSubmit = async () => {
+    if (!isValidEmail(form.email)) {
+      alert("유효하지 않은 이메일입니다.");
+      return;
+    }
+
     setLoading(true);
     setEmailCheckResult(null);
-  
+
     try {
       const result = await EmailCheckApi({ email: form.email });
       console.log("API 응답:", result);
-  
-      // API 응답의 available 값에 따라 상태 설정
+
       setEmailCheckResult({ ...result, email: form.email });
     } catch (error: any) {
       console.error("API 호출 오류:", error);
@@ -33,6 +45,11 @@ export const SignUpUserInfoForm = ({ form, setForm }: Props) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+      setEmailCheckResult(null);
+    }, [form.email]);
+
   
   return (
     <div className="space-y-3">

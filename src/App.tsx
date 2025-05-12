@@ -14,6 +14,7 @@ function App() {
       <Route path="/analytics/segment" element={<SegmentCohortPage />} /> {/* 추가! */}
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/mypage" element={<SignupPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
     </Routes>
   );

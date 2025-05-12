@@ -40,7 +40,7 @@ export const useSignupViewModel = () => {
   const verifyOtp = async () => {
     try {
       const res: OtpVerificationRequest = await modalSignupUseCase.verifyotp(email, otp);
-      if (res.success) {
+      if (res) {
         setSignupComplete(true);
         setShowOtpModal(false);
       }

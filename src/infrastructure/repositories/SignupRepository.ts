@@ -19,8 +19,8 @@ export const SignupRepository = {
     return response; 
   },
 
-  signup: async (email: string, password: string): Promise<string> => {
-    const response = await SignupApi(email, password);
+  signup: async (email: string, password: string, confirmPassword:string): Promise<string> => {
+    const response = await SignupApi(email, password, confirmPassword);
     return response;
   }
 };

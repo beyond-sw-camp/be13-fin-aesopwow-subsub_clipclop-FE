@@ -4,6 +4,7 @@ import { Text } from "../atoms/TextLabel";
 import { useMemo } from "react";
 import { CustomButton } from "../atoms/CustomButton";
 import { SignupOtpApi } from "@/infrastructure/api/auth";
+import { EmailCheckApi } from "@/infrastructure/api/auth";
 
 interface Props {
   form: {
@@ -13,7 +14,7 @@ interface Props {
     agree: boolean;
   };
   setForm: React.Dispatch<React.SetStateAction<any>>;
-  onOtpSent: () => void;
+  onOtpSent: (password: string) => void;
 }
 
 export const SignUpPasswordForm = ({ form, setForm, onOtpSent }: Props) => {
@@ -28,19 +29,25 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent }: Props) => {
   ]);
 
   const handleSubmit = async () => {
-    console.log("전송할 데이터:", {
-      email: form.email,
-      password: form.password
-    });
-    try {
-      await SignupOtpApi(form.email, form.password); 
-      onOtpSent();
-    } catch (err: any) {
-      // onOtpSent(); // 이미 otp보냇다고 떠서 모달 볼라고 넣음
-      console.error("OTP 전송 실패:", err);
-      alert(err?.response?.data || "OTP 전송 중 오류가 발생했습니다.");
-    }
-  };
+  if (!form.agree) {
+    alert("개인정보 처리방침에 동의하셔야 가입이 가능합니다.");
+    return;
+  }
+
+  if (!passwordMatch) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return;
+  }
+
+  try {
+    await SignupOtpApi(form.email, form.password); 
+    onOtpSent(form.password); 
+
+  } catch (err: any) {
+    console.error("회원가입 중 오류:", err);
+    alert(err?.response?.data?.message || "회원가입 중 오류가 발생했습니다.");
+  }
+};
 
   return (
     <div className="space-y-3">
