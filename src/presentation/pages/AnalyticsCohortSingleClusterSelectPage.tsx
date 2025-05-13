@@ -3,12 +3,11 @@ import { SideMenu } from "@/presentation/layout/SideMenu";
 import { SingleClusterSelectionPanel } from "../components/organisms/SingleClusterSelectionPanel";
 import { StepProgress } from "@/presentation/components/molecules/StepProgress";
 import { Header } from "@/presentation/layout/Header";
-import ProtectedRoute from "../components/organisms/LoginProtectedRoute";
 
 export default function AnalyticsCohortSingleClusterSelectPage() {
   return (
     <div className="min-h-screen w-screen bg-primary text-gray-800">
-      <ProtectedRoute>
+
       <Header />
 
       <main className="flex">
@@ -41,7 +40,7 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
           </div>
         </div>
       </main>
-      </ProtectedRoute>
+
     </div>
   );
 }
