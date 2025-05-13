@@ -1,4 +1,4 @@
-import axiosInstance from "@/infrastructure/api/axios"; // axiosInstance 경로 확인
+import axiosInstance from "@/infrastructure/api/Axios"; // axiosInstance 경로 확인
 import type { LoginResponse } from "@/core/model/LoginResponse";
 import type { CheckEmailRequest, CheckEmailResponse } from "@/core/model/CheckEmail"; 
 import type { SignupRequestOtp } from "@/core/model/SignupRequestOtp";
@@ -35,9 +35,10 @@ export const EmailCheckApi = async (
 
 export const SignupOtpApi = async (
   email: string,
-  password: string
+  password: string,
+  name: string,
 ): Promise<SignupRequestOtp> => {
-  const requestData = { email, password };
+  const requestData = { email, password, name };
 
   return await axiosInstance.post("auth/signup/otp", requestData); // 경로 수정
 };

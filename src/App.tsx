@@ -13,7 +13,7 @@ import AnalyticsCohortSingleUserDataPage from './presentation/pages/AnalyticsCoh
 import AnalyticsCohortDoubleClusterSelectPage from './presentation/pages/AnalyticsCohortDoubleClusterSelectPage';
 import AnalyticsCohortDoubleCohortResultPage from './presentation/pages/AnalyticsCohortDoubleCohortResultPage';
 import AnalyticsCohortDoubleUserDataPage from './presentation/pages/AnalyticsCohortDoubleUserDataPage';
-
+// import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
 
 function App() {
   return (
@@ -26,7 +26,6 @@ function App() {
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/mypage" element={<SignupPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
-
       <Route path="/analytics/single/clusterselect" element={<AnalyticsCohortSingleClusterSelectPage />} />
       <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} />
       <Route path="/analytics/single/user-data" element={<AnalyticsCohortSingleUserDataPage />} />
