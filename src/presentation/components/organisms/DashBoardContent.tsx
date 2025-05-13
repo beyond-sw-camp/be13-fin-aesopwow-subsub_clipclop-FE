@@ -1,9 +1,8 @@
 import { BoardGrid } from "@/presentation/components/molecules/BoardGrid";
-import LineChart from "@/presentation/components/atoms/LineChart";
-import DoughnutChart from "@/presentation/components/atoms/DoughnutChart";
-import StackedBarChart from "@/presentation/components/atoms/StackedBarChart";
-import { ReactComponent as UserIcon } from "@/assets/icons/user.svg";
-import "./DashboardSection.css";
+import { LineChart } from "@/presentation/components/atoms/LineChart";
+import { DoughnutChart } from "@/presentation/components/atoms/DoughnutChart";
+import { StackedBarChart } from "@/presentation/components/atoms/StackedBarChart";
+import UserIcon from "@/assets/icons/user.svg?react";
 
 const boardData = [
     { title: "총 구독자 수", number: 1050, icon: UserIcon },
@@ -14,7 +13,7 @@ const boardData = [
     { title: "휴면 유저", number: 88, icon: UserIcon },
 ];
 
-const DashboardSection = () => (
+const DashBoardContent = () => (
     <div className="dashboard-grid">
         <div className="dashboard-boardgrid">
             <BoardGrid boards={boardData} />
@@ -33,4 +32,4 @@ const DashboardSection = () => (
     </div>
 );
 
-export default DashboardSection;
+export default DashBoardContent;

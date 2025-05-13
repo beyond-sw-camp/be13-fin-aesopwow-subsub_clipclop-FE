@@ -27,6 +27,6 @@ const doughnutOptions = {
     },
 };
 
-export default function LineChart() {
-  return <Doughnut data={doughnutData} options={doughnutOptions} />;
+export function DoughnutChart() {
+    return <Doughnut data={doughnutData} options={doughnutOptions} />;
 }

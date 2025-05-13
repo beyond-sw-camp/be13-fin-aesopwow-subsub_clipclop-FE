@@ -31,6 +31,6 @@ const stackedBarOptions = {
     },
 };
 
-export default function LineChart() {
-  return <Bar data={stackedBarData} options={stackedBarOptions} />;
+export function StackedBarChart() {
+    return <Bar data={stackedBarData} options={stackedBarOptions} />;
 }
