@@ -12,7 +12,13 @@ import path from 'path';
 
 export default defineConfig({
   base: '/', // 여기에 base 설정을 추가합니다.
-  plugins: [react()],
+  plugins: [
+    react(),
+    svgr({ 
+      svgrOptions: {
+        icon: true, // SVG 속성 변환 활성화
+      },
+    }),],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'), // 절대경로 @로 지정
@@ -33,3 +39,7 @@ export default defineConfig({
     }
   },
 });
+function svgr(arg0: { svgrOptions: { icon: boolean; }; }): import("vite").PluginOption {
+  throw new Error('Function not implemented.');
+}
+
