@@ -1,20 +1,29 @@
 import { useState } from "react";
+import { LoginUseCase } from "../useCases/LoginUseCase";
+import type { LoginResponse } from "@/core/model/LoginResponse"; 
+import { useNavigate } from "react-router-dom";
 
-export function useLoginViewModel() {
+
+export const useLoginViewModel = () => {
   const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState<LoginResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  // email, password를 파라미터로 받음
-  const onClickSignInButton = async (_email: string, _password: string) => {
+
+  const loginUseCase = new LoginUseCase();
+
+  const onClickLoginButton = async (email: string, password: string) => {
     setLoading(true);
+    setError(null);
     try {
-      // 실제 로그인 usecase(API 호출 등) 작성
-
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // 예시: 2초 대기
-
-      // 로그인 성공 처리 (예: 토큰 저장, 페이지 이동 등)
-    } catch (error) {
-      // 에러 처리 (예: 에러 메시지 상태 업데이트)
-      console.error(error);
+      const userDto = await loginUseCase.execute(email, password);
+      setToken(userDto);
+      alert("로그인 성공!");
+      navigate("/mypage")
+    } catch (err) {
+      alert("로그인 실패");
+      setError("로그인에 실패했습니다.");
     } finally {
       setLoading(false);
     }
@@ -22,6 +31,8 @@ export function useLoginViewModel() {
 
   return {
     loading,
-    onClickSignInButton,
+    token,
+    error,
+    onClickLoginButton,
   };
-}
+};
