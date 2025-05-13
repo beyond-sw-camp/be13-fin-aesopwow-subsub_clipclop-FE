@@ -1,54 +1,86 @@
-import { useEffect, useMemo, useState } from "react";
-import { useCohortDoubleUserDataSearchResultViewModel } from "@/application/viewModels/CohortViewModel";
+// /presentation/components/organisms/DoubleUserDataPanel.tsx
+import { useAnalysisFileViewModel } from "@/application/viewModels/AnalysisViewModel";
+import { getUser } from "@/application/stores/UserStore";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { UserDataKeywordSelector } from "@/presentation/components/molecules/UserDataKeywordSelector";
-import { CohortDoubleUserResponse } from "@/core/model/CohortModel";
 import { PanelTitle } from "../atoms/PanelTitle";
 
-interface DoubleUserProps {
+interface DoubleUserDataPanelProps {
   firstClusterType: string;
   secondClusterType: string;
 }
 
-export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: DoubleUserProps) {
+export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: DoubleUserDataPanelProps) {
+  // ✅ getUser 호출 고정
+  const { companyNo } = useMemo(() => getUser(), []);
+
+  // ✅ params 고정
+  const params = useMemo(
+    () => ({ firstClusterType, secondClusterType, companyNo }),
+    [firstClusterType, secondClusterType, companyNo]
+  );
+
+  const { data, isLoading, error } = useAnalysisFileViewModel(params);
+
+  const [firstTableData, setFirstTableData] = useState<Record<string, string>[]>([]);
+  const [secondTableData, setSecondTableData] = useState<Record<string, string>[]>([]);
+  const [headers, setHeaders] = useState<string[]>([]);
   const [activeCluster, setActiveCluster] = useState<'A' | 'B'>('A');
+  const [filters, setFilters] = useState<Record<string, boolean>>({});
 
-  const [filters, setFilters] = useState<Record<keyof CohortDoubleUserResponse, boolean>>({
-    userId: true,
-    name: true,
-    age: true,
-    country: true,
-    subscription: true,
-    watchTimeHours: true,
-    lastLogin: true,
-    favoriteGenre: true,
-  });
+  const parsedRef = useRef(false);
 
-  const selectedFields = useMemo<(keyof CohortDoubleUserResponse)[]>(() => {
-    return Object.entries(filters)
-      .filter(([_, checked]) => checked)
-      .map(([key]) => key as keyof CohortDoubleUserResponse);
+  const selectedFields = useMemo<string[]>(() => {
+    return Object.entries(filters).filter(([_, checked]) => checked).map(([key]) => key);
   }, [filters]);
 
-  const { firstData, secondData, error, isLoading, search } = useCohortDoubleUserDataSearchResultViewModel();
-
   useEffect(() => {
-    search(firstClusterType, secondClusterType, selectedFields as string[]);
-  }, [firstClusterType, secondClusterType, selectedFields]);
+    if (!data || parsedRef.current) return;
+    parsedRef.current = true;
 
-  const activeData = activeCluster === 'A' ? firstData : secondData;
+    data.text().then((text) => {
+      const sections = text.trim().split("---");
+      if (sections.length !== 2) return;
+
+      const parseTable = (section: string) => {
+        const [headerLine, ...rows] = section.trim().split("\n");
+        const headerList = headerLine.split(",");
+        const parsedRows = rows.map((line) => {
+          const values = line.split(",");
+          const obj: Record<string, string> = {};
+          headerList.forEach((header, idx) => {
+            obj[header] = values[idx] ?? "";
+          });
+          return obj;
+        });
+        return { headerList, parsedRows };
+      };
+
+      const first = parseTable(sections[0]);
+      const second = parseTable(sections[1]);
+
+      setHeaders(first.headerList);
+      setFilters(first.headerList.reduce((acc, key) => ({ ...acc, [key]: true }), {}));
+      setFirstTableData(first.parsedRows);
+      setSecondTableData(second.parsedRows);
+    });
+  }, [data]);
+
+  const activeData = activeCluster === 'A' ? firstTableData : secondTableData;
 
   const handleExport = () => {
     const csvContent = [
-      selectedFields.join(","), // 헤더
-      ...activeData.map((row) => selectedFields.map((field) => {
-        const rawValue = row[field] ?? ''; // null, undefined 방어
-        const value = String(rawValue);    // 항상 string 처리
-
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-          return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value;
-      }).join(",")),
+      selectedFields.join(","),
+      ...activeData.map((row) =>
+        selectedFields
+          .map((field) => {
+            const rawValue = row[field] ?? "";
+            return rawValue.includes(",") || rawValue.includes('"') || rawValue.includes("\n")
+              ? `"${rawValue.replace(/"/g, '""')}"`
+              : rawValue;
+          })
+          .join(",")
+      ),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -77,7 +109,6 @@ export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: Dou
         </button>
       </div>
 
-      {/* 클러스터 전환 버튼 */}
       <div className="flex justify-center space-x-4 mb-6">
         <button className={getButtonStyle('A')} onClick={() => setActiveCluster('A')}>
           {firstClusterType} 기반
@@ -88,7 +119,9 @@ export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: Dou
       </div>
 
       <div className="flex gap-6">
-        <UserDataKeywordSelector filters={filters} onChange={setFilters} />
+        {headers.length > 0 && (
+          <UserDataKeywordSelector filters={filters} onChange={(newFilters) => setFilters(newFilters)} />
+        )}
         <div className="flex-1 overflow-x-auto">
           {error && <p className="text-sm text-red-500">{error.message}</p>}
           {isLoading && <p className="text-gray-500">로딩 중...</p>}
@@ -109,7 +142,7 @@ export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: Dou
                   <tr key={rowIdx} className="text-center">
                     {selectedFields.map((field, colIdx) => (
                       <td key={colIdx} className="border px-3 py-2">
-                        {String(row[field])}
+                        {row[field] ?? ""}
                       </td>
                     ))}
                   </tr>
