@@ -91,7 +91,7 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent, emailCheckResult 
         />
         <label>
           I agree with the{" "}
-          <a href="/privacy" className="text-blue-600 underline">Privacy Policy</a>
+          <a href="src\assets\PrivacyPolicy.pdf" download="PrivacyPolicy.pdf" className="text-blue-600 underline">Privacy Policy</a>
         </label>
       </div>
       <div className="pt-2 justify-center items-center">
