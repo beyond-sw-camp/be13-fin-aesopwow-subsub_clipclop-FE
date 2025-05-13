@@ -12,6 +12,7 @@ interface Props {
     password: string;
     confirmPassword: string;
     agree: boolean;
+    name: string;
   };
   setForm: React.Dispatch<React.SetStateAction<any>>;
   onOtpSent: (password: string) => void;
@@ -40,7 +41,7 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent }: Props) => {
   }
 
   try {
-    await SignupOtpApi(form.email, form.password); 
+    await SignupOtpApi(form.email, form.password, form.name); 
     onOtpSent(form.password); 
 
   } catch (err: any) {
