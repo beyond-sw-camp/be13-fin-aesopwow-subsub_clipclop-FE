@@ -1,11 +1,7 @@
 // src/App.tsx
 import { Route, Routes } from 'react-router-dom';
 import LoginPage from './presentation/pages/LoginPage';
-
-import MyPage from './presentation/pages/MyPage'; 
-
 import SignupPage from './presentation/pages/SignUpPage';
-
 import AnalyticsCohortSingleClusterSelectPage from './presentation/pages/AnalyticsCohortSingleClusterSelectPage';
 import AnalyticsCohortSingleCohortResultPage from './presentation/pages/AnalyticsCohortSingleCohortResultPage';
 import AnalyticsCohortSingleUserDataPage from './presentation/pages/AnalyticsCohortSingleUserDataPage';
@@ -14,29 +10,54 @@ import AnalyticsCohortDoubleClusterSelectPage from './presentation/pages/Analyti
 import AnalyticsCohortDoubleCohortResultPage from './presentation/pages/AnalyticsCohortDoubleCohortResultPage';
 import AnalyticsCohortDoubleUserDataPage from './presentation/pages/AnalyticsCohortDoubleUserDataPage';
 // import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
+import { useEffect } from "react";
+import { useAuthStore } from "@/application/stores/AuthStore"; 
+import ProtectedRoute from './presentation/components/organisms/LoginProtectedRoute';
+
 
 function App() {
+const initializeToken = useAuthStore((state) => state.initializeToken);
+  const isInitialized = useAuthStore((state) => state.isInitialized);
+
+  useEffect(() => {
+    initializeToken();
+  }, []);
+
+  if (!isInitialized) {
+    // 토큰 초기화 중이면 렌더링하지 않음
+    return <div>Loading...</div>;
+  }
+
   return (
     <Routes>
-
-      {/* <Route path="/analytics/cohorts" element={<AnalyticsCohortPage />} />
-      <Route path="/analytics/singlecohorts" element={<AnalyticsCohortSinglePage />} />
-      <Route path="/analytics/segment" element={<SegmentCohortPage />} /> 추가! */}
+      {/* <Route path="/analytics/cohorts" element={<AnalyticsCohortPage />} /> */}
+      {/* <Route path="/analytics/singlecohorts" element={<AnalyticsCohortPage />} /> */}
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-      <Route path="/mypage" element={<SignupPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
-      <Route path="/analytics/single/clusterselect" element={<AnalyticsCohortSingleClusterSelectPage />} />
+      <Route
+        path="/analytics/double/clusterselect"
+        element={
+          <ProtectedRoute>
+            <AnalyticsCohortSingleClusterSelectPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} />
       <Route path="/analytics/single/user-data" element={<AnalyticsCohortSingleUserDataPage />} />
 
-      <Route path="/analytics/double/clusterselect" element={<AnalyticsCohortDoubleClusterSelectPage />} />
+      <Route
+        path="/analytics/double/clusterselect"
+        element={
+          <ProtectedRoute>
+            <AnalyticsCohortDoubleClusterSelectPage />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/analytics/double/cohortresult" element={<AnalyticsCohortDoubleCohortResultPage />} />
       <Route path="/analytics/double/user-data" element={<AnalyticsCohortDoubleUserDataPage />} />
 
       <Route path="/" element={<LoginPage />} />
-
-      <Route path="/profile" element={<MyPage />} />
     </Routes>
   );
 }
