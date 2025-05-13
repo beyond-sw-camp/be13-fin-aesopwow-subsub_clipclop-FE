@@ -36,7 +36,7 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/signup" element={<SignupPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
       <Route
-        path="/analytics/double/clusterselect"
+        path="/analytics/single/clusterselect"
         element={
           <ProtectedRoute>
             <AnalyticsCohortSingleClusterSelectPage />
