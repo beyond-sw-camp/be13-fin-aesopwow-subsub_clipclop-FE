@@ -1,5 +1,5 @@
 import { Doughnut } from "react-chartjs-2";
-import { ChartData } from "chart.js";
+import { ChartData } from '@/core/model/ChartData';
 
 interface ChartProps {
     chartData: ChartData | null;

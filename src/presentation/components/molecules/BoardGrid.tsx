@@ -9,8 +9,8 @@ interface BoardGridProps {
 
 export const BoardGrid: React.FC<BoardGridProps> = ({ cards = [] }) => (
     <div className="board-grid">
-        {cards?.map((card, idx) => (
-            <TitleNumberBoard key={idx} {...card} />
+        {cards?.map((card) => (
+            <TitleNumberBoard key={card.title} {...card} />
         ))}
     </div>
 );

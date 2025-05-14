@@ -1,9 +1,10 @@
+import { ChartEvent, ActiveElement } from 'chart.js';
+
 export const chartOptions = {
   responsive: true,
-  onClick: (_event: any, elements: any) => {
+  onClick: (_event: ChartEvent, elements: ActiveElement[]) => {
     if (elements.length > 0) {
-    //   const _datasetIndex = elements[0].datasetIndex;
-    //   const _dataIndex = elements[0].index;
+      // 필요한 경우 여기에 클릭 이벤트 처리 로직을 추가하세요
     }
   },
   plugins: {

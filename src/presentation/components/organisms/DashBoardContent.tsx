@@ -2,7 +2,9 @@ import { BoardGrid } from "@/presentation/components/molecules/BoardGrid";
 import { LineChart } from "@/presentation/components/atoms/LineChart";
 import { DoughnutChart } from "@/presentation/components/atoms/DoughnutChart";
 import { StackedBarChart } from "@/presentation/components/atoms/StackedBarChart";
-import { ChartData, StatCardData } from "@/application/stores/DashBoardStore";
+import { StatCardData } from "@/application/stores/DashBoardStore";
+import { ChartData } from "@/core/model/ChartData";
+
 import "./DashBoardContent.css";
 
 interface DashBoardContentProps {
@@ -21,15 +23,27 @@ export const DashBoardContent = ({
                     <BoardGrid cards={cards} />
                 </div>
                 <div className="dashboard-linechart">
-                    <LineChart chartData={chartData} />
+                    {chartData ? (
+                        <LineChart chartData={chartData} />
+                    ) : (
+                        <div className="chart-loading">데이터를 불러오는 중입니다...</div>
+                    )}
                 </div>
             </div>
             <div className="dashboard-row">
                 <div className="dashboard-doughnut">
-                    <DoughnutChart chartData={chartData} />
+                    {chartData ? (
+                        <DoughnutChart chartData={chartData} />
+                    ) : (
+                        <div className="chart-loading">데이터를 불러오는 중입니다...</div>
+                    )}
                 </div>
                 <div className="dashboard-stackedbar">
-                    <StackedBarChart chartData={chartData} />
+                    {chartData ? (
+                        <StackedBarChart chartData={chartData} />
+                    ) : (
+                        <div className="chart-loading">데이터를 불러오는 중입니다...</div>
+                    )}
                 </div>
             </div>
         </div>

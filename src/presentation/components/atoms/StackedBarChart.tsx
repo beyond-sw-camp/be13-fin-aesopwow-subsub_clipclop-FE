@@ -1,8 +1,9 @@
 import { Bar } from "react-chartjs-2";
-import { ChartData } from "chart.js";
+import { ChartData as ChartJSData } from "chart.js";
+import { ChartData as AppChartData } from "@/core/model/ChartData";
 
 interface ChartProps {
-    chartData: ChartData | null;
+    chartData: ChartJSData<'bar'> | null;
 }
 
 export const StackedBarChart: React.FC<ChartProps> = ({ chartData }) => {

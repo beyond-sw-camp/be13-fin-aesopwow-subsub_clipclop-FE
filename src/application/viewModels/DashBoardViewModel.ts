@@ -1,10 +1,10 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useDashBoardStore } from '@/application/stores/DashBoardStore';
 import { DashBoardUsecase } from '@/application/useCases/DashBoardUsecase';
 
 export const useDashBoardViewModel = () => {
     const store = useDashBoardStore();
-    const dashboardUsecase = new DashBoardUsecase();
+    const dashboardUsecase = useMemo(() => new DashBoardUsecase(), []);
 
     useEffect(() => {
         loadData();

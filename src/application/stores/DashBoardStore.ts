@@ -1,19 +1,11 @@
 import UserIcon from '@/assets/icons/user.svg?react';
+import { ChartData } from '@/core/model/ChartData';
 import { create } from 'zustand';
 
 export interface StatCardData {
     title: string;
     value: number | string;
     icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-}
-
-export interface ChartData {
-    labels: string[];
-    datasets: {
-        label: string;
-        data: number[];
-        backgroundColor: string[];
-    }[];
 }
 
 interface DashBoardStoreState {
@@ -28,6 +20,7 @@ interface DashBoardStoreState {
 }
 
 export const useDashBoardStore = create<DashBoardStoreState>((set) => ({
+    //FIXME: - cards: [],
     cards: [
         { title: "총 구독자 수", value: 1050, icon: UserIcon },
         { title: "신규 유저", value: 2300, icon: UserIcon },

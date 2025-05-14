@@ -1,8 +1,9 @@
 import { Line } from "react-chartjs-2";
-import { ChartData } from "chart.js";
+import { ChartData as ChartJSData } from "chart.js";
+import { ChartData } from "@/core/model/ChartData";
 
 interface ChartProps {
-    chartData: ChartData | null;
+    chartData: ChartJSData<'line', number[]> | null;
 }
 
 export const LineChart: React.FC<ChartProps> = ({ chartData }) => {
