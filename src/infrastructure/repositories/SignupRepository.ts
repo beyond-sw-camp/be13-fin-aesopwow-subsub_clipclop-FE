@@ -9,8 +9,8 @@ export const SignupRepository = {
     return response;
   },
 
-  signupOtp: async (email: string, password: string): Promise<SignupRequestOtp> => {
-    const response = await SignupOtpApi(email, password);
+  signupOtp: async (email: string, password: string, name: string): Promise<SignupRequestOtp> => {
+    const response = await SignupOtpApi(email, password, name);
     return response;
   },
 

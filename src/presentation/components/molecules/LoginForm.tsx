@@ -11,7 +11,7 @@ export const LoginForm = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onClickLoginButton(email, password);
+        onClickLoginButton(email, password, rememberMe);
     };
     const [rememberMe, setRememberMe] = useState(false);
 
