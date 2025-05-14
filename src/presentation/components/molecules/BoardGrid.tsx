@@ -10,19 +10,7 @@ interface BoardGridProps {
 }
 
 export const BoardGrid: React.FC<BoardGridProps> = ({ boards }) => (
-    <div
-        style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gridTemplateRows: 'repeat(3, 1fr)',
-            gap: '32px',
-            background: '#ffa726',
-            padding: '40px',
-            justifyItems: 'center',
-            alignItems: 'center',
-            minHeight: '100vh',
-        }}
-    >
+    <div className="board-grid">
         {boards.map((props, idx) => (
             <TitleNumberBoard key={idx} {...props} />
         ))}
