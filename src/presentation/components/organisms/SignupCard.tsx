@@ -47,6 +47,7 @@ export const SignupCard = ({ form, setForm }: Props) => {
 
       const signupResponse = await SignupApi(email, verifiedPassword, form.confirmPassword);
       console.log("회원가입 성공:", signupResponse);
+      alert("회원가입 되셨습니다.")
 
       setOtpOpen(false);
 
@@ -63,7 +64,12 @@ export const SignupCard = ({ form, setForm }: Props) => {
         emailCheckResult={emailCheckResult}
         setEmailCheckResult={setEmailCheckResult}
       />
-      <SignUpPasswordForm form={form} setForm={setForm} onOtpSent={handleOtpSent} />
+      <SignUpPasswordForm 
+        form={form} 
+        setForm={setForm} 
+        onOtpSent={handleOtpSent} 
+        emailCheckResult={emailCheckResult}
+        />
 
       <OtpModal
         open={otpOpen}

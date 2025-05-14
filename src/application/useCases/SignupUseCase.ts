@@ -17,8 +17,8 @@ export class EmailCheckUseCase {
 }
 
 export class CreateAccountUseCase {
-  async execute(email: string, password: string): Promise<SignupRequestOtp> {
-      const res = await SignupRepository.signupOtp(email, password);
+  async execute(email: string, password: string, name:string): Promise<SignupRequestOtp> {
+      const res = await SignupRepository.signupOtp(email, password, name);
       return res;
   };
 };
@@ -29,8 +29,8 @@ export class ModalSignupUseCase {
       return res;
   };
 
-  async signup(email: string, password: string): Promise<SignupRequestOtp> {
-      const res = await SignupRepository.signup(email, password);
+  async signup(email: string, password: string, name: string): Promise<SignupRequestOtp> {
+      const res = await SignupRepository.signup(email, password, name);
       return res;
     };
 };

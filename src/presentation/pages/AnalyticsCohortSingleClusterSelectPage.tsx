@@ -7,6 +7,7 @@ import { Header } from "@/presentation/layout/Header";
 export default function AnalyticsCohortSingleClusterSelectPage() {
   return (
     <div className="min-h-screen w-screen bg-primary text-gray-800">
+
       <Header />
 
       <main className="flex">
@@ -39,6 +40,7 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
           </div>
         </div>
       </main>
+
     </div>
   );
 }
