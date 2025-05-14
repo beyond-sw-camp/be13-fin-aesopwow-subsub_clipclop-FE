@@ -7,7 +7,7 @@ interface ModalsProps {
   children: ReactNode;
 }
 
-export function Modals({ open, setOpen, children }: ModalsProps) {
+export function Modals({ open, setOpen }: ModalsProps) {
   const handleOpen = () => {
     console.log("모달 닫기 동작 확인");
     setOpen(false);

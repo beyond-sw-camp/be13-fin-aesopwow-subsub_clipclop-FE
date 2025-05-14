@@ -7,7 +7,7 @@ interface CustomButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   children?: ReactNode;
-  // color?: "orange" | "green"; 
+  color?: "orange" | "green"; 
 }
 
 export function CustomButton({
@@ -16,15 +16,15 @@ export function CustomButton({
   onClick,
   type = "button",
   disabled = false,
-  // color = "orange",
+  color = "orange",
 }: CustomButtonProps) {
   const baseStyle =
     "text-white font-semibold px-6 py-3 rounded-md border border-black shadow transition";
 
-  // const colorStyle =
-  //   color === "orange"
-  //     ? "bg-orange-500 hover:bg-orange-600"
-  //     : "bg-green-600 hover:bg-green-700";
+  const colorStyle =
+    color === "orange"
+      ? "bg-orange-500 hover:bg-orange-600"
+      : "bg-green-600 hover:bg-green-700";
 
   const disabledStyle = loading || disabled ? "opacity-50 cursor-not-allowed" : "";
 
@@ -33,7 +33,7 @@ export function CustomButton({
       type={type}
       onClick={onClick}
       disabled={loading || disabled}
-      className={`${baseStyle} ${disabledStyle}`}
+      className={`${baseStyle} ${colorStyle} ${disabledStyle}`}
     >
       {loading ? "처리 중..." : title}
     </button>
