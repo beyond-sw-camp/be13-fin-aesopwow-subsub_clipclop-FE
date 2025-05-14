@@ -11,8 +11,7 @@ export const CheckBox = ({ label='', checked, onChange }: CheckboxProps ) => {
     <Checkbox
       label={label}
       checked={checked}
-      onChange={onChange}
-    />
+      onChange={onChange} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}    />
   );
 };
 

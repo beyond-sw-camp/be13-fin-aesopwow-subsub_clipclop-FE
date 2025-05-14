@@ -4,7 +4,6 @@ import { Text } from "../atoms/TextLabel";
 import { useMemo } from "react";
 import { CustomButton } from "../atoms/CustomButton";
 import { SignupOtpApi } from "@/infrastructure/api/auth";
-import { EmailCheckApi } from "@/infrastructure/api/auth";
 import { CheckEmailResponse } from "@/core/model/CheckEmail";
 
 interface Props {
@@ -98,8 +97,7 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent, emailCheckResult 
         <CustomButton
           title="Create Account"
           type="button"
-          onClick={handleSubmit}
-        />
+          onClick={handleSubmit} loading={false}        />
       </div>
     </div>
   );

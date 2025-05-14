@@ -1,4 +1,4 @@
-import { Button } from "@material-tailwind/react";
+import { ReactNode } from "react";
 
 interface CustomButtonProps {
   title: string;
@@ -6,6 +6,7 @@ interface CustomButtonProps {
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  children?: ReactNode;
   // color?: "orange" | "green"; 
 }
 

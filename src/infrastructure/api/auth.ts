@@ -2,7 +2,7 @@ import axiosInstance from "@/infrastructure/api/Axios"; // axiosInstance 경로 
 import type { LoginResponse } from "@/core/model/LoginResponse";
 import type { CheckEmailRequest, CheckEmailResponse } from "@/core/model/CheckEmail"; 
 import type { SignupRequestOtp } from "@/core/model/SignupRequestOtp";
-import type { OtpVerificationRequest } from "@/core/model/OtpVerificationRequest";
+import type { OtpVerificationRequest } from "@/core/model/OtpVerification";
 
 export const loginApi = async (
   email: string,
