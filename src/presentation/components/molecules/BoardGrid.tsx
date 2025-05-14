@@ -1,6 +1,7 @@
 import React from "react";
 import { TitleNumberBoard } from "../atoms/TitleNumberBoard";
-import { StatCardData } from "@/application/viewModels/DashBoardViewModel";
+import { StatCardData } from "@/application/stores/DashBoardStore";
+
 
 interface BoardGridProps {
     cards?: StatCardData[];

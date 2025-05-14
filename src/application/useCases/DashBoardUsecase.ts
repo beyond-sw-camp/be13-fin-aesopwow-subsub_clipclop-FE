@@ -1,46 +1,36 @@
-import { CSVChartDataRepository } from '@/infrastructure/repositories/CSVChartDataRepository';
-import { ChartData } from '@/core/model/ChartData';
-import { StatCardData } from '@/application/stores/DashBoardStore';
-import UserIcon from '@/assets/icons/user.svg?react';
+import { ChartData, StatCardData } from '@/application/stores/DashBoardStore';
+import { getUser } from '@/application/stores/UserStore';
+import axios from 'axios';
+import { UserIcon } from 'lucide-react';
 
 export class DashBoardUsecase {
-    private repository = new CSVChartDataRepository();
-
-    async processCSV(csvText: string): Promise<{
+    async fetchDashboardData(): Promise<{
         chartData: ChartData;
         statCards: StatCardData[];
     }> {
-        const chartData = await this.repository.getChartData(csvText);
+        try {
+            const { companyNo } = getUser();
+            const response = await axios.get(`/api/dashboard/${companyNo}`);
+            const rawData = response.data;
 
-        // ✅ 데이터 유효성 검사
-        if (!chartData?.labels || !chartData.datasets?.[0]?.data) {
-            throw new Error("CSV 데이터 형식이 올바르지 않습니다.");
+            // 변환 로직 (예시)
+            const chartData: ChartData = {
+                labels: rawData.labels,
+                datasets: [{
+                    label: '데이터셋',
+                    data: rawData.values,
+                    backgroundColor: ['#4F46E5'],
+                }]
+            };
+
+            const statCards: StatCardData[] = [
+                { title: "총 구독자", value: rawData.total, icon: UserIcon },
+                // ... 추가 데이터
+            ];
+
+            return { chartData, statCards };
+        } catch (error) {
+            throw new Error('데이터 조회 실패');
         }
-
-        const statCards = this.generateStatCards(chartData);
-        return { chartData, statCards };
-    }
-
-    private generateStatCards(chartData: ChartData): StatCardData[] {
-        const dataset = chartData.datasets[0].data;
-        return [
-            {
-                title: "총 구독자 수",
-                value: chartData.labels.length,
-                icon: UserIcon,
-            },
-            {
-                title: "평균 값",
-                value: this.calculateAverage(dataset).toFixed(1),
-                icon: UserIcon,
-            },
-            // ... 추가 스탯카드
-        ];
-    }
-
-    private calculateAverage(arr: number[]): number {
-        return arr.length > 0
-            ? arr.reduce((a, b) => a + b, 0) / arr.length
-            : 0;
     }
 }

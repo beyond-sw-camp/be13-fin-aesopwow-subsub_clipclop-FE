@@ -5,13 +5,7 @@ import { DashBoardContent } from "../components/organisms/DashBoardContent";
 import { useDashBoardViewModel } from "@/application/viewModels/DashBoardViewModel";
 
 export default function DashBoardPage() {
-    const {
-        statCards: cards,
-        chartData,
-        isLoading,
-        error,
-        handleCSVUpload
-    } = useDashBoardViewModel();
+    const { statCards, chartData, isLoading, error } = useDashBoardViewModel();
 
     return (
         <div className="min-h-screen w-screen bg-primary text-gray-800">
@@ -27,19 +21,10 @@ export default function DashBoardPage() {
                         <div className="mb-4">
                             <PageBreadcrumb />
                         </div>
-                        {/* CSV 업로드 및 상태 표시 */}
-                        <div style={{ marginBottom: 24 }}>
-                            <input
-                                type="file"
-                                accept=".csv"
-                                onChange={(e) => e.target.files?.[0] && handleCSVUpload(e.target.files[0])}
-                            />
-                            {isLoading && <span>로딩 중...</span>}
-                            {error && <span style={{ color: "red" }}>{error.message}</span>}
-                        </div>
-                        {/* 대시보드 콘텐츠 */}
+                        {isLoading && <div>데이터 로딩 중...</div>}
+                        {error && <div style={{ color: 'red' }}>{error.message}</div>}
                         <DashBoardContent
-                            cards={cards}
+                            cards={statCards}
                             chartData={chartData}
                         />
                     </div>

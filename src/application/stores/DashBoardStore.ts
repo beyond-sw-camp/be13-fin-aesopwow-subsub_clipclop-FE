@@ -1,11 +1,19 @@
-import { create } from 'zustand';
-import { ChartData } from '@/core/model/ChartData';
 import UserIcon from '@/assets/icons/user.svg?react';
+import { create } from 'zustand';
 
 export interface StatCardData {
     title: string;
     value: number | string;
     icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+}
+
+export interface ChartData {
+    labels: string[];
+    datasets: {
+        label: string;
+        data: number[];
+        backgroundColor: string[];
+    }[];
 }
 
 interface DashBoardStoreState {
