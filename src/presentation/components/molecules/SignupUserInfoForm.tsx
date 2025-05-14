@@ -73,6 +73,7 @@ export const SignUpUserInfoForm = ({ form, setForm, setEmailCheckResult, emailCh
           loading={loading}
           type="button"
           onClick={handleSubmit}
+          color={undefined}
         />
         {emailCheckResult && (
           <p className="text-sm text-gray-700">

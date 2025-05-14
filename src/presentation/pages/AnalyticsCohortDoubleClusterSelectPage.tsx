@@ -3,9 +3,12 @@ import { SideMenu } from "@/presentation/layout/SideMenu";
 import { DoubleClusterSelectionPanel } from "../components/organisms/DoubleClusterSelectionPanel";
 import { StepProgress } from "@/presentation/components/molecules/StepProgress";
 import { Header } from "@/presentation/layout/Header";
+import ProtectedRoute from "../components/organisms/LoginProtectedRoute";
+import { LogoutButton } from "../components/molecules/LogoutButton";
 
 export default function AnalyticsCohortSingleClusterSelectPage() {
   return (
+      <ProtectedRoute>
     <div className="min-h-screen w-screen bg-primary text-gray-800">
       <Header />
 
@@ -35,10 +38,12 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
             {/* 본문 콘텐츠 */}
             <div className="w-full mb-6">
               <DoubleClusterSelectionPanel />
+              <LogoutButton></LogoutButton>
             </div>
           </div>
         </div>
       </main>
     </div>
+      </ProtectedRoute>
   );
 }

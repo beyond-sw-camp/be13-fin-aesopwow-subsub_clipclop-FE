@@ -4,7 +4,7 @@ import { Text } from "../atoms/TextLabel";
 import { useMemo } from "react";
 import { CustomButton } from "../atoms/CustomButton";
 import { SignupOtpApi } from "@/infrastructure/api/auth";
-import { EmailCheckApi } from "@/infrastructure/api/auth";
+import { CheckEmailResponse } from "@/core/model/CheckEmail";
 
 interface Props {
   form: {
@@ -16,9 +16,10 @@ interface Props {
   };
   setForm: React.Dispatch<React.SetStateAction<any>>;
   onOtpSent: (password: string) => void;
+  emailCheckResult: CheckEmailResponse | null;
 }
 
-export const SignUpPasswordForm = ({ form, setForm, onOtpSent }: Props) => {
+export const SignUpPasswordForm = ({ form, setForm, onOtpSent, emailCheckResult }: Props) => {
   const passwordStrength = useMemo(() => {
     const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(form.password);
     return form.password.length >= 8 && hasSpecialChar ? "strong" : "weak";
@@ -32,6 +33,11 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent }: Props) => {
   const handleSubmit = async () => {
   if (!form.agree) {
     alert("개인정보 처리방침에 동의하셔야 가입이 가능합니다.");
+    return;
+  }
+
+  if (!emailCheckResult || !emailCheckResult.available || emailCheckResult.email !== form.email) {
+    alert("이메일 중복 확인을 해주세요.");
     return;
   }
 
@@ -84,15 +90,14 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent }: Props) => {
         />
         <label>
           I agree with the{" "}
-          <a href="/privacy" className="text-blue-600 underline">Privacy Policy</a>
+          <a href="src\assets\PrivacyPolicy.pdf" download="PrivacyPolicy.pdf" className="text-blue-600 underline">Privacy Policy</a>
         </label>
       </div>
       <div className="pt-2 justify-center items-center">
         <CustomButton
           title="Create Account"
           type="button"
-          onClick={handleSubmit}
-        />
+          onClick={handleSubmit} loading={false}        />
       </div>
     </div>
   );

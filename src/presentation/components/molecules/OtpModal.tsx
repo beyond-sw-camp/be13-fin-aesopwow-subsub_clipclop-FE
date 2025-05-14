@@ -2,8 +2,9 @@ import { Modals } from "../atoms/Modals";
 import { InputOneTimePassword } from "./InputOtp";
 import { useEffect, useState } from "react";
 import { CustomButton } from "../atoms/CustomButton";
-import { VerifyOtpApi, SignupApi } from "@/infrastructure/api/auth";
+import { VerifyOtpApi } from "@/infrastructure/api/auth";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 type OtpModalProps = {
   open: boolean;
@@ -18,6 +19,8 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
   const [timer, setTimer] = useState(180);
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!open) return;
@@ -72,6 +75,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
 
     console.log('회원가입 성공:', signupResponse.data);
     setOpen(false); // 모달 닫기
+    navigate('/signin');
   } catch (error) {
     console.error("OTP 확인 또는 회원가입 실패", error);
     alert("OTP 인증 또는 회원가입에 실패했습니다.");
@@ -79,7 +83,6 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
     setLoading(false);
   }
 };
-
 
   return (
     <Modals open={open} setOpen={setOpen}>
