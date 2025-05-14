@@ -44,13 +44,15 @@ export default function AnalyticsCohortSingleCohortResultPage() {
                   onClick={() =>
                     navigate(`/analytics/single/user-data?clusterType=${encodeURIComponent(clusterType)}`)
                   } // ✅ 쿼리로 전달
-                  color="orange"
+                  bgColor="bg-orange-500"
+                  hoverColor="hover:bg-orange-600"
                 />
                 <CustomButton
                   title="데이터 내보내기"
                   loading={false}
                   onClick={() => console.log("데이터 내보내기")}
-                  color="green"
+                  bgColor="bg-green-500"
+                  hoverColor="hover:bg-green-600"
                 />
               </div>
             </div>

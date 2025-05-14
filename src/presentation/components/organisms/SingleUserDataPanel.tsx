@@ -1,49 +1,63 @@
 // /presentation/components/organisms/SingleUserDataPanel.tsx
-import { useEffect, useMemo, useState } from "react";
-import { useSingleUserDataSearchResultViewModel } from "@/application/viewModels/CohortViewModel";
+import { useEffect, useState, useRef, useMemo } from "react";
+import { useAnalysisFileViewModel } from "@/application/viewModels/AnalysisViewModel";
+import { getUser } from "@/application/stores/UserStore";
 import { UserDataKeywordSelector } from "@/presentation/components/molecules/UserDataKeywordSelector";
-import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 
 interface SingleUserProps {
   clusterType: string;
 }
 
 export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
-  const [filters, setFilters] = useState<Record<keyof CohortSingleUserResponse, boolean>>({
-    userId: true,
-    name: true,
-    age: true,
-    country: true,
-    subscription: true,
-    watchTimeHours: true,
-    lastLogin: true,
-    favoriteGenre: true,
-  });
+  // ✅ getUser 호출 고정
+  const { companyNo } = useMemo(() => getUser(), []);
 
-  const selectedFields = useMemo<(keyof CohortSingleUserResponse)[]>(() => {
-    return Object.entries(filters)
-      .filter(([_, checked]) => checked)
-      .map(([key]) => key as keyof CohortSingleUserResponse);
-  }, [filters]);
+  // ✅ params 고정
+  const params = useMemo(() => ({ clusterType, companyNo }), [clusterType, companyNo]);
+  const { data, error, isLoading } = useAnalysisFileViewModel(params);
 
-  const { data, error, isLoading, search } = useSingleUserDataSearchResultViewModel();
+  const [parsedData, setParsedData] = useState<Record<string, string>[]>([]);
+  const [availableFields, setAvailableFields] = useState<string[]>([]);
+  const [selectedFields, setSelectedFields] = useState<string[]>([]);
+
+  const parsedRef = useRef(false);
 
   useEffect(() => {
-    search(clusterType, selectedFields as string[]);
-  }, [clusterType, selectedFields]);
+    if (!data || parsedRef.current) return;
+    parsedRef.current = true;
+
+    data.text().then((text) => {
+      const [headerLine, ...rows] = text.trim().split("\n");
+      const headers = headerLine.split(",");
+      const result = rows.map((line) => {
+        const values = line.split(",");
+        const obj: Record<string, string> = {};
+        headers.forEach((header, index) => {
+          obj[header] = values[index] ?? "";
+        });
+        return obj;
+      });
+
+      setParsedData(result);
+      setAvailableFields(headers);
+      setSelectedFields(headers);
+    });
+  }, [data]);
 
   const handleExport = () => {
     const csvContent = [
       selectedFields.join(","),
-      ...data.map((row) => selectedFields.map((field) => {
-        const rawValue = row[field] ?? '';
-        const value = String(rawValue);
-
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-          return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value;
-      }).join(",")),
+      ...parsedData.map((row) =>
+        selectedFields
+          .map((field) => {
+            const rawValue = row[field] ?? "";
+            if (rawValue.includes(",") || rawValue.includes('"') || rawValue.includes("\n")) {
+              return `"${rawValue.replace(/"/g, '""')}"`;
+            }
+            return rawValue;
+          })
+          .join(",")
+      ),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -68,14 +82,22 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
       </div>
 
       <div className="flex gap-6">
-        <UserDataKeywordSelector filters={filters} onChange={setFilters} />
+        <UserDataKeywordSelector
+          filters={availableFields.reduce((acc, field) => {
+            acc[field] = selectedFields.includes(field);
+            return acc;
+          }, {} as Record<string, boolean>)}
+          onChange={(newFilters) => {
+            setSelectedFields(Object.entries(newFilters).filter(([_, checked]) => checked).map(([key]) => key));
+          }}
+        />
         <div className="flex-1 overflow-x-auto">
           {error && <p className="text-sm text-red-500">{error.message}</p>}
-            {isLoading && <p className="text-gray-500">로딩 중...</p>}
-            {!isLoading && data.length === 0 && !error && (
-              <p className="text-gray-500">표시할 데이터가 없습니다.</p>
-            )}
-          {data.length > 0 && (
+          {isLoading && <p className="text-gray-500">로딩 중...</p>}
+          {!isLoading && parsedData.length === 0 && !error && (
+            <p className="text-gray-500">표시할 데이터가 없습니다.</p>
+          )}
+          {parsedData.length > 0 && (
             <table className="min-w-full text-sm border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>
@@ -85,11 +107,11 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
                 </tr>
               </thead>
               <tbody>
-                {data.map((row, rowIdx) => (
+                {parsedData.map((row, rowIdx) => (
                   <tr key={rowIdx} className="text-center">
                     {selectedFields.map((field, colIdx) => (
                       <td key={colIdx} className="border px-3 py-2">
-                        {String(row[field])}
+                        {row[field] ?? ""}
                       </td>
                     ))}
                   </tr>
