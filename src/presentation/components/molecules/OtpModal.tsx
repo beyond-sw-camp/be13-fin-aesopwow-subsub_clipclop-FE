@@ -2,7 +2,7 @@ import { Modals } from "../atoms/Modals";
 import { InputOneTimePassword } from "./InputOtp";
 import { useEffect, useState } from "react";
 import { CustomButton } from "../atoms/CustomButton";
-import { VerifyOtpApi, SignupApi } from "@/infrastructure/api/auth";
+import { VerifyOtpApi } from "@/infrastructure/api/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 

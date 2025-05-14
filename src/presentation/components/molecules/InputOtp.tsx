@@ -66,15 +66,14 @@ export function InputOneTimePassword({
               onKeyDown={(e) => handleBackspace(e, index)}
               inputRef={(el) => {
                 inputRefs.current[index] = el;
-              }}
+              } }
               className="!w-10 text-center !text-lg"
               labelProps={{
                 className: "before:content-none after:content-none",
               }}
               containerProps={{
                 className: "!min-w-0 !w-10 !shrink-0",
-              }}
-            />
+              }} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} crossOrigin={undefined}            />
             {index === 2 && <span className="text-2xl text-slate-700">-</span>}
           </React.Fragment>
         ))}
