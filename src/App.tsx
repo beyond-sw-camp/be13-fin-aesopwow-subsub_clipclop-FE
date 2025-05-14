@@ -9,6 +9,7 @@ import AnalyticsCohortSingleUserDataPage from './presentation/pages/AnalyticsCoh
 import AnalyticsCohortDoubleClusterSelectPage from './presentation/pages/AnalyticsCohortDoubleClusterSelectPage';
 import AnalyticsCohortDoubleCohortResultPage from './presentation/pages/AnalyticsCohortDoubleCohortResultPage';
 import AnalyticsCohortDoubleUserDataPage from './presentation/pages/AnalyticsCohortDoubleUserDataPage';
+import DashBoardPage from './presentation/pages/DashBoardPage';
 // import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
 import { useEffect } from "react";
 import { useAuthStore } from "@/application/stores/AuthStore"; 
@@ -35,6 +36,8 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/signin" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
+      <Route path="/dash-board" element={<DashBoardPage />} />
+      <Route path="/analytics/single/clusterselect" element={<AnalyticsCohortSingleClusterSelectPage />} />
       <Route
         path="/analytics/single/clusterselect"
         element={
