@@ -1,36 +1,28 @@
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { ChartData } from "chart.js";
 
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
-
-const stackedBarData = {
-    labels: ["January", "February", "March"],
-    datasets: [
-        {
-            label: "Dataset 1",
-            data: [30, 20, 50],
-            backgroundColor: "rgba(255, 99, 132, 0.5)",
-        },
-        {
-            label: "Dataset 2",
-            data: [20, 30, 40],
-            backgroundColor: "rgba(54, 162, 235, 0.5)",
-        },
-    ],
-};
-
-const stackedBarOptions = {
-    responsive: true,
-    plugins: {
-        legend: { position: "top" as const },
-        title: { display: true, text: "스택 바 차트 예시" },
-    },
-    scales: {
-        x: { stacked: true },
-        y: { stacked: true },
-    },
-};
-
-export function StackedBarChart() {
-    return <Bar data={stackedBarData} options={stackedBarOptions} />;
+interface ChartProps {
+    chartData: ChartData | null;
 }
+
+export const StackedBarChart: React.FC<ChartProps> = ({ chartData }) => {
+    if (!chartData) return <div>데이터가 없습니다.</div>;
+
+    return (
+        <Bar
+            data={chartData}
+            options={{
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: "top" },
+                    title: { display: true, text: "스택 바 차트" }
+                },
+                scales: {
+                    x: { stacked: true },
+                    y: { stacked: true }
+                }
+            }}
+        />
+    );
+};

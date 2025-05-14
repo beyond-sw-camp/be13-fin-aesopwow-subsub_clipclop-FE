@@ -1,18 +1,15 @@
-import React from 'react';
+import React from "react";
 import { TitleNumberBoard } from "../atoms/TitleNumberBoard";
+import { StatCardData } from "@/application/viewModels/DashBoardViewModel";
 
 interface BoardGridProps {
-    boards: {
-        title: string;
-        number: number;
-        icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-    }[];
+    cards?: StatCardData[];
 }
 
-export const BoardGrid: React.FC<BoardGridProps> = ({ boards }) => (
+export const BoardGrid: React.FC<BoardGridProps> = ({ cards = [] }) => (
     <div className="board-grid">
-        {boards.map((props, idx) => (
-            <TitleNumberBoard key={idx} {...props} />
+        {cards?.map((card, idx) => (
+            <TitleNumberBoard key={idx} {...card} />
         ))}
     </div>
 );

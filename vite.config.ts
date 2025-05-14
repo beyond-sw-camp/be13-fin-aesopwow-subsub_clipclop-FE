@@ -9,6 +9,7 @@ export default defineConfig({
     react(),
     svgr({
       include: "**/*.svg?react",
+      exportAsDefault: true,
     }),
   ],
   resolve: {
