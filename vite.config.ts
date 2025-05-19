@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     svgr({
       include: "**/*.svg?react",
-      exportAsDefault: true,
+      // exportAsDefault: true,
     }),
   ],
   resolve: {
@@ -23,10 +23,13 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8001',
+        target: 'https://dagudok-service.com',
         changeOrigin: true,
         secure: false,
       }
     }
   },
+  // define: {
+  //   ''
+  // }
 });
