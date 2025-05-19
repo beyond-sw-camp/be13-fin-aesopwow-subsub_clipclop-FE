@@ -1,6 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import { ChartData as ChartJSData } from "chart.js";
-import { ChartData as AppChartData } from "@/core/model/ChartData";
+// import { ChartData as AppChartData } from "@/core/model/ChartData";
 
 interface ChartProps {
     chartData: ChartJSData<'bar'> | null;
