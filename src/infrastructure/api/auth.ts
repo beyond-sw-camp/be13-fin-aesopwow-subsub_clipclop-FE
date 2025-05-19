@@ -8,7 +8,6 @@ export const loginApi = async (
   email: string,
   password: string
 ): Promise<LoginResponse> => {
-  console.log(axiosInstance.getUri);
   
   const response = await axiosInstance.post(`/auth/login`, { email, password });
   return response.data;
