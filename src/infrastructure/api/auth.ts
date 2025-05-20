@@ -8,7 +8,8 @@ export const loginApi = async (
   email: string,
   password: string
 ): Promise<LoginResponse> => {
-  const response = await axiosInstance.post("/auth/login", { email, password });
+  
+  const response = await axiosInstance.post(`/auth/login`, { email, password });
   return response.data;
 };
 
@@ -16,7 +17,7 @@ export const EmailCheckApi = async (
   payload: CheckEmailRequest
 ): Promise<CheckEmailResponse> => {
   try {
-    const response = await axiosInstance.post<CheckEmailResponse>("/auth/email-check", payload);
+    const response = await axiosInstance.post<CheckEmailResponse>(`/auth/email-check`, payload);
     const result = response.data;
 
     if (typeof result === "string") {
@@ -40,7 +41,7 @@ export const SignupOtpApi = async (
 ): Promise<SignupRequestOtp> => {
   const requestData = { email, password, name };
 
-  return await axiosInstance.post("auth/signup/otp", requestData); // 경로 수정
+  return await axiosInstance.post(`/auth/signup/otp`, requestData); // 경로 수정
 };
 
 export const VerifyOtpApi = async (
@@ -48,7 +49,7 @@ export const VerifyOtpApi = async (
   otp: string
 ): Promise<string> => {
   const payload: OtpVerificationRequest = { email, otp };
-  const response = await axiosInstance.post("/auth/signup/verify-otp", payload);
+  const response = await axiosInstance.post("${BASE_URL}/auth/signup/verify-otp", payload);
   return response.data;
 };
 
@@ -58,6 +59,6 @@ export const SignupApi = async (
   confirmPassword: string
 ): Promise<string> => {
   const payload= { email, password, confirmPassword };
-  const response = await axiosInstance.post("/auth/signup", payload); // 경로 수정
+  const response = await axiosInstance.post("${BASE_URL}/auth/signup", payload); // 경로 수정
   return response.data;
 };

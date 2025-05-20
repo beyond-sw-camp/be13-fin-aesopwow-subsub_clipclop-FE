@@ -1,6 +1,6 @@
 import { Line } from "react-chartjs-2";
 import { ChartData as ChartJSData } from "chart.js";
-import { ChartData } from "@/core/model/ChartData";
+// import { ChartData } from "@/core/model/ChartData";
 
 interface ChartProps {
     chartData: ChartJSData<'line', number[]> | null;
