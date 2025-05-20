@@ -20,15 +20,24 @@ export default defineConfig({
   build: {
     rollupOptions: {},
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://dagudok-service.com',
-        changeOrigin: true,
-        secure: false,
-      }
-    }
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'https://dagudok-service.com',
+  //       changeOrigin: true,
+  //       secure: false,
+  //     }
+  //   }
+  // },  
+server: {
+  proxy: {
+    '/api': {
+      target: 'http://localhost:8001', // ✅ Spring 서버가 실제 실행 중인 주소
+      changeOrigin: true,
+    },
   },
+}
+
   // define: {
   //   ''
   // }

@@ -1,7 +1,8 @@
+import axios from 'axios';
+import Papa from 'papaparse';
+import { ChartData } from '@/core/model/ChartData';
 import { StatCardData } from '@/application/stores/DashBoardStore';
 import { getUser } from '@/application/stores/UserStore';
-import { ChartData } from '@/core/model/ChartData';
-import axios from 'axios';
 import { UserIcon } from 'lucide-react';
 
 export class DashBoardUsecase {
@@ -10,41 +11,71 @@ export class DashBoardUsecase {
         statCards: StatCardData[];
     }> {
         try {
-            const { companyNo } = getUser();
-            const response = await axios.get(`/api/dashboard/${companyNo}`);
-            const rawData = response.data;
+            const { infoDbNo, originTable } = getUser();
 
-            // 데이터 유효성 검사
-            if (!rawData || !rawData.labels || !rawData.values || !Array.isArray(rawData.labels) || !Array.isArray(rawData.values)) {
-                throw new Error('유효하지 않은 대시보드 데이터 형식');
-            }
+const response = await axios.get(`/api/dash-board/${infoDbNo}/${originTable}`, {
+  responseType: 'blob',
+});
+const fullText = await response.data.text(); // ✅ CSV 전체 문자열
 
-            if (rawData.labels.length !== rawData.values.length) {
-                throw new Error('대시보드 데이터의 라벨과 값의 개수가 일치하지 않습니다');
-            }
+console.log("📦 전체 CSV 응답:", fullText.slice(0, 60000));
 
-            // 변환 로직 (예시)
-            const chartData: ChartData = {
-                labels: rawData.labels,
-                datasets: [{
-                    label: '데이터셋',
-                    data: rawData.values,
-                    backgroundColor: Array(rawData.values.length).fill('#4F46E5'),
-                }]
-            };
+const firstCsvBlock = fullText.split('month,')[0].trim(); // 첫 번째 CSV 블록 추출
+const parsed = Papa.parse(firstCsvBlock, {
+  header: true,
+  skipEmptyLines: true,
+});
+const rows = parsed.data as any[];
 
-            const statCards: StatCardData[] = [
-                { title: "총 구독자", value: rawData.total ?? 0, icon: UserIcon },
-                { title: "활성 사용자", value: rawData.active ?? 0, icon: UserIcon },
-                { title: "신규 가입자", value: rawData.new ?? 0, icon: UserIcon },
-                { title: "해지자", value: rawData.churn ?? 0, icon: UserIcon },
-                { title: "휴면 사용자", value: rawData.dormant ?? 0, icon: UserIcon },
-            ];
+// metric 추출
+const getMetric = (label: string): number => {
+  const row = rows.find((r) => r.metric?.trim() === label);
+  if (!row) return 0;
 
-            return { chartData, statCards };
+  const value = row.value;
+
+  // 1. 숫자형 문자열인 경우
+  const num = parseFloat(value);
+  if (!isNaN(num)) return num;
+
+  // 2. 빈 데이터프레임 처리
+  if (typeof value === 'string' && value.includes('Empty DataFrame')) return 0;
+
+  // 3. pandas 스타일 표 출력인 경우
+  const lines = value
+    .split('\n')
+    .filter((line: string) => /^\d+\s/.test(line)); // ✅ 타입 명시
+
+  return lines.length;
+};
+
+
+// 통계 카드 구성
+const statCards: StatCardData[] = [
+  { title: '총 구독자', value: getMetric('Entire Users'), icon: UserIcon },
+  { title: '활성 사용자', value: getMetric('Active Users'), icon: UserIcon },
+  { title: '신규 가입자', value: getMetric('New Users'), icon: UserIcon },
+  { title: '해지자', value: getMetric('Cancellation Rate'), icon: UserIcon },
+  { title: '휴면 사용자', value: getMetric('Dormant Users'), icon: UserIcon },
+];
+
+// 차트 데이터 구성
+const chartData: ChartData = {
+  labels: rows.map((r) => r.metric),
+  datasets: [
+    {
+      label: '지표값',
+      data: rows.map((r) => getMetric(r.metric)),
+      backgroundColor: Array(rows.length).fill('#4F46E5'),
+    },
+  ],
+};
+
+return { statCards, chartData };
+
         } catch (error) {
-            console.error('대시보드 데이터 조회 실패:', error);
-            throw new Error('데이터 조회 실패: ' + (error instanceof Error ? error.message : '알 수 없는 오류'));
+            console.error('❌ Dashboard CSV 처리 실패:', error);
+            throw new Error('CSV 파싱 실패');
         }
     }
 }
