@@ -7,7 +7,7 @@ interface ModalsProps {
   children: ReactNode;
 }
 
-export function Modals({ open, setOpen }: ModalsProps) {
+export function Modals({ open, setOpen, children }: ModalsProps) {
   const handleOpen = () => {
     console.log("모달 닫기 동작 확인");
     setOpen(false);
@@ -17,7 +17,8 @@ export function Modals({ open, setOpen }: ModalsProps) {
     <Dialog
       open={open}
       handler={handleOpen}
-      className="bg-white rounded-lg shadow-lg p-6" children={undefined} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
+      className="bg-white rounded-lg shadow-lg p-6" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}    >
+    {children}
     </Dialog>
   );
 }
