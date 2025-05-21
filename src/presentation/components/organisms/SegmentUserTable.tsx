@@ -1,13 +1,4 @@
-interface User {
-    userId: number;
-    name: string;
-    age: number;
-    country: string;
-    watchTimeHours: number;
-    favoriteGenre: string;
-    lastLogin: string;
-    subscription: "Basic" | "Premium" | "Ultimate";
-}
+import { User } from "@/mocks/mockSegmentUsers";
 
 interface Props {
     users: User[];
@@ -30,16 +21,19 @@ export function SegmentUserTable({ users }: Props) {
                             {group === "Premium" && "B."}
                             {group === "Ultimate" && "C."} {group} 구독자
                         </h3>
-                        <table className="min-w-full text-sm text-left bg-black text-white rounded">
+                        <table
+                            className="min-w-full text-sm text-left bg-black text-white rounded"
+                            aria-label={`${group} 구독자 목록`}
+                        >
                             <thead className="bg-gray-800">
                                 <tr>
-                                    <th className="px-3 py-2">User_ID</th>
-                                    <th className="px-3 py-2">Name</th>
-                                    <th className="px-3 py-2">Age</th>
-                                    <th className="px-3 py-2">Country</th>
-                                    <th className="px-3 py-2">Watch_Time_Hours</th>
-                                    <th className="px-3 py-2">Favorite_Genre</th>
-                                    <th className="px-3 py-2">Last_Login</th>
+                                    <th scope="col" className="px-3 py-2">User_ID</th>
+                                    <th scope="col" className="px-3 py-2">Name</th>
+                                    <th scope="col" className="px-3 py-2">Age</th>
+                                    <th scope="col" className="px-3 py-2">Country</th>
+                                    <th scope="col" className="px-3 py-2">Watch_Time_Hours</th>
+                                    <th scope="col" className="px-3 py-2">Favorite_Genre</th>
+                                    <th scope="col" className="px-3 py-2">Last_Login</th>
                                 </tr>
                             </thead>
                             <tbody>

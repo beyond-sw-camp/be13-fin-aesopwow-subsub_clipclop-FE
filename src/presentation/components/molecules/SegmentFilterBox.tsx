@@ -67,7 +67,7 @@ export function SegmentFilterBox({
     return (
         <div className="bg-white shadow p-4 rounded border border-gray-200 text-sm space-y-4 w-full">
         <div>
-            <p className="font-semibold text-gray-800 mb-1">내림차순 유/무</p>
+            <p className="font-semibold text-gray-800 mb-1">필터 선택</p>
             <div className="flex flex-col gap-1">
                 {group1.map((key) => (
                     <CheckBox
@@ -89,6 +89,7 @@ export function SegmentFilterBox({
                         key={key}
                         label={FILTER_LABELS[key]}
                         checked={filters[key]}
+                        disabled={isLocked(key)}
                         onChange={(e) => handleChange(key, e.target.checked)}
                     />
                 ))}
