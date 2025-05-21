@@ -3,6 +3,7 @@ import { Checkbox } from "@material-tailwind/react";
 interface CheckboxProps {
   label?: string;
   checked?: boolean;
+  disabled?: boolean;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
