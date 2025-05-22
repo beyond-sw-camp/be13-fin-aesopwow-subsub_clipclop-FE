@@ -1,17 +1,36 @@
 import { User } from "@/mocks/mockSegmentUsers";
+import { useMemo } from "react";
 
 interface Props {
     users: User[];
+    sortKey: keyof User | null;
+    sortOrder: "asc" | "desc";
 }
 
-export function SegmentUserTable({ users }: Props) {
+export function SegmentUserTable({ users, sortKey, sortOrder }: Props) {
     const groupNames = ["Basic", "Premium", "Ultimate"];
+
+    const sortedUsers = useMemo(() => {
+        const sorted = [...users];
+        if (sortKey) {
+            sorted.sort((a, b) => {
+                const aVal = a[sortKey];
+                const bVal = b[sortKey];
+                if (typeof aVal === "number" && typeof bVal === "number") {
+                    return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
+                }
+                return sortOrder === "asc"
+                    ? String(aVal).localeCompare(String(bVal))
+                    : String(bVal).localeCompare(String(aVal));
+            });
+        }
+        return sorted;
+    }, [users, sortKey, sortOrder]);
 
     return (
         <div className="space-y-6">
             {groupNames.map((group) => {
-                const groupUsers = users.filter((u) => u.subscription === group);
-
+                const groupUsers = sortedUsers.filter((u) => u.subscription === group);
                 if (groupUsers.length === 0) return null;
 
                 return (

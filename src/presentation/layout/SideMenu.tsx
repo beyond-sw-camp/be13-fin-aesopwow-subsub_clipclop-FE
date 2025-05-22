@@ -7,7 +7,6 @@ export function SideMenu() {
   return (
     <div className="w-60 bg-white p-4 flex flex-col justify-between shadow-md rounded-lg">
       <div>
-        {/* Home */}
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Home</h2>
           <SideMenuButton label="Dash Board" to="/dash-board" />
@@ -15,7 +14,6 @@ export function SideMenu() {
 
         <div className="border-t border-gray-300 my-4" />
 
-        {/* Segments */}
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Segments</h2>
           <SideMenuButton label="누적 시청시간" to="/segments/watchtime" />
@@ -26,7 +24,6 @@ export function SideMenu() {
 
         <div className="border-t border-gray-300 my-4" />
 
-        {/* Cohorts */}
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Cohorts</h2>
           <SideMenuButton label="단일 분석" to="/analytics/single/clusterselect" />
@@ -36,7 +33,6 @@ export function SideMenu() {
 
         <div className="border-t border-gray-300 my-4" />
 
-        {/* SHAP */}
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">SHAP</h2>
           <SideMenuButton label="SHAP 분석" to="/analytics/shap" />
@@ -45,7 +41,6 @@ export function SideMenu() {
 
       <div className="border-t border-gray-300 my-4" />
 
-      {/* Upgrade */}
       <div className="mt-4 bg-orange-500 p-3 rounded-md border border-gray-300">
         <h3 className="text-sm font-bold mb-2">Upgrade to PRO</h3>
         <p className="text-xs mb-3">

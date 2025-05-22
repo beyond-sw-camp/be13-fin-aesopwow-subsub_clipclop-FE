@@ -1,18 +1,50 @@
+import { useState, useMemo } from "react";
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 import { SegmentTemplate } from "@/presentation/components/organisms/SegmentTemplate";
 import { SegmentUserTable } from "@/presentation/components/organisms/SegmentUserTable";
 import { SegmentFilterBox } from "@/presentation/components/molecules/SegmentFilterBox";
 import { useSegmentViewModel } from "@/application/viewModels/SegmentViewModel";
+import { User } from "@/mocks/mockSegmentUsers";
 
 export default function WatchTimePage() {
     const { filters, setFilters, users, isLoading, error } = useSegmentViewModel("watchTime");
+
+    const [sortKey, setSortKey] = useState<"age" | "country" | null>(null);
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+    const handleSortChange = (key: "age" | "country") => {
+        if (sortKey === key) {
+            setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+        } else {
+            setSortKey(key);
+            setSortOrder("asc");
+        }
+    };
+
+    const sortedUsers = useMemo(() => {
+        const sorted = [...users];
+        if (sortKey) {
+            sorted.sort((a, b) => {
+                const aVal = a[sortKey]!;
+                const bVal = b[sortKey]!;
+
+                if (typeof aVal === "number" && typeof bVal === "number") {
+                    return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
+                }
+                return sortOrder === "asc"
+                    ? String(aVal).localeCompare(String(bVal))
+                    : String(bVal).localeCompare(String(aVal));
+            });
+        }
+        return sorted;
+    }, [users, sortKey, sortOrder]);
 
     return (
         <div className="min-h-screen w-screen bg-primary text-gray-800">
             <Header />
             <main className="flex">
-                <div className="pt-4 pl-4">
+                <div className="w-64 pt-4 pl-4">
                     <div className="mt-4 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
                         <SideMenu />
                     </div>
@@ -23,16 +55,20 @@ export default function WatchTimePage() {
                         title="누적 시청시간"
                         filter={
                             <SegmentFilterBox
+                                segmentType="watchTimeHour"
                                 defaultFilters={{
                                     watchTime: true,
                                     age: false,
                                     country: false,
                                     lastLogin: false,
                                     subscription: false,
-                                    genre: false,
+                                    genre: false
                                 }}
                                 lockedKeys={["watchTime"]}
                                 onChange={setFilters}
+                                onSortChange={handleSortChange}
+                                sortKey={sortKey}
+                                sortOrder={sortOrder}
                             />
                         }
                     >
@@ -50,7 +86,11 @@ export default function WatchTimePage() {
                                 </div>
                             )}
                             {!isLoading && !error && (
-                                <SegmentUserTable users={users} />
+                                <SegmentUserTable
+                                    users={sortedUsers}
+                                    sortKey={sortKey}
+                                    sortOrder={sortOrder}
+                                />
                             )}
                         </div>
                     </SegmentTemplate>
