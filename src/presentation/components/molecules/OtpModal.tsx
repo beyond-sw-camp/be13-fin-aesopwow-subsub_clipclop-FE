@@ -12,7 +12,7 @@ type OtpModalProps = {
   email: string;
   password: string;
   confirmPassword: string;
-  // onVerify: (otp: string) => Promise<void>;
+  onVerify?: (otp: string) => Promise<void>;
 };
 
 export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: OtpModalProps) => {
