@@ -31,7 +31,7 @@ const FILTER_LABELS: Record<FilterKey, string> = {
 
 interface Props {
     segmentType: SegmentType;
-    defaultFilters: Record<FilterKey, boolean>;
+    filters: Record<FilterKey, boolean>;
     lockedKeys?: FilterKey[];
     onChange?: (updated: Record<FilterKey, boolean>) => void;
     onSortChange?: (key: "age" | "country") => void;
@@ -41,7 +41,7 @@ interface Props {
 
 export function SegmentFilterBox({
     segmentType,
-    defaultFilters,
+    filters,
     lockedKeys = [],
     onChange,
     onSortChange,
@@ -57,7 +57,14 @@ export function SegmentFilterBox({
         "genre",
     ];
 
-    const [filters, setFilters] = useState<Record<FilterKey, boolean>>(defaultFilters);
+    const filtersState = filters;
+    const setFiltersState = onChange;
+
+    const [watchTimeOptions, setWatchTimeOptions] = useState<Record<string, boolean>>({
+        powerUser: true,
+        coreUser: true,
+        lightUser: true,
+    });
 
     const [subscriptionOptions, setSubscriptionOptions] = useState<Record<string, boolean>>({
         Basic: true,
@@ -86,7 +93,6 @@ export function SegmentFilterBox({
     const handleChange = (key: FilterKey, checked: boolean) => {
         if (isLocked(key)) return;
         const next = { ...filters, [key]: checked };
-        setFilters(next);
         onChange?.(next);
     };
 
@@ -133,12 +139,17 @@ export function SegmentFilterBox({
                 <div>
                     <p className="font-semibold text-gray-800 mb-2 text-base">Watch Time Hours</p>
                     <div className="flex flex-col gap-2 ml-2">
-                        {["powerUser", "coreUser", "lightUser"].map((key) => (
+                        {Object.entries(watchTimeOptions).map(([key, checked]) => (
                             <CheckBox
                                 key={key}
                                 label={key}
-                                checked={false}
-                                onChange={() => {}}
+                                checked={checked}
+                                onChange={(e) =>
+                                    setWatchTimeOptions({
+                                        ...watchTimeOptions,
+                                        [key]: e.target.checked,
+                                    })
+                                }
                             />
                         ))}
                     </div>

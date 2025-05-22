@@ -4,7 +4,8 @@ import { SideMenu } from "@/presentation/layout/SideMenu";
 import { SegmentTemplate } from "@/presentation/components/organisms/SegmentTemplate";
 import { SegmentUserTable } from "@/presentation/components/organisms/SegmentUserTable";
 import { SegmentFilterBox } from "@/presentation/components/molecules/SegmentFilterBox";
-import { useSegmentViewModel } from "@/application/viewModels/SegmentViewModel";
+import { useSegmentViewModel } from "@/application/viewModels/useSegmentViewModel";
+import { sortUsersByKey } from "@/core/utils/sortUsersByKey";
 
 export default function SubscriptionPage() {
     const { filters, setFilters, users, isLoading, error } = useSegmentViewModel("subscription");
@@ -21,22 +22,10 @@ export default function SubscriptionPage() {
         }
     };
 
-    const sortedUsers = useMemo(() => {
-        const sorted = [...users];
-        if (sortKey) {
-            sorted.sort((a, b) => {
-                const aVal = a[sortKey]!;
-                const bVal = b[sortKey]!;
-                if (typeof aVal === "number" && typeof bVal === "number") {
-                    return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
-                }
-                return sortOrder === "asc"
-                    ? String(aVal).localeCompare(String(bVal))
-                    : String(bVal).localeCompare(String(aVal));
-            });
-        }
-        return sorted;
-    }, [users, sortKey, sortOrder]);
+    const sortedUsers = useMemo(() =>
+        sortUsersByKey(users, sortKey, sortOrder),
+        [users, sortKey, sortOrder]
+    );
 
     return (
         <div className="min-h-screen w-screen bg-primary text-gray-800">
@@ -54,16 +43,9 @@ export default function SubscriptionPage() {
                         filter={
                             <SegmentFilterBox
                                 segmentType="subscription"
-                                defaultFilters={{
-                                    subscription: true,
-                                    age: false,
-                                    country: false,
-                                    lastLogin: false,
-                                    genre: false,
-                                    watchTime: false,
-                                }}
-                                lockedKeys={["subscription"]}
+                                filters={filters}
                                 onChange={setFilters}
+                                lockedKeys={["subscription"]}
                                 onSortChange={handleSortChange}
                                 sortKey={sortKey}
                                 sortOrder={sortOrder}
@@ -84,11 +66,7 @@ export default function SubscriptionPage() {
                                 </div>
                             )}
                             {!isLoading && !error && (
-                                <SegmentUserTable
-                                    users={sortedUsers}
-                                    sortKey={sortKey}
-                                    sortOrder={sortOrder}
-                                />
+                                <SegmentUserTable users={sortedUsers} />
                             )}
                         </div>
                     </SegmentTemplate>

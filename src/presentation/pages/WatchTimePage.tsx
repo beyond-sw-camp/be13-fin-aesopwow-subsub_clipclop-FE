@@ -4,11 +4,11 @@ import { SideMenu } from "@/presentation/layout/SideMenu";
 import { SegmentTemplate } from "@/presentation/components/organisms/SegmentTemplate";
 import { SegmentUserTable } from "@/presentation/components/organisms/SegmentUserTable";
 import { SegmentFilterBox } from "@/presentation/components/molecules/SegmentFilterBox";
-import { useSegmentViewModel } from "@/application/viewModels/SegmentViewModel";
-import { User } from "@/mocks/mockSegmentUsers";
+import { useSegmentViewModel } from "@/application/viewModels/useSegmentViewModel";
+import { sortUsersByKey } from "@/core/utils/sortUsersByKey";
 
 export default function WatchTimePage() {
-    const { filters, setFilters, users, isLoading, error } = useSegmentViewModel("watchTime");
+    const { filters, setFilters, users, isLoading, error } = useSegmentViewModel("watchTimeHour");
 
     const [sortKey, setSortKey] = useState<"age" | "country" | null>(null);
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
@@ -22,23 +22,10 @@ export default function WatchTimePage() {
         }
     };
 
-    const sortedUsers = useMemo(() => {
-        const sorted = [...users];
-        if (sortKey) {
-            sorted.sort((a, b) => {
-                const aVal = a[sortKey]!;
-                const bVal = b[sortKey]!;
-
-                if (typeof aVal === "number" && typeof bVal === "number") {
-                    return sortOrder === "asc" ? aVal - bVal : bVal - aVal;
-                }
-                return sortOrder === "asc"
-                    ? String(aVal).localeCompare(String(bVal))
-                    : String(bVal).localeCompare(String(aVal));
-            });
-        }
-        return sorted;
-    }, [users, sortKey, sortOrder]);
+    const sortedUsers = useMemo(() =>
+        sortUsersByKey(users, sortKey, sortOrder),
+        [users, sortKey, sortOrder]
+    );
 
     return (
         <div className="min-h-screen w-screen bg-primary text-gray-800">
@@ -56,16 +43,9 @@ export default function WatchTimePage() {
                         filter={
                             <SegmentFilterBox
                                 segmentType="watchTimeHour"
-                                defaultFilters={{
-                                    watchTime: true,
-                                    age: false,
-                                    country: false,
-                                    lastLogin: false,
-                                    subscription: false,
-                                    genre: false
-                                }}
-                                lockedKeys={["watchTime"]}
+                                filters={filters}
                                 onChange={setFilters}
+                                lockedKeys={["watchTime"]}
                                 onSortChange={handleSortChange}
                                 sortKey={sortKey}
                                 sortOrder={sortOrder}
