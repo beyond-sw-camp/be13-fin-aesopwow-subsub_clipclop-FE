@@ -1,5 +1,6 @@
 // src/App.tsx
 import { Route, Routes } from 'react-router-dom';
+import './chart/ChartRegister';
 import LoginPage from './presentation/pages/LoginPage';
 import SignupPage from './presentation/pages/SignUpPage';
 import AnalyticsCohortSingleClusterSelectPage from './presentation/pages/AnalyticsCohortSingleClusterSelectPage';
