@@ -51,7 +51,11 @@ export class DashBoardUsecase {
             // --- 스탯 카드용 파싱 --- //
             const metricsBlock = fullText.split(/\n\s*\n/)[0].trim();
             const parsedMetrics = Papa.parse(metricsBlock, { header: true, skipEmptyLines: true });
-            const rows = parsedMetrics.data as any[];
+            interface MetricRow {
+                metric: string;
+                value: string;
+            }
+            const rows = parsedMetrics.data as MetricRow[];
 
             const metricMap = Object.fromEntries(rows.map((r) => [r.metric?.trim(), r.value]));
 
@@ -107,9 +111,9 @@ export class DashBoardUsecase {
                 monthAgo.setMonth(monthAgo.getMonth() - 1);
                 const targetMonth = monthAgo.toISOString().slice(0, 7);
 
-                const targetRow = (parsed.data as any[]).find(
+                const targetRow = (parsed.data as SubscriptionTypeRow[]).find(
                     (row) => row.month === targetMonth && row.type === 'new'
-                ) as Record<string, string>;
+                );
 
                 if (targetRow) {
                     doughnutChartData = {
