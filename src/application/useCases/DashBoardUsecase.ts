@@ -5,12 +5,7 @@ import { StatCardData } from '@/application/stores/DashBoardStore';
 import { getUser } from '@/application/stores/UserStore';
 import { User } from 'lucide-react';
 import { ChartData as ChartJSData } from 'chart.js';
-
-interface DashBoardCharts {
-    line: ChartJSData<'line', number[]>;
-    doughnut: DoughnutChartData;
-    stackedBar: ChartJSData<'bar'>;
-}
+import { DashBoardCharts } from '@/application/stores/DashBoardStore';
 
 interface SubscriptionTypeRow {
     month: string;
@@ -27,14 +22,12 @@ export class DashBoardUsecase {
     }> {
         const { infoDbNo, originTable } = getUser();
 
-        // API 호출 전 파라미터 유효성 검사
         if (!infoDbNo || !originTable) {
             throw new Error('대시보드 데이터를 요청하기 위한 파라미터가 유효하지 않습니다.');
         }
 
         let fullText: string = '';
 
-        // API 호출 및 오류 처리
         try {
             const response = await axios.get(`/api/dash-board/${infoDbNo}/${originTable}`, {
                 responseType: 'blob',
@@ -60,19 +53,14 @@ export class DashBoardUsecase {
             const parsedMetrics = Papa.parse(metricsBlock, { header: true, skipEmptyLines: true });
             const rows = parsedMetrics.data as any[];
 
-            const metricMap = Object.fromEntries(
-                rows.map((r) => [r.metric?.trim(), r.value])
-            );
+            const metricMap = Object.fromEntries(rows.map((r) => [r.metric?.trim(), r.value]));
 
             const getMetric = (label: string): number => {
                 const value = metricMap[label];
                 if (!value) return 0;
-
                 const num = parseFloat(value);
                 if (!isNaN(num)) return num;
-
                 if (typeof value === 'string' && value.includes('Empty DataFrame')) return 0;
-
                 const lines = value.split('\n').filter((line: string) => /^\d+\s/.test(line));
                 return lines.length;
             };
@@ -114,11 +102,7 @@ export class DashBoardUsecase {
             let doughnutChartData: DoughnutChartData = { labels: [], datasets: [] };
 
             if (donutBlock) {
-                const parsed = Papa.parse(donutBlock.trim(), {
-                    header: true,
-                    skipEmptyLines: true,
-                });
-
+                const parsed = Papa.parse(donutBlock.trim(), { header: true, skipEmptyLines: true });
                 const monthAgo = new Date();
                 monthAgo.setMonth(monthAgo.getMonth() - 1);
                 const targetMonth = monthAgo.toISOString().slice(0, 7);
@@ -150,40 +134,57 @@ export class DashBoardUsecase {
             let stackedBarData: ChartJSData<'bar'> = { labels: [], datasets: [] };
 
             if (stackedBlock) {
-                const parsed = Papa.parse<SubscriptionTypeRow>(stackedBlock.join('\n').trim(), { header: true, skipEmptyLines: true });
+                const parsed = Papa.parse<SubscriptionTypeRow>(stackedBlock.join('\n').trim(), {
+                    header: true,
+                    skipEmptyLines: true,
+                });
                 const rows = parsed.data;
 
-                const grouped = new Map<string, { active?: any; cancelled?: any }>();
+                const groupByMonth = (
+                    rows: SubscriptionTypeRow[]
+                ): Map<string, { active?: SubscriptionTypeRow; cancelled?: SubscriptionTypeRow }> => {
+                    const grouped = new Map<string, { active?: SubscriptionTypeRow; cancelled?: SubscriptionTypeRow }>();
+                    rows.forEach((row) => {
+                        const key = row.month;
+                        if (!grouped.has(key)) grouped.set(key, {});
+                        if (row.type === 'active' || row.type === 'cancelled') {
+                            grouped.get(key)![row.type] = row;
+                        }
+                    });
+                    return grouped;
+                };
 
-                rows.forEach((row) => {
-                    const key = row.month;
-                    if (!grouped.has(key)) grouped.set(key, {});
-                    const type = row.type as 'active' | 'cancelled';
-                    grouped.get(key)![type] = row;
-                });
+                const createChartDataFromGroups = (
+                    grouped: Map<string, { active?: SubscriptionTypeRow; cancelled?: SubscriptionTypeRow }>
+                ) => {
+                    const labels: string[] = [];
+                    const basicData: number[] = [];
+                    const standardData: number[] = [];
+                    const premiumData: number[] = [];
 
-                const labels: string[] = [];
-                const basicData: number[] = [];
-                const standardData: number[] = [];
-                const premiumData: number[] = [];
+                    [...grouped.entries()].reverse().forEach(([month, types]) => {
+                        if (types.active) {
+                            labels.push(`${month} Active`);
+                            basicData.push(parseFloat(types.active['basic(%)']));
+                            standardData.push(parseFloat(types.active['standard(%)']));
+                            premiumData.push(parseFloat(types.active['premium(%)']));
+                        }
+                        if (types.cancelled) {
+                            labels.push(`${month} Cancelled`);
+                            basicData.push(parseFloat(types.cancelled['basic(%)']));
+                            standardData.push(parseFloat(types.cancelled['standard(%)']));
+                            premiumData.push(parseFloat(types.cancelled['premium(%)']));
+                        }
+                        basicData.push(0);
+                        standardData.push(0);
+                        premiumData.push(0);
+                    });
 
-                [...grouped.entries()].reverse().forEach(([month, types]) => {
-                    if (types.active) {
-                        labels.push(`${month} Active`);
-                        basicData.push(parseFloat(types.active['basic(%)']));
-                        standardData.push(parseFloat(types.active['standard(%)']));
-                        premiumData.push(parseFloat(types.active['premium(%)']));
-                    }
-                    if (types.cancelled) {
-                        labels.push(`${month} Cancelled`);
-                        basicData.push(parseFloat(types.cancelled['basic(%)']));
-                        standardData.push(parseFloat(types.cancelled['standard(%)']));
-                        premiumData.push(parseFloat(types.cancelled['premium(%)']));
-                    }
-                    basicData.push(0);
-                    standardData.push(0);
-                    premiumData.push(0);
-                });
+                    return { labels, basicData, standardData, premiumData };
+                };
+
+                const grouped = groupByMonth(rows);
+                const { labels, basicData, standardData, premiumData } = createChartDataFromGroups(grouped);
 
                 stackedBarData = {
                     labels,
@@ -220,7 +221,6 @@ export class DashBoardUsecase {
             };
 
             return { statCards, chartData };
-
         } catch (error) {
             console.error('❌ Dashboard CSV 처리 실패:', error);
             if (error instanceof Error) {
