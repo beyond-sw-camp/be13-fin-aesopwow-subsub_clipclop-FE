@@ -5,7 +5,7 @@ import profileImage from "@/assets/profile.png"; // 사용자 아바타 이미�
 export function ProfileAvatar() {
   return (
     <div className="fixed top-4 right-4 z-50">
-      <Link to="/profile">
+      <Link to="/mypage">
         <img
           src={profileImage}
           alt="User Avatar"

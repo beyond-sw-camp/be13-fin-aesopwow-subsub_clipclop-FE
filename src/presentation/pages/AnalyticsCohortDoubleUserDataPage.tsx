@@ -23,7 +23,7 @@ export default function AnalyticsCohortDoubleUserDataPage() {
           <div className="flex flex-col p-8 flex-grow">
             {/* ✅ 페이지 제목 및 경로 표시 */}
             <div className="mb-4">
-              <PageBreadcrumb />
+              <PageBreadcrumb title="Analysis/Cohort/Single" />
             </div>
 
             {/* ✅ 단계 표시 (3단계 중 마지막) */}

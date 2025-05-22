@@ -7,7 +7,7 @@ interface CustomButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   children?: ReactNode;
-  color?: "orange" | "green"; 
+  color?: "orange" | "green" | "black"; // ⬅️ 추가
 }
 
 export function CustomButton({
@@ -19,12 +19,14 @@ export function CustomButton({
   color = "orange",
 }: CustomButtonProps) {
   const baseStyle =
-    "text-white font-semibold px-6 py-3 rounded-md border border-black shadow transition";
+    "text-xs text-white px-3 py-2 rounded transition font-normal";
 
   const colorStyle =
     color === "orange"
-      ? "bg-orange-500 hover:bg-orange-600"
-      : "bg-green-600 hover:bg-green-700";
+      ? "bg-orange-500 hover:bg-orange-600 border border-black shadow"
+      : color === "green"
+      ? "bg-green-600 hover:bg-green-700 border border-black shadow"
+      : "bg-black hover:bg-gray-800"; // ⬅️ black 버튼 스타일 추가
 
   const disabledStyle = loading || disabled ? "opacity-50 cursor-not-allowed" : "";
 
