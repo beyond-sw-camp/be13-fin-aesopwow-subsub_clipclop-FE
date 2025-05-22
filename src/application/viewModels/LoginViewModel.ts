@@ -27,7 +27,7 @@ export const useLoginViewModel = () => {
     
       setToken(accessToken, remember); // zustand에 저장
       alert("로그인 성공!");
-      navigate("/dashboard"); 
+      navigate("/dash-board"); 
     } catch (err) {
       alert("로그인 실패");
       setError("로그인에 실패했습니다.");
