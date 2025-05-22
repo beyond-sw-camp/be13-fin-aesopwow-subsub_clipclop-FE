@@ -19,15 +19,15 @@ export const useLoginViewModel = () => {
     setLoading(true);
     setError(null);
     try {
-      const { token } = await loginUseCase.execute(email, password); // token만 받는 구조
+      const { accessToken } = await loginUseCase.execute(email, password); // token만 받는 구조
 
-      if (!token) {
+      if (!accessToken) {
       throw new Error("서버에서 토큰이 오지 않았습니다.");
     }
     
-      setToken(token, remember); // zustand에 저장
+      setToken(accessToken, remember); // zustand에 저장
       alert("로그인 성공!");
-      navigate("/dashboard"); 
+      navigate("/dash-board"); 
     } catch (err) {
       alert("로그인 실패");
       setError("로그인에 실패했습니다.");
