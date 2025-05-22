@@ -1,78 +1,197 @@
+// 📁 DashBoardUsecase.ts
 import axios from 'axios';
 import Papa from 'papaparse';
-import { ChartData } from '@/core/model/ChartData';
+import { ChartData as DoughnutChartData } from '@/core/model/ChartData';
 import { StatCardData } from '@/application/stores/DashBoardStore';
 import { getUser } from '@/application/stores/UserStore';
 import { UserIcon } from 'lucide-react';
+import { ChartData as ChartJSData } from 'chart.js';
+
+interface DashBoardCharts {
+    line: ChartJSData<'line', number[]>;
+    doughnut: DoughnutChartData;
+    stackedBar: ChartJSData<'bar'>;
+}
 
 export class DashBoardUsecase {
     async fetchDashboardData(): Promise<{
-        chartData: ChartData;
+        chartData: DashBoardCharts;
         statCards: StatCardData[];
     }> {
         try {
             const { infoDbNo, originTable } = getUser();
+            const response = await axios.get(`/api/dash-board/${infoDbNo}/${originTable}`, {
+                responseType: 'blob',
+            });
+            const fullText = await response.data.text();
 
-const response = await axios.get(`/api/dash-board/${infoDbNo}/${originTable}`, {
-  responseType: 'blob',
-});
-const fullText = await response.data.text(); // ✅ CSV 전체 문자열
+            // --- 스탯 카드용 파싱 --- //
+            const metricsBlock = fullText.split('month,')[0].trim();
+            const parsedMetrics = Papa.parse(metricsBlock, { header: true, skipEmptyLines: true });
+            const rows = parsedMetrics.data as any[];
 
-console.log("📦 전체 CSV 응답:", fullText.slice(0, 60000));
+            const getMetric = (label: string): number => {
+                const row = rows.find((r) => r.metric?.trim() === label);
+                if (!row) return 0;
 
-const firstCsvBlock = fullText.split('month,')[0].trim(); // 첫 번째 CSV 블록 추출
-const parsed = Papa.parse(firstCsvBlock, {
-  header: true,
-  skipEmptyLines: true,
-});
-const rows = parsed.data as any[];
+                const value = row.value;
+                const num = parseFloat(value);
+                if (!isNaN(num)) return num;
+                if (typeof value === 'string' && value.includes('Empty DataFrame')) return 0;
 
-// metric 추출
-const getMetric = (label: string): number => {
-  const row = rows.find((r) => r.metric?.trim() === label);
-  if (!row) return 0;
+                const lines = value.split('\n').filter((line: string) => /^\d+\s/.test(line));
+                return lines.length;
+            };
 
-  const value = row.value;
+            const statCards: StatCardData[] = [
+              { title: '총 구독자', value: getMetric('Entire Users'), icon: UserIcon },
+              { title: '신규 가입자', value: getMetric('New Users'), icon: UserIcon },
+              { title: '활성 사용자', value: getMetric('Active Users'), icon: UserIcon },
+              { title: '휴면 사용자', value: getMetric('Dormant Users'), icon: UserIcon },
+              { title: '해지율', value: getMetric('Cancellation Rate'), icon: UserIcon },
+              { title: '증감률', value: getMetric('Increase Decrease Rate'), icon: UserIcon }, // ✅ 이거 추가
+            ];
 
-  // 1. 숫자형 문자열인 경우
-  const num = parseFloat(value);
-  if (!isNaN(num)) return num;
+            // --- 꺾은선 그래프 파싱 --- //
+            const increaseRateBlock = fullText.match(/month,subscribers,rate\(\%\)[\s\S]+?(?=\n\n|$)/);
+            let lineChartData: ChartJSData<'line', number[]> = {
+                labels: [],
+                datasets: [],
+            };
+            if (increaseRateBlock) {
+                const parsed = Papa.parse(increaseRateBlock[0].trim(), { header: true, skipEmptyLines: true });
+                const rows = parsed.data as any[];
 
-  // 2. 빈 데이터프레임 처리
-  if (typeof value === 'string' && value.includes('Empty DataFrame')) return 0;
+                lineChartData = {
+                    labels: rows.map((r) => r.month),
+                    datasets: [
+                        {
+                            label: '구독 증감률(%)',
+                            data: rows.map((r) => parseFloat(r['rate(%)'])),
+                            borderColor: '#4F46E5',
+                            fill: false,
+                        },
+                    ],
+                };
+            }
 
-  // 3. pandas 스타일 표 출력인 경우
-  const lines = value
-    .split('\n')
-    .filter((line: string) => /^\d+\s/.test(line)); // ✅ 타입 명시
+            // --- 도넛 차트 파싱 --- //
+            const donutBlock = fullText
+              .match(/month,type,basic\(\%\),premium\(\%\),ultimate\(\%\)[\s\S]+?(?=month,type|month,subscribers|$)/g)
+              ?.find((b: string) => b.includes(',new,'));
 
-  return lines.length;
-};
+            let doughnutChartData: DoughnutChartData = { labels: [], datasets: [] };
 
+            if (donutBlock) {
+                const parsed = Papa.parse(donutBlock.trim(), {
+                    header: true,
+                    skipEmptyLines: true
+                });
 
-// 통계 카드 구성
-const statCards: StatCardData[] = [
-  { title: '총 구독자', value: getMetric('Entire Users'), icon: UserIcon },
-  { title: '활성 사용자', value: getMetric('Active Users'), icon: UserIcon },
-  { title: '신규 가입자', value: getMetric('New Users'), icon: UserIcon },
-  { title: '해지자', value: getMetric('Cancellation Rate'), icon: UserIcon },
-  { title: '휴면 사용자', value: getMetric('Dormant Users'), icon: UserIcon },
-];
+                const monthAgo = new Date();
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
+                const targetMonth = monthAgo.toISOString().slice(0, 7);
 
-// 차트 데이터 구성
-const chartData: ChartData = {
-  labels: rows.map((r) => r.metric),
-  datasets: [
-    {
-      label: '지표값',
-      data: rows.map((r) => getMetric(r.metric)),
-      backgroundColor: Array(rows.length).fill('#4F46E5'),
-    },
-  ],
-};
+                const targetRow = (parsed.data as any[]).find(
+                    (row) => row.month === targetMonth && row.type === 'new'
+                ) as Record<string, string>;
 
-return { statCards, chartData };
+                if (targetRow) {
+                    doughnutChartData = {
+                        labels: ['Basic', 'Premium', 'Ultimate'],
+                        datasets: [
+                            {
+                                label: `${targetMonth} 신규 유저 비율`,
+                                data: [
+                                    parseFloat(targetRow['basic(%)']),
+                                    parseFloat(targetRow['premium(%)']),
+                                    parseFloat(targetRow['ultimate(%)']),
+                                ],
+                                backgroundColor: ['#60A5FA', '#34D399', '#FBBF24'],
+                            },
+                        ],
+                    };
+                }
+            }
 
+            // --- 스택바 차트 파싱 --- //
+            const stackedBlock = fullText.match(/month,type,basic\(\%\),premium\(\%\),ultimate\(\%\)[\s\S]+?(?=month,subscribers|$)/g);
+            let stackedBarData: ChartJSData<'bar'> = {
+                labels: [],
+                datasets: [],
+            };
+            if (stackedBlock) {
+                const parsed = Papa.parse(stackedBlock.join('\n').trim(), { header: true, skipEmptyLines: true });
+                const rows = parsed.data as any[];
+
+                const grouped = new Map<string, { active?: any; cancelled?: any }>();
+
+                (rows as any[]).forEach((row) => {
+                  const key = row.month;
+                  if (!grouped.has(key)) grouped.set(key, {});
+                  
+                  const type = row.type as 'active' | 'cancelled';
+                  grouped.get(key)![type] = row;
+                });
+
+                const labels: string[] = [];
+                const basicData: number[] = [];
+                const premiumData: number[] = [];
+                const ultimateData: number[] = [];
+
+                [...grouped.entries()].reverse().forEach(([month, types]) => {
+                    if (types.active) {
+                        labels.push(`${month} Active`);
+                        basicData.push(parseFloat(types.active['basic(%)']));
+                        premiumData.push(parseFloat(types.active['premium(%)']));
+                        ultimateData.push(parseFloat(types.active['ultimate(%)']));
+                    }
+                    if (types.cancelled) {
+                        labels.push(`${month} Cancelled`);
+                        basicData.push(parseFloat(types.cancelled['basic(%)']));
+                        premiumData.push(parseFloat(types.cancelled['premium(%)']));
+                        ultimateData.push(parseFloat(types.cancelled['ultimate(%)']));
+                    }
+                    basicData.push(0);
+                    premiumData.push(0);
+                    ultimateData.push(0);
+                });
+
+                stackedBarData = {
+                  labels,
+                  datasets: [
+                    {
+                      label: 'Basic',
+                      data: basicData,
+                      backgroundColor: '#60A5FA',
+                      categoryPercentage: 0.7,
+                      barPercentage: 0.9,
+                    },
+                    {
+                      label: 'Premium',
+                      data: premiumData,
+                      backgroundColor: '#34D399',
+                      categoryPercentage: 0.7,
+                      barPercentage: 0.9,
+                    },
+                    {
+                      label: 'Ultimate',
+                      data: ultimateData,
+                      backgroundColor: '#FBBF24',
+                      categoryPercentage: 0.7,
+                      barPercentage: 0.9,
+                    },
+                  ]
+                };
+            }
+
+            const chartData: DashBoardCharts = {
+                line: lineChartData,
+                doughnut: doughnutChartData,
+                stackedBar: stackedBarData,
+            };
+
+            return { statCards, chartData };
         } catch (error) {
             console.error('❌ Dashboard CSV 처리 실패:', error);
             throw new Error('CSV 파싱 실패');
