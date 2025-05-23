@@ -33,7 +33,7 @@ export default function AnalyticsCohortDoubleResultPage() {
           <div className="flex flex-col p-8 flex-grow">
             {/* PageBreadcrumb */}
             <div className="mb-4">
-              <PageBreadcrumb />
+              <PageBreadcrumb title="Analysis/Cohort/Double" />
             </div>
 
             {/* ✅ StepProgress 가운데 + 버튼 오른쪽 */}

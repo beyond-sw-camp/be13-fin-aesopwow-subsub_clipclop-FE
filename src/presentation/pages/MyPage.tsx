@@ -7,6 +7,8 @@ import { ProfileCard } from "@/presentation/components/organisms/ProfileCard";
 import { UserDetailPanel } from "@/presentation/components/organisms/UserDetailPanel";
 import profileImg from "@/assets/profileimg.png";
 import { fetchMyPageUserInfo } from "@/infrastructure/api/MypageApi";
+import { UserViewModel } from "@/application/viewModels/UserViewModel";
+import { getUser } from "@/application/stores/UserStore";
 
 interface UserInfo {
   name: string;
@@ -37,12 +39,27 @@ const calculateRemainingDays = (expiredDate: string): number => {
 
 export default function MyPage() {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const userViewModel = new UserViewModel();
+
+  const handleDeleteAccount = async () => {
+    const confirmed = window.confirm("정말로 회원 탈퇴하시겠습니까?");
+    if (!confirmed) return;
+
+    try {
+      const { userNo } = getUser();
+      await userViewModel.deleteUser(userNo);
+      alert("회원 탈퇴가 완료되었습니다.");
+      window.location.href = "/login";
+    } catch (error) {
+      console.error("회원 탈퇴 실패:", error);
+      alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
         const data = await fetchMyPageUserInfo();
-
         setUserInfo({
           name: data.username || "정보 없음",
           company: data.companyName || "정보 없음",
@@ -101,7 +118,16 @@ export default function MyPage() {
                 imgClassName="w-56 h-56"
               />
             </div>
+
             <UserDetailPanel />
+
+            {/* 회원 탈퇴 버튼 */}
+            <button
+              onClick={handleDeleteAccount}
+              className="mt-4 py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg self-end"
+            >
+              회원 탈퇴
+            </button>
           </div>
         </div>
       </div>
