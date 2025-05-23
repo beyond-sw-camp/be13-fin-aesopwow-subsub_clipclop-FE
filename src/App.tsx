@@ -16,6 +16,13 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/application/stores/AuthStore"; 
 import ProtectedRoute from './presentation/components/organisms/LoginProtectedRoute';
 
+import WatchTimePage from "@/presentation/pages/WatchTimePage";
+import SubscriptionPage from "@/presentation/pages/SubscriptionPage";
+import GenrePage from "@/presentation/pages/GenrePage";
+import LastLoginPage from "@/presentation/pages/LastLoginPage";
+
+import MyPage from '@/presentation/pages/MyPage';
+
 
 function App() {
 const initializeToken = useAuthStore((state) => state.initializeToken);
@@ -62,6 +69,14 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/analytics/double/user-data" element={<AnalyticsCohortDoubleUserDataPage />} />
 
       <Route path="/" element={<LoginPage />} />
+
+      <Route path="/segments/watchtime" element={<WatchTimePage />} />
+      <Route path="/segments/subscription" element={<SubscriptionPage />} />
+      <Route path="/segments/genre" element={<GenrePage />} />
+      <Route path="/segments/lastlogin" element={<LastLoginPage />} />
+
+      <Route path="/mypage" element={<MyPage />} />
+
     </Routes>
   );
 }
