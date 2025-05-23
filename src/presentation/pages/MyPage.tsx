@@ -9,6 +9,7 @@ import profileImg from "@/assets/profileimg.png";
 import { fetchMyPageUserInfo } from "@/infrastructure/api/MypageApi";
 import { MyPageCompany } from "@/presentation/pages/MyPageCompany";
 import { MyPageStaff } from "@/presentation/pages/MyPageStaff";
+import { MyPageRequest } from "@/presentation/pages/MyPageRequest";
 
 interface UserInfo {
   name: string;
@@ -128,18 +129,10 @@ export default function MyPage() {
             )}
 
             {showRequestModal && (
-              <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-                <div className="bg-white rounded-lg p-8 shadow-lg w-80 text-center">
-                  <h2 className="text-xl font-semibold mb-4">요청 내역 관리</h2>
-                  <p className="text-gray-500">현재 요청 내역이 없습니다.</p>
-                  <button
-                    onClick={() => setShowRequestModal(false)}
-                    className="mt-6 px-4 py-2 bg-purple-500 text-white rounded hover:bg-purple-600"
-                  >
-                    닫기
-                  </button>
-                </div>
-              </div>
+              <MyPageRequest
+                isOpen={showRequestModal}
+                onClose={() => setShowRequestModal(false)}
+              />
             )}
           </div>
         </div>

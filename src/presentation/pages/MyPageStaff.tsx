@@ -16,8 +16,15 @@ export function MyPageStaff({
     handleDelete,
   } = useStaffViewModel();
 
-  if (isLoading) return <div className="text-white">로딩 중...</div>;
-
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="text-gray-700">로딩 중...</div>
+        </div>
+      </div>
+    );
+  }
   return (
     <>
       {isOpen && (

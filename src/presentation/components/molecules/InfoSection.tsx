@@ -1,4 +1,5 @@
 interface InfoItem {
+  id: string;
   subtitle: string;
   content: string;
   onClick?: () => void;
@@ -20,7 +21,7 @@ export function InfoSection({ title, items }: InfoSectionProps) {
       <div className="flex flex-col gap-4">
         {items.map((item, idx) => (
           <div
-            key={idx}
+            key={item.id}
             onClick={item.onClick}
             className={`flex flex-col items-center w-full cursor-pointer transition ${
               item.onClick ? "hover:bg-gray-100 p-3 rounded-md" : ""
