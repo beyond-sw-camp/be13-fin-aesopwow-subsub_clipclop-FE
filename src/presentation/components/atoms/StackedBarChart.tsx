@@ -1,6 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import { ChartData as ChartJSData } from "chart.js";
-import { ChartData as AppChartData } from "@/core/model/ChartData";
+// import { ChartData as AppChartData } from "@/core/model/ChartData";
 
 interface ChartProps {
     chartData: ChartJSData<'bar'> | null;
@@ -11,19 +11,51 @@ export const StackedBarChart: React.FC<ChartProps> = ({ chartData }) => {
 
     return (
         <Bar
-            data={chartData}
-            options={{
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: "top" },
-                    title: { display: true, text: "스택 바 차트" }
+        data={chartData}
+        options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+            legend: { position: "top" },
+            title: { display: true, text: "스택 바 차트" },
+            },
+            layout: {
+            padding: {
+                bottom: 30,
+            },
+            },
+            scales: {
+                x: {
+                type: 'category',
+                stacked: true,
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 45,
+                    minRotation: 45,
                 },
-                scales: {
-                    x: { stacked: true },
-                    y: { stacked: true }
-                }
-            }}
+                grid: {
+                    drawOnChartArea: false,
+                },
+                border: {
+                    display: false,
+                },
+                },
+                y: {
+                    stacked: true,
+                    max: 100,
+                    ticks: {
+                    callback: (value) => `${value}%`,
+                    },
+                    grid: {
+                    color: (ctx) =>
+                        ctx.tick.value === 0 ? 'rgba(0,0,0,0.1)' : 'rgba(0,0,0,0.05)',
+                    },
+                    border: {
+                    display: false,
+                    },
+                },
+            }
+        }}
         />
     );
 };
