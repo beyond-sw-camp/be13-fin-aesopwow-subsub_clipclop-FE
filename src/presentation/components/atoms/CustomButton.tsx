@@ -7,7 +7,8 @@ interface CustomButtonProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   children?: ReactNode;
-  color?: "orange" | "green" | "black"; // ⬅️ 추가
+  color?: "orange" | "green" | "black"; // ⬅️ 기존
+  className?: string; // ⬅️ 추가
 }
 
 export function CustomButton({
@@ -17,6 +18,7 @@ export function CustomButton({
   type = "button",
   disabled = false,
   color = "orange",
+  className = "", // ⬅️ 기본값 설정
 }: CustomButtonProps) {
   const baseStyle =
     "text-xs text-white px-3 py-2 rounded transition font-normal";
@@ -26,7 +28,7 @@ export function CustomButton({
       ? "bg-orange-500 hover:bg-orange-600 border border-black shadow"
       : color === "green"
       ? "bg-green-600 hover:bg-green-700 border border-black shadow"
-      : "bg-black hover:bg-gray-800"; // ⬅️ black 버튼 스타일 추가
+      : "bg-black hover:bg-gray-800"; // ⬅️ black 버튼 스타일
 
   const disabledStyle = loading || disabled ? "opacity-50 cursor-not-allowed" : "";
 
@@ -35,7 +37,7 @@ export function CustomButton({
       type={type}
       onClick={onClick}
       disabled={loading || disabled}
-      className={`${baseStyle} ${colorStyle} ${disabledStyle}`}
+      className={`${baseStyle} ${colorStyle} ${disabledStyle} ${className}`} // ⬅️ 외부 className 병합
     >
       {loading ? "처리 중..." : title}
     </button>

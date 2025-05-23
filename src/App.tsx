@@ -64,6 +64,7 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/analytics/double/user-data" element={<AnalyticsCohortDoubleUserDataPage />} />
 
       <Route path="/" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage />} />
 
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/aboutus" element={<AboutUsPage />} />
