@@ -31,9 +31,15 @@ export function useCompanyViewModel() {
         }
     };
 
-    const handleDelete = (id: number) => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
+    const handleDelete = async (id: number) => {
+        if (!window.confirm("정말 삭제하시겠습니까?")) return;
+
+        try {
+            await axios.delete(`/api/company/${id}`);
             setCompanyList((prev) => prev.filter((item) => item.id !== id));
+        } catch (error) {
+            console.error("회사 정보 삭제 실패:", error);
+            alert("회사 정보를 삭제하는 데 실패했습니다.");
         }
     };
 
