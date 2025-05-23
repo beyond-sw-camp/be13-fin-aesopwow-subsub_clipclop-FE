@@ -27,8 +27,6 @@ export function MyPageCompany({
   );
 }
 
-if (!isOpen) return null;
-
   return (
     <EditableListModal
       title="회사 정보"
