@@ -23,6 +23,8 @@ import LastLoginPage from "@/presentation/pages/LastLoginPage";
 
 import MyPage from '@/presentation/pages/MyPage';
 
+import MembershipPage from '@/presentation/pages/MembershipPage';
+
 
 function App() {
 const initializeToken = useAuthStore((state) => state.initializeToken);
@@ -76,6 +78,8 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/segments/lastlogin" element={<LastLoginPage />} />
 
       <Route path="/mypage" element={<MyPage />} />
+
+      <Route path="/membership" element={<MembershipPage />} />
 
     </Routes>
   );
