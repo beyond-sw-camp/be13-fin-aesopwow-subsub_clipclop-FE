@@ -8,16 +8,18 @@ import { useUserStore } from '@/application/stores/UserStore';
 export default function QnaDetail() {
   const { id } = useParams();
   const { selectedPost, comment, loadOne, loadComment } = useQnaViewModel();
-  const { role } = useUserStore.getState(); // 현재 사용자 권한 (예: ADMIN, USER)
+  const { role } = useUserStore.getState(); // 현재 사용자 권한 (ADMIN or USER)
 
+  // 글 번호가 있을 경우 상세 정보 및 댓글 불러오기
   useEffect(() => {
     if (id) {
       const postId = parseInt(id, 10);
-      loadOne(postId);
-      loadComment(postId);
+      loadOne(postId);        // 문의글 조회
+      loadComment(postId);    // 관리자 답변 조회
     }
   }, [id]);
 
+  // 로딩 중 처리
   if (!selectedPost) {
     return <div className="p-6 text-gray-500">문의 내용을 불러오는 중입니다...</div>;
   }
@@ -41,9 +43,9 @@ export default function QnaDetail() {
         )}
       </div>
 
-      {/* 관리자만 답변 입력 가능 */}
+      {/* 관리자만 답변 작성 가능 */}
       {role === 'ADMIN' && id && (
-        < QnaAnswerForm qnaPostNo={parseInt(id, 10)} />
+        <QnaAnswerForm qnaPostNo={parseInt(id, 10)} />
       )}
     </div>
   );

@@ -7,4 +7,8 @@ export const QnaRepository = {
   submitPost: QnaApi.createPost,
   fetchComment: QnaApi.getComment,
   submitComment: QnaApi.createComment,
+  updateComment: (
+    id: number,
+    data: { content: string; userNo: number }
+  ) => QnaApi.updateComment(id, data),
 };

@@ -1,4 +1,5 @@
 // 📁 viewmodel/QnaViewModel.ts
+import { getUser } from '@/application/stores/UserStore';
 import { useQnaStore } from '@/application/stores/QnaStore';
 import { QnaUsecase } from '../useCases/QnaUsecase';
 import { useMemo } from 'react';
@@ -17,28 +18,35 @@ export const useQnaViewModel = () => {
   // 특정 문의글 조회
   const loadOne = async (id: number) => {
     const res = await qnaUsecase.loadPost(id);
-    store.setSelectedPost(res.data);
+    store.setSelectedPost((res.data as any).data); // ✅ 반드시 .data.data
   };
 
   // 관리자 답변 조회
   const loadComment = async (id: number) => {
     const res = await qnaUsecase.loadComment(id);
-    store.setComment(res.data);
+    store.setComment((res.data as any).data); // ✅ 진짜 댓글만 저장
   };
 
   // 문의글 작성
   const writePost = async (title: string, content: string) => {
-    return await qnaUsecase.writePost(title, content);
+    const { userNo } = getUser(); // ✅ 여기서 userNo 가져오기
+    return await qnaUsecase.writePost(title, content, userNo);
   };
 
   // 관리자 답변 작성
   const writeComment = async (id: number, content: string) => {
-    return await qnaUsecase.writeComment(id, content);
+    const { userNo } = getUser(); // ✅ 추가
+    return await qnaUsecase.writeComment(id, content, userNo);
+  };
+
+  const updateComment = async (id: number, content: string) => {
+  const { userNo } = getUser();
+  return await qnaUsecase.updateComment(id, content, userNo);
   };
 
   return {
     posts: store.posts,
-      currentPage: store.currentPage,
+    currentPage: store.currentPage,
     setPage: store.setPage,
     selectedPost: store.selectedPost,
     comment: store.comment,
@@ -46,6 +54,7 @@ export const useQnaViewModel = () => {
     loadOne,
     loadComment,
     writePost,
-    writeComment, // ✅ 추가됨
+    writeComment,
+    updateComment, // ✅ 반드시 추가해야 함!
   };
 };
