@@ -18,7 +18,7 @@ export default function QnaListPage() {
         <div className="flex-1 flex flex-col min-h-screen">
           <div className="flex flex-col p-8 flex-grow">
             <div className="mb-4">
-              <PageBreadcrumb />
+              <PageBreadcrumb title="문의사항 목록" />
             </div>
 
             <div className="w-full mb-6">

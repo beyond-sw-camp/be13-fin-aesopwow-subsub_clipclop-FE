@@ -45,7 +45,7 @@ export const SignupCard = ({ form, setForm }: Props) => {
       const verifyResponse = await VerifyOtpApi(email, otp);
       console.log("OTP 검증 성공:", verifyResponse);
 
-      const signupResponse = await SignupApi(email, verifiedPassword, form.confirmPassword);
+      const signupResponse = await SignupApi(email, verifiedPassword, form.confirmPassword, form.name);
       console.log("회원가입 성공:", signupResponse);
       alert("회원가입 되셨습니다.")
 
@@ -77,7 +77,8 @@ export const SignupCard = ({ form, setForm }: Props) => {
         email={email}
         password={verifiedPassword}
         confirmPassword={form.confirmPassword}
-        onVerify={handleOtpVerify} 
+        name={form.name} // ✅ 필수
+        onVerify={handleOtpVerify}
       />
     </div>
   );

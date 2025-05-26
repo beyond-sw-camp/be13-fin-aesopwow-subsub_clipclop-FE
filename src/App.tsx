@@ -11,6 +11,8 @@ import AnalyticsCohortDoubleClusterSelectPage from './presentation/pages/Analyti
 import AnalyticsCohortDoubleCohortResultPage from './presentation/pages/AnalyticsCohortDoubleCohortResultPage';
 import AnalyticsCohortDoubleUserDataPage from './presentation/pages/AnalyticsCohortDoubleUserDataPage';
 import DashBoardPage from './presentation/pages/DashBoardPage';
+import MyPage from './presentation/pages/MyPage';
+import AboutUsPage from './presentation/pages/AboutUsPage';
 // import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
 import { useEffect } from "react";
 import { useAuthStore } from "@/application/stores/AuthStore"; 
@@ -41,7 +43,7 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/signup" element={<SignupPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
       <Route path="/dash-board" element={<DashBoardPage />} />
-      <Route path="/analytics/single/clusterselect" element={<AnalyticsCohortSingleClusterSelectPage />} />
+
       <Route
         path="/analytics/single/clusterselect"
         element={
@@ -70,6 +72,10 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/qna/write" element={<QnaWritePage />} />
       <Route path="/qna/:id" element={<QnaDetailPage />} />
 
+      <Route path="/login" element={<LoginPage />} />
+
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/aboutus" element={<AboutUsPage />} />
     </Routes>
   );
 }
