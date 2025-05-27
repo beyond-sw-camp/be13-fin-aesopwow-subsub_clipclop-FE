@@ -11,7 +11,7 @@ export const LoginCard = () => {
       </Text>
       <LoginForm />
       <div className="pb-6 flex justify-center space-x-2 mt-6">
-        <LinkText href="#">Forgot password?</LinkText>
+        <LinkText href="http://localhost:5173/forgot/password">Forgot password?</LinkText>
         <LinkText href="http://localhost:5173/signup">Create new account</LinkText>
       </div>
     </div>

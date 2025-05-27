@@ -6,13 +6,22 @@ import { VerifyOtpApi, SignupApi } from "@/infrastructure/api/auth";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// type OtpModalProps = {
+//   open: boolean;
+//   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+//   email: string;
+//   password: string;
+//   confirmPassword: string;
+//   onVerify: (otp: string) => Promise<void>;
+// };
+
 type OtpModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   email: string;
-  password: string;
-  confirmPassword: string;
   onVerify: (otp: string) => Promise<void>;
+  password?: string;
+  confirmPassword?: string;
 };
 
 export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: OtpModalProps) => {

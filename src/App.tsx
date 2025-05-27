@@ -14,6 +14,8 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/application/stores/AuthStore"; 
 import ProtectedRoute from './presentation/components/organisms/LoginProtectedRoute';
 
+import ForgotPasswordPage from './presentation/pages/ForgotPasswordPage';
+
 
 function App() {
 const initializeToken = useAuthStore((state) => state.initializeToken);
@@ -45,6 +47,7 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       />
       <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} />
       <Route path="/analytics/single/user-data" element={<AnalyticsCohortSingleUserDataPage />} />
+      <Route path="/forgot/password" element={<ForgotPasswordPage />} />
 
       <Route
         path="/analytics/double/clusterselect"

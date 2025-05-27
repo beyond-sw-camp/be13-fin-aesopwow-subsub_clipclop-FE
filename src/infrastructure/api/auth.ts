@@ -61,3 +61,31 @@ export const SignupApi = async (
   const response = await axiosInstance.post("/auth/signup", payload); // 경로 수정
   return response.data;
 };
+
+// ... 기존 코드 위에 추가
+
+export const ForgotPasswordOtpApi = async (
+  email: string
+): Promise<string> => {
+  const response = await axiosInstance.post("/auth/forgot-password", { email });
+  return response.data;
+};
+
+export const ForgotPasswordVerifyOtpApi = async (
+  email: string,
+  otp: string
+): Promise<string> => {
+  const response = await axiosInstance.post("/auth/forgot-password/verify-otp", { email, otp });
+  return response.data;
+};
+
+export const ForgotPasswordResetApi = async (
+  email: string,
+  password: string,
+  confirmPassword: string
+): Promise<string> => {
+  const payload = { email, password, confirmPassword };
+  const response = await axiosInstance.put("/auth/forgot-password/reset", payload);
+  return response.data;
+};
+
