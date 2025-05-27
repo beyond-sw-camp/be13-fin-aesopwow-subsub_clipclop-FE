@@ -43,19 +43,27 @@ const PricingCard: React.FC<PricingCardProps> = ({
 
             <h2 className="text-2xl font-bold mb-2">{title}</h2>
 
-            <div className="flex items-baseline my-4">
+            <div className="flex items-baseline my-4 gap-1">
                 <span className="text-3xl font-bold mr-1">₩</span>
-                <span className="text-6xl font-extrabold leading-none">
+                <span className="text-6xl font-extrabold leading-none tabular-nums">
                     {price.toLocaleString()}
                 </span>
-                <span className="text-sm text-gray-600 ml-1">/{period}</span>
+                <span className="text-sm text-gray-600 ml-1 whitespace-nowrap">/{period}</span>
             </div>
 
-            <ul className="w-full my-4 list-disc text-gray-500 text-base pl-5 space-y-2">
+            <ul
+                className={`w-full my-4 list-disc text-base space-y-2 ${
+                    isSelected ? 'text-white' : 'text-gray-800 font-semibold'
+                } pl-16 text-left`}
+            >
                 {features.map((item, idx) => (
                     <li key={idx}>{item}</li>
                 ))}
-            </ul>
+                </ul>
+
+                {Array.from({ length: 5 - features.length }).map((_, idx) => (
+                    <li key={`placeholder-${idx}`} className="invisible">placeholder</li>
+                ))}
 
             <div className="w-full flex justify-center mt-2">
                 <CustomButton

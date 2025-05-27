@@ -1,52 +1,17 @@
 import React, { useState } from 'react';
 import { Header } from '@/presentation/layout/Header';
 import PricingCard from '@/presentation/components/molecules/PricingCard';
+import { MEMBERSHIP_PLANS } from '@/constants/membership';
 
 const MembershipPage: React.FC = () => {
     const [isMonthly, setIsMonthly] = useState(true);
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
-    const monthlyPlans = [
-        {
-            title: 'Basic',
-            price: 5000,
-            features: ['List item 1', 'List item 2', 'List item 3'],
-        },
-        {
-            title: 'Premium',
-            price: 10000,
-            features: ['List item 1', 'List item 2', 'List item 3', 'List item 4'],
-        },
-        {
-            title: 'Ultimate',
-            price: 15000,
-            features: ['List item 1', 'List item 2', 'List item 3', 'List item 4', 'List item 5'],
-        },
-    ];
-
-    const yearlyPlans = [
-        {
-            title: 'Basic',
-            price: 50000,
-            features: ['List item 1', 'List item 2', 'List item 3'],
-        },
-        {
-            title: 'Premium',
-            price: 100000,
-            features: ['List item 1', 'List item 2', 'List item 3', 'List item 4'],
-        },
-        {
-            title: 'Ultimate',
-            price: 150000,
-            features: ['List item 1', 'List item 2', 'List item 3', 'List item 4', 'List item 5'],
-        },
-    ];
+    const plans = isMonthly ? MEMBERSHIP_PLANS.monthly : MEMBERSHIP_PLANS.yearly;
 
     const handleSubscribe = (title: string, price: number) => {
         alert(`${title} ${isMonthly ? '월간' : '연간'} 플랜 가입 완료 (가격: ₩${price.toLocaleString()})`);
     };
-
-    const plans = isMonthly ? monthlyPlans : yearlyPlans;
 
     return (
         <div className="min-h-screen w-screen bg-orange-400 overflow-x-hidden text-gray-800 flex flex-col">
@@ -85,14 +50,14 @@ const MembershipPage: React.FC = () => {
                             features={plan.features}
                             buttonText="가입하기"
                             onButtonClick={() => handleSubscribe(plan.title, plan.price)}
-                            period={isMonthly ? 'mo' : 'yr'}
+                            period={isMonthly ? '월' : '년'}
                             onClick={() => setSelectedPlan(plan.title)}
                             isSelected={selectedPlan === plan.title}
                             badge={
                                 plan.title === 'Premium'
                                     ? 'BEST'
                                     : plan.title === 'Ultimate'
-                                        ? '2개월 무료'
+                                        ? isMonthly ? '2개월 무료' : '15% 할인'
                                         : undefined
                             }
                         />
