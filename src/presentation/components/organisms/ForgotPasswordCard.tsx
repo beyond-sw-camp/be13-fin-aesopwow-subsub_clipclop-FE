@@ -1,7 +1,8 @@
 import { useState } from "react";
 
 import { ForgetPasswordForm } from "../molecules/ForgetPasswordForm";
-import { OtpModal } from "../molecules/OtpModal";
+// import { OtpModal } from "../molecules/OtpModal";
+import { ForgotPasswordOtpModal } from "../molecules/ForgetPasswordOtpModel"
 
 import { ForgetPasswordPasswordForm } from "../molecules/ForgetPasswordPasswordForm"; // 재사용
 
@@ -86,7 +87,7 @@ export const ChangePasswordCard = ({ form, setForm }: Props) => {
         loading={loading}
         message={message}
       />
-      <OtpModal
+      <ForgotPasswordOtpModal
         open={otpOpen}
         setOpen={setOtpOpen}
         email={form.email}
