@@ -2,13 +2,14 @@ import axiosInstance from "@/infrastructure/api/Axios"; // axiosInstance 경로 
 import type { LoginResponse } from "@/core/model/LoginResponse";
 import type { CheckEmailRequest, CheckEmailResponse } from "@/core/model/CheckEmail"; 
 import type { SignupRequestOtp } from "@/core/model/SignupRequestOtp";
-import type { OtpVerificationRequest } from "@/core/model/OtpVerificationRequest";
+import type { OtpVerificationRequest } from "@/core/model/OtpVerification";
 
 export const loginApi = async (
   email: string,
   password: string
 ): Promise<LoginResponse> => {
-  const response = await axiosInstance.post("/auth/login", { email, password });
+  
+  const response = await axiosInstance.post(`/auth/login`, { email, password });
   return response.data;
 };
 
@@ -16,7 +17,7 @@ export const EmailCheckApi = async (
   payload: CheckEmailRequest
 ): Promise<CheckEmailResponse> => {
   try {
-    const response = await axiosInstance.post<CheckEmailResponse>("/auth/email-check", payload);
+    const response = await axiosInstance.post<CheckEmailResponse>(`/auth/email-check`, payload);
     const result = response.data;
 
     if (typeof result === "string") {
@@ -40,7 +41,7 @@ export const SignupOtpApi = async (
 ): Promise<SignupRequestOtp> => {
   const requestData = { email, password, name };
 
-  return await axiosInstance.post("auth/signup/otp", requestData); // 경로 수정
+  return await axiosInstance.post(`/auth/signup/otp`, requestData); // 경로 수정
 };
 
 export const VerifyOtpApi = async (

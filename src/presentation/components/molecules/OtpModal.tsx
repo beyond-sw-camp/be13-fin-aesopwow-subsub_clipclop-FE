@@ -3,7 +3,6 @@ import { InputOneTimePassword } from "./InputOtp";
 import { useEffect, useState } from "react";
 import { CustomButton } from "../atoms/CustomButton";
 import { VerifyOtpApi, SignupApi } from "@/infrastructure/api/auth";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 // type OtpModalProps = {
@@ -19,10 +18,11 @@ type OtpModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   email: string;
+  
   onVerify: (otp: string) => Promise<void>;
   password?: string;
   confirmPassword?: string;
-};
+
 
 export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: OtpModalProps) => {
   const [timer, setTimer] = useState(180);
@@ -59,39 +59,31 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
   // };
 
   const handleConfirm = async () => {
-  const code = otp.join("");
-  if (code.length !== 6) {
-    alert("6자리 코드를 정확히 입력해주세요.");
-    return;
-  }
+    const code = otp.join("");
+    if (code.length !== 6) {
+      alert("6자리 코드를 정확히 입력해주세요.");
+      return;
+    }
 
-  try {
-    setLoading(true);
-    
-    // 1. OTP 검증
-    await VerifyOtpApi(email, code);
-    
-    // 2. 회원가입 요청 보내기 (axios 사용)
-    const signupResponse = await axios.post('http://localhost:8001/api/auth/signup', {
-      email,
-      password, 
-      confirmPassword,
-    }, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`, // JWT 토큰 추가
-      }
-    });
+    try {
+      setLoading(true);
 
-    console.log('회원가입 성공:', signupResponse.data);
-    setOpen(false); // 모달 닫기
-    navigate('/signin');
-  } catch (error) {
-    console.error("OTP 확인 또는 회원가입 실패", error);
-    alert("OTP 인증 또는 회원가입에 실패했습니다.");
-  } finally {
-    setLoading(false);
-  }
-};
+      // 1. OTP 검증
+      await VerifyOtpApi(email, code);
+
+      // 2. 회원가입 요청
+      await SignupApi(email, password, confirmPassword);
+
+      alert("회원가입에 성공하셨습니다. 로그인 페이지로 이동합니다.");
+      setOpen(false); // 모달 닫기
+      navigate("/signin");
+    } catch (error) {
+      console.error("OTP 확인 또는 회원가입 실패", error);
+      alert("OTP 인증 또는 회원가입에 실패했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Modals open={open} setOpen={setOpen}>
@@ -101,7 +93,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
           timer={timer}
           formatTime={formatTime}
           // onResendClick={handleResend}
-          setOtp={setOtp} // 부모 상태 전달
+          setOtp={setOtp}
         />
         <CustomButton title="확인" loading={loading} onClick={handleConfirm} />
       </div>

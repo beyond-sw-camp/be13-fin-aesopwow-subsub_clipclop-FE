@@ -1,7 +1,8 @@
 import { SignupRepository } from "@/infrastructure/repositories/SignupRepository";
 import type { CheckEmailResponse } from "@/core/model/CheckEmail";
 import type { SignupRequestOtp } from "@/core/model/SignupRequestOtp";
-import type { OtpVerificationRequest } from "@/core/model/OtpVerificationRequest";
+// import type { OtpVerificationRequest } from "@/core/model/OtpVerificationRequest";
+import { OtpVerificationResponse } from "@/core/model/OtpVerification";
 
 export class EmailCheckUseCase {
   async execute(email: string): Promise<CheckEmailResponse> {
@@ -24,13 +25,15 @@ export class CreateAccountUseCase {
 };
 
 export class ModalSignupUseCase {
-  async verifyotp(email: string, otp: string): Promise<OtpVerificationRequest> {
+  async verifyotp(email: string, otp: string): Promise<OtpVerificationResponse> {
       const res = await SignupRepository.verifyotp(email, otp);
-      return res;
+      const json: OtpVerificationResponse = JSON.parse(res);
+      return json;
   };
 
   async signup(email: string, password: string, name: string): Promise<SignupRequestOtp> {
       const res = await SignupRepository.signup(email, password, name);
-      return res;
+      const json: SignupRequestOtp = JSON.parse(res);
+      return json;
     };
 };

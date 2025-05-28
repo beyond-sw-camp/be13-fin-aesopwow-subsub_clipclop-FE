@@ -1,6 +1,5 @@
-// hooks/useAuth.ts
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../stores/AuthStore"; // 경로는 프로젝트 구조에 맞게 조정
+import { useAuthStore } from "../stores/AuthStore";
 
 export const LogoutUseCase = () => {
   const navigate = useNavigate();
