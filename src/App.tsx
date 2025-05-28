@@ -22,7 +22,7 @@ import SubscriptionPage from "@/presentation/pages/SubscriptionPage";
 import GenrePage from "@/presentation/pages/GenrePage";
 import LastLoginPage from "@/presentation/pages/LastLoginPage";
 import MyPage from '@/presentation/pages/MyPage';
-import MembershipPage from '@/presentation/pages/Membersh
+import MembershipPage from '@/presentation/pages/MembershipPage';
 
 function App() {
 const initializeToken = useAuthStore((state) => state.initializeToken);

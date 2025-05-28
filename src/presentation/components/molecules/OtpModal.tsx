@@ -18,10 +18,10 @@ type OtpModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   email: string;
-  
-  onVerify: (otp: string) => Promise<void>;
-  password?: string;
-  confirmPassword?: string;
+  password: string;
+  confirmPassword: string;
+  onVerify?: (otp: string) => Promise<void>;
+};
 
 
 export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: OtpModalProps) => {

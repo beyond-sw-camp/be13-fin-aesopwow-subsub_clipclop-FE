@@ -31,30 +31,36 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent, emailCheckResult 
   ]);
 
   const handleSubmit = async () => {
-  if (!form.agree) {
-    alert("개인정보 처리방침에 동의하셔야 가입이 가능합니다.");
-    return;
-  }
+    if (!form.agree) {
+      alert("개인정보 처리방침에 동의하셔야 가입이 가능합니다.");
+      return;
+    }
 
-  if (!emailCheckResult || !emailCheckResult.available || emailCheckResult.email !== form.email) {
-    alert("이메일 중복 확인을 해주세요.");
-    return;
-  }
+    if (!emailCheckResult || !emailCheckResult.available || emailCheckResult.email !== form.email) {
+      alert("이메일 중복 확인을 해주세요.");
+      return;
+    }
 
-  if (!passwordMatch) {
-    alert("비밀번호가 일치하지 않습니다.");
-    return;
-  }
+    if (!passwordMatch) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
 
-  try {
-    await SignupOtpApi(form.email, form.password, form.name); 
-    onOtpSent(form.password); 
+    try {
+      // 여기서 전송되는 데이터 확인
+      console.log("전송할 데이터:", {
+        email: form.email,
+        password: form.password,
+        name: form.name,
+      });
 
-  } catch (err: any) {
-    console.error("회원가입 중 오류:", err);
-    alert(err?.response?.data?.message || "회원가입 중 오류가 발생했습니다.");
-  }
-};
+      await SignupOtpApi(form.email, form.password, form.name);
+      onOtpSent(form.password);
+    } catch (err: any) {
+      console.error("회원가입 중 오류:", err);
+      alert(err?.response?.data?.message || "회원가입 중 오류가 발생했습니다.");
+    }
+  };
 
   return (
     <div className="space-y-3">
@@ -90,14 +96,16 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent, emailCheckResult 
         />
         <label>
           I agree with the{" "}
-          <a href="src\assets\PrivacyPolicy.pdf" download="PrivacyPolicy.pdf" className="text-blue-600 underline">Privacy Policy</a>
+          <a href="src\\assets\\PrivacyPolicy.pdf" download="PrivacyPolicy.pdf" className="text-blue-600 underline">Privacy Policy</a>
         </label>
       </div>
       <div className="pt-2 justify-center items-center">
         <CustomButton
           title="Create Account"
           type="button"
-          onClick={handleSubmit} loading={false}        />
+          onClick={handleSubmit}
+          loading={false}
+        />
       </div>
     </div>
   );
