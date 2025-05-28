@@ -22,6 +22,13 @@ import QnaListPage from './presentation/pages/QnaListPage';
 import QnaWritePage from './presentation/pages/QnaWritePage';
 import QnaDetailPage from './presentation/pages/QnaDetailPage';
 
+import ForgotPasswordPage from './presentation/pages/ForgotPasswordPage';
+import WatchTimePage from './presentation/pages/WatchTimePage';
+import SubscriptionPage from './presentation/pages/SubscriptionPage';
+import GenrePage from './presentation/pages/GenrePage';
+import LastLoginPage from './presentation/pages/LastLoginPage';
+import MembershipPage from './presentation/pages/MembershipPage';
+
 function App() {
 const initializeToken = useAuthStore((state) => state.initializeToken);
   const isInitialized = useAuthStore((state) => state.isInitialized);
@@ -54,6 +61,7 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       />
       <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} />
       <Route path="/analytics/single/user-data" element={<AnalyticsCohortSingleUserDataPage />} />
+      <Route path="/forgot/password" element={<ForgotPasswordPage />} />
 
       <Route
         path="/analytics/double/clusterselect"
@@ -76,6 +84,13 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
 
       <Route path="/mypage" element={<MyPage />} />
       <Route path="/aboutus" element={<AboutUsPage />} />
+
+      <Route path="/segments/watchtime" element={<WatchTimePage />} />
+      <Route path="/segments/subscription" element={<SubscriptionPage />} />
+      <Route path="/segments/genre" element={<GenrePage />} />
+      <Route path="/segments/lastlogin" element={<LastLoginPage />} />
+
+      <Route path="/membership" element={<MembershipPage />} />
     </Routes>
   );
 }
