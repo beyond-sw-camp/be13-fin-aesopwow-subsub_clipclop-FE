@@ -34,7 +34,6 @@ export default function QnaEditForm() {
   const isAuthor = selectedPost.userNo === currentUserNo;
   const hasAnswer = !!comment;
 
-  // 조건 불충족 시 차단
   if (!isAuthor || hasAnswer) {
     return (
       <div className="text-red-600 font-semibold">
@@ -47,16 +46,30 @@ export default function QnaEditForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true); // ✅ 시작
+
+    const trimmedTitle = title.trim();
+    const trimmedContent = content.trim();
+
+    if (!trimmedTitle || trimmedTitle.length < 2) {
+      alert('제목은 최소 2자 이상 입력해주세요.');
+      return;
+    }
+
+    if (!trimmedContent || trimmedContent.length < 10) {
+      alert('내용은 최소 10자 이상 입력해주세요.');
+      return;
+    }
+
+    setIsSubmitting(true);
     try {
-      await updatePost(selectedPost.qnaPostNo, title, content);
+      await updatePost(selectedPost.qnaPostNo, trimmedTitle, trimmedContent);
       alert('수정이 완료되었습니다.');
       navigate(`/qna/${selectedPost.qnaPostNo}`);
     } catch (error) {
       console.error('❗수정 실패:', error);
       alert('수정 중 오류가 발생했습니다.');
     } finally {
-      setIsSubmitting(false); // ✅ 종료
+      setIsSubmitting(false);
     }
   };
 
