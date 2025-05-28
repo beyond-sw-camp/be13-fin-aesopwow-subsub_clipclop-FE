@@ -7,6 +7,9 @@ import { ProfileCard } from "@/presentation/components/organisms/ProfileCard";
 import { UserDetailPanel } from "@/presentation/components/organisms/UserDetailPanel";
 import profileImg from "@/assets/profileimg.png";
 import { fetchMyPageUserInfo } from "@/infrastructure/api/MypageApi";
+import { MyPageCompany } from "@/presentation/pages/MyPageCompany";
+import { MyPageStaff } from "@/presentation/pages/MyPageStaff";
+import { MyPageRequest } from "@/presentation/pages/MyPageRequest";
 
 export default function MyPage() {
   // 1. UserInfo 타입 정의
@@ -34,6 +37,9 @@ export default function MyPage() {
   const [error, setError] = useState<boolean>(false);
 
   // 5. 마이페이지 사용자 정보 가져오기
+  const [showCompanyModal, setShowCompanyModal] = useState(false);
+  const [showStaffModal, setShowStaffModal] = useState(false);
+  const [showRequestModal, setShowRequestModal] = useState(false);
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
@@ -85,11 +91,11 @@ export default function MyPage() {
         </div>
 
         {/* 메인 컨텐츠 */}
-        <div className="flex-1 flex justify-start items-start">
-          <div
-            className="bg-white rounded-2xl shadow-2xl w-full max-w-7xl mx-auto flex flex-col px-12 py-12 gap-8 mt-8"
-            style={{ boxSizing: "border-box" }}
-          >
+        <div className="flex-1 flex justify-start items-start p-8">
+        <div
+          className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl mx-auto flex flex-col px-12 py-16 gap-8"
+          style={{ boxSizing: "border-box" }}
+        >
             {/* 버튼 2개 + 프로필카드 묶기 */}
             {userInfo && (
               <div className="flex flex-col gap-6 mb-8">
@@ -107,6 +113,46 @@ export default function MyPage() {
               </div>
             )}
             <UserDetailPanel />
+            <div className="flex flex-col gap-6 mb-8">
+              <div className="flex justify-around w-full">
+                <ProfileButton type="plan" label={userInfo.plan} />
+                <ProfileButton type="days" label={`${userInfo.remainingDays} 남은 일수`} />
+              </div>
+              <ProfileCard
+                src={profileImg}
+                alt="프로필 이미지"
+                name={userInfo.name}
+                company={userInfo.company}
+                imgClassName="w-28 h-28"
+              />
+            </div>
+            <UserDetailPanel
+              onCompanyClick={() => setShowCompanyModal(true)}
+              onStaffClick={() => setShowStaffModal(true)}
+              onRequestClick={() => setShowRequestModal(true)}
+            />
+
+            {showCompanyModal && (
+              <MyPageCompany
+                isOpen={showCompanyModal}
+                onClose={() => setShowCompanyModal(false)}
+              />
+            )}
+
+            {showStaffModal && (
+              <MyPageStaff
+                isOpen={showStaffModal}
+                onClose={() => setShowStaffModal(false)}
+              />
+            )}
+
+            {showRequestModal && (
+              <MyPageRequest
+                isOpen={showRequestModal}
+                onClose={() => setShowRequestModal(false)}
+              />
+            )}
+
           </div>
         </div>
       </div>

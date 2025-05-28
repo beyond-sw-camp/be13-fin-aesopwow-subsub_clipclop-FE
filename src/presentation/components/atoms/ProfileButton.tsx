@@ -6,11 +6,11 @@ interface ProfileButtonProps {
 export function ProfileButton({ type, label }: ProfileButtonProps) {
   // 플랜 버튼용 클래스
   const planButtonClasses =
-    "bg-[#FF2C2C] text-white text-2xl font-bold py-4 px-12 rounded-lg shadow-md min-w-[160px] min-h-[64px] flex items-center justify-center";
+    "bg-[#FF2C2C] text-white text-4xl font-bold py-2 px-6 rounded-lg shadow min-w-[180px] min-h-[36px] flex items-center justify-center";
 
   // 일수 표시용 클래스
   const daysButtonClasses =
-    "bg-white border border-gray-300 rounded-lg shadow-md min-w-[160px] min-h-[64px] flex flex-col items-center justify-center py-4 px-12";
+  "bg-white border border-gray-300 rounded-lg shadow flex flex-col items-center justify-center py-2 px-6 min-w-[180px] min-h-[36px]";
 
   if (type === "plan") {
     // Ultimate 버튼
