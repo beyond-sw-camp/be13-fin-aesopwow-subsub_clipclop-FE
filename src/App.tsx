@@ -11,10 +11,16 @@ import AnalyticsCohortDoubleClusterSelectPage from './presentation/pages/Analyti
 import AnalyticsCohortDoubleCohortResultPage from './presentation/pages/AnalyticsCohortDoubleCohortResultPage';
 import AnalyticsCohortDoubleUserDataPage from './presentation/pages/AnalyticsCohortDoubleUserDataPage';
 import DashBoardPage from './presentation/pages/DashBoardPage';
+import AboutUsPage from './presentation/pages/AboutUsPage';
 // import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
 import { useEffect } from "react";
 import { useAuthStore } from "@/application/stores/AuthStore"; 
 import ProtectedRoute from './presentation/components/organisms/LoginProtectedRoute';
+
+import QnaListPage from './presentation/pages/QnaListPage';
+import QnaWritePage from './presentation/pages/QnaWritePage';
+import QnaDetailPage from './presentation/pages/QnaDetailPage';
+import QnaEditPage from './presentation/pages/QnaEditPage';
 
 import ForgotPasswordPage from './presentation/pages/ForgotPasswordPage';
 import WatchTimePage from "@/presentation/pages/WatchTimePage";
@@ -45,7 +51,7 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/signup" element={<SignupPage />} />
       {/* 향후 다른 페이지 추가 시 아래에 계속 확장 가능 */}
       <Route path="/dash-board" element={<DashBoardPage />} />
-      <Route path="/analytics/single/clusterselect" element={<AnalyticsCohortSingleClusterSelectPage />} />
+
       <Route
         path="/analytics/single/clusterselect"
         element={
@@ -71,12 +77,21 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
 
       <Route path="/" element={<LoginPage />} />
 
+      <Route path="/qna" element={<QnaListPage />} />
+      <Route path="/qna/write" element={<QnaWritePage />} />
+      <Route path="/qna/:id" element={<QnaDetailPage />} />
+      <Route path="/qna/edit/:id" element={<QnaEditPage />} />
+
+
+      <Route path="/login" element={<LoginPage />} />
+
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/aboutus" element={<AboutUsPage />} />
+
       <Route path="/segments/watchtime" element={<WatchTimePage />} />
       <Route path="/segments/subscription" element={<SubscriptionPage />} />
       <Route path="/segments/genre" element={<GenrePage />} />
       <Route path="/segments/lastlogin" element={<LastLoginPage />} />
-
-      <Route path="/mypage" element={<MyPage />} />
 
       <Route path="/membership" element={<MembershipPage />} />
     </Routes>

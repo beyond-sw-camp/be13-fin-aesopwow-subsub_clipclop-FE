@@ -20,11 +20,11 @@ type OtpModalProps = {
   email: string;
   password: string;
   confirmPassword: string;
+  name: string; // ✅ 추가
   onVerify?: (otp: string) => Promise<void>;
 };
 
-
-export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: OtpModalProps) => {
+export const OtpModal = ({ open, setOpen, email, password, confirmPassword, name }: OtpModalProps) => {
   const [timer, setTimer] = useState(180);
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [loading, setLoading] = useState(false);
@@ -72,7 +72,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
       await VerifyOtpApi(email, code);
 
       // 2. 회원가입 요청
-      await SignupApi(email, password, confirmPassword);
+      await SignupApi(email, password, confirmPassword, name);
 
       alert("회원가입에 성공하셨습니다. 로그인 페이지로 이동합니다.");
       setOpen(false); // 모달 닫기

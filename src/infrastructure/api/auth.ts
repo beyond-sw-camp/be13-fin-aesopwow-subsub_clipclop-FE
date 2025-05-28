@@ -56,10 +56,11 @@ export const VerifyOtpApi = async (
 export const SignupApi = async (
   email: string,
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
+  name: string
 ): Promise<string> => {
-  const payload= { email, password, confirmPassword };
-  const response = await axiosInstance.post("/auth/signup", payload); // 경로 수정
+  const payload = { email, password, confirmPassword, name };
+  const response = await axiosInstance.post("/auth/signup", payload);
   return response.data;
 };
 

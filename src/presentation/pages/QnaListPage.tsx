@@ -1,46 +1,32 @@
+// 📁 src/pages/QnaListPage.tsx
 import { PageBreadcrumb } from "@/presentation/components/molecules/PageBreadcrumb";
 import { SideMenu } from "@/presentation/layout/SideMenu";
-import { SingleClusterSelectionPanel } from "../components/organisms/SingleClusterSelectionPanel";
-import { StepProgress } from "@/presentation/components/molecules/StepProgress";
 import { Header } from "@/presentation/layout/Header";
+import QnaList from "@/presentation/components/organisms/QnaList";
 
-export default function AnalyticsCohortSingleClusterSelectPage() {
+export default function QnaListPage() {
   return (
     <div className="min-h-screen w-screen bg-primary text-gray-800">
-
       <Header />
-
       <main className="flex">
-        {/* Sidebar */}
         <div className="pt-4 pl-4">
           <div className="mt-4 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
             <SideMenu />
           </div>
         </div>
 
-        {/* Main Content */}
         <div className="flex-1 flex flex-col min-h-screen">
           <div className="flex flex-col p-8 flex-grow">
-            {/* PageBreadcrumb 먼저 출력 */}
             <div className="mb-4">
-              <PageBreadcrumb title="Analysis/Cohort/Single" />
+              <PageBreadcrumb title="문의사항 목록" />
             </div>
 
-            {/* StepProgress 중앙 정렬 및 하단 간격 조정 */}
-            <div className="flex justify-center mb-4">
-              <div className="w-full max-w-4xl">
-                <StepProgress currentStep={1} steps={[1, 2, 3]} />
-              </div>
-            </div>
-
-            {/* 본문 콘텐츠 */}
             <div className="w-full mb-6">
-              <SingleClusterSelectionPanel />
+              <QnaList />
             </div>
           </div>
         </div>
       </main>
-
     </div>
   );
 }
