@@ -20,11 +20,8 @@ import WatchTimePage from "@/presentation/pages/WatchTimePage";
 import SubscriptionPage from "@/presentation/pages/SubscriptionPage";
 import GenrePage from "@/presentation/pages/GenrePage";
 import LastLoginPage from "@/presentation/pages/LastLoginPage";
-
 import MyPage from '@/presentation/pages/MyPage';
-
-import MembershipPage from '@/presentation/pages/MembershipPage';
-
+import MembershipPage from '@/presentation/pages/Membersh
 
 function App() {
 const initializeToken = useAuthStore((state) => state.initializeToken);
@@ -80,7 +77,6 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/mypage" element={<MyPage />} />
 
       <Route path="/membership" element={<MembershipPage />} />
-
     </Routes>
   );
 }
