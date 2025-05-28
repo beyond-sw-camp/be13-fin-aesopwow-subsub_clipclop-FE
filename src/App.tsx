@@ -11,7 +11,6 @@ import AnalyticsCohortDoubleClusterSelectPage from './presentation/pages/Analyti
 import AnalyticsCohortDoubleCohortResultPage from './presentation/pages/AnalyticsCohortDoubleCohortResultPage';
 import AnalyticsCohortDoubleUserDataPage from './presentation/pages/AnalyticsCohortDoubleUserDataPage';
 import DashBoardPage from './presentation/pages/DashBoardPage';
-import MyPage from './presentation/pages/MyPage';
 import AboutUsPage from './presentation/pages/AboutUsPage';
 // import AnalyticsCohortPage from './presentation/pages/AnalyticsCohortPage';
 import { useEffect } from "react";
@@ -24,11 +23,12 @@ import QnaDetailPage from './presentation/pages/QnaDetailPage';
 import QnaEditPage from './presentation/pages/QnaEditPage';
 
 import ForgotPasswordPage from './presentation/pages/ForgotPasswordPage';
-import WatchTimePage from './presentation/pages/WatchTimePage';
-import SubscriptionPage from './presentation/pages/SubscriptionPage';
-import GenrePage from './presentation/pages/GenrePage';
-import LastLoginPage from './presentation/pages/LastLoginPage';
-import MembershipPage from './presentation/pages/MembershipPage';
+import WatchTimePage from "@/presentation/pages/WatchTimePage";
+import SubscriptionPage from "@/presentation/pages/SubscriptionPage";
+import GenrePage from "@/presentation/pages/GenrePage";
+import LastLoginPage from "@/presentation/pages/LastLoginPage";
+import MyPage from '@/presentation/pages/MyPage';
+import MembershipPage from '@/presentation/pages/MembershipPage';
 
 function App() {
 const initializeToken = useAuthStore((state) => state.initializeToken);
