@@ -12,6 +12,7 @@ export default function QnaEditForm() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ 추가
 
   useEffect(() => {
     if (id) {
@@ -46,6 +47,7 @@ export default function QnaEditForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true); // ✅ 시작
     try {
       await updatePost(selectedPost.qnaPostNo, title, content);
       alert('수정이 완료되었습니다.');
@@ -53,6 +55,8 @@ export default function QnaEditForm() {
     } catch (error) {
       console.error('❗수정 실패:', error);
       alert('수정 중 오류가 발생했습니다.');
+    } finally {
+      setIsSubmitting(false); // ✅ 종료
     }
   };
 
@@ -77,9 +81,14 @@ export default function QnaEditForm() {
       <div className="flex justify-end">
         <button
           type="submit"
-          className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+          disabled={isSubmitting}
+          className={`px-6 py-2 rounded transition-colors ${
+            isSubmitting
+              ? 'bg-gray-400 text-white cursor-not-allowed'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          }`}
         >
-          수정 완료
+          {isSubmitting ? '수정 중...' : '수정 완료'}
         </button>
       </div>
     </form>
