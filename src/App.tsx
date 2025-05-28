@@ -21,6 +21,7 @@ import ProtectedRoute from './presentation/components/organisms/LoginProtectedRo
 import QnaListPage from './presentation/pages/QnaListPage';
 import QnaWritePage from './presentation/pages/QnaWritePage';
 import QnaDetailPage from './presentation/pages/QnaDetailPage';
+import QnaEditPage from './presentation/pages/QnaEditPage';
 
 import ForgotPasswordPage from './presentation/pages/ForgotPasswordPage';
 import WatchTimePage from './presentation/pages/WatchTimePage';
@@ -79,6 +80,8 @@ const initializeToken = useAuthStore((state) => state.initializeToken);
       <Route path="/qna" element={<QnaListPage />} />
       <Route path="/qna/write" element={<QnaWritePage />} />
       <Route path="/qna/:id" element={<QnaDetailPage />} />
+      <Route path="/qna/edit/:id" element={<QnaEditPage />} />
+
 
       <Route path="/login" element={<LoginPage />} />
 

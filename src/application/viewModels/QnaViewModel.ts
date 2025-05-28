@@ -8,40 +8,47 @@ export const useQnaViewModel = () => {
   const store = useQnaStore();
   const qnaUsecase = useMemo(() => QnaUsecase, []);
 
-  // 문의글 전체 조회
+  // 전체 게시글 불러오기
   const loadAll = async () => {
     const res = await QnaUsecase.loadPosts();
-    const posts = (res.data as any).data; // 응답에서 data 꺼내기
+    const posts = (res.data as any).data;
     store.setPosts(posts);
   };
-  
-  // 특정 문의글 조회
+
+  // 단일 게시글 불러오기
   const loadOne = async (id: number) => {
     const res = await qnaUsecase.loadPost(id);
-    store.setSelectedPost((res.data as any).data); // ✅ 반드시 .data.data
+    store.setSelectedPost((res.data as any).data);
   };
 
-  // 관리자 답변 조회
+  // 댓글 불러오기
   const loadComment = async (id: number) => {
     const res = await qnaUsecase.loadComment(id);
-    store.setComment((res.data as any).data); // ✅ 진짜 댓글만 저장
+    store.setComment((res.data as any).data);
   };
 
-  // 문의글 작성
+  // 게시글 작성
   const writePost = async (title: string, content: string) => {
-    const { userNo } = getUser(); // ✅ 여기서 userNo 가져오기
+    const { userNo } = getUser();
     return await qnaUsecase.writePost(title, content, userNo);
   };
 
-  // 관리자 답변 작성
+  // 관리자 댓글 작성
   const writeComment = async (id: number, content: string) => {
-    const { userNo } = getUser(); // ✅ 추가
+    const { userNo } = getUser();
     return await qnaUsecase.writeComment(id, content, userNo);
   };
 
-  const updateComment = async (id: number, content: string) => {
-  const { userNo } = getUser();
-  return await qnaUsecase.updateComment(id, content, userNo);
+// 게시글 삭제
+const deletePost = async (id: number) => {
+  const { userNo } = getUser(); // ✅ 현재 로그인 유저의 userNo
+  return await qnaUsecase.deletePost(id, userNo);
+};
+
+  // 게시글 수정 (🆕 추가됨)
+  const updatePost = async (id: number, title: string, content: string) => {
+    const { userNo } = getUser();
+    return await qnaUsecase.updatePost(id, title, content, userNo);
   };
 
   return {
@@ -55,6 +62,7 @@ export const useQnaViewModel = () => {
     loadComment,
     writePost,
     writeComment,
-    updateComment, // ✅ 반드시 추가해야 함!
+    deletePost,
+    updatePost, // ✅ 추가됨
   };
 };
