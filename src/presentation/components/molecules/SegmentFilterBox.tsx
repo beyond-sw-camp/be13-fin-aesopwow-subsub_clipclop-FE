@@ -57,8 +57,8 @@ export function SegmentFilterBox({
         "genre",
     ];
 
-    const filtersState = filters;
-    const setFiltersState = onChange;
+    // const filtersState = filters;
+    // const setFiltersState = onChange;
 
     const [watchTimeOptions, setWatchTimeOptions] = useState<Record<string, boolean>>({
         powerUser: true,

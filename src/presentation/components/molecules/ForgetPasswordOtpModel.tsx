@@ -70,11 +70,11 @@ export const ForgotPasswordOtpModal = ({
     }
   };
 
-  const handleClose = () => {
-    setOtp(Array(6).fill(""));
-    setError("");
-    setOpen(false);
-  };
+  // const handleClose = () => {
+  //   setOtp(Array(6).fill(""));
+  //   setError("");
+  //   setOpen(false);
+  // };
 
   if (!open) return null;
 
