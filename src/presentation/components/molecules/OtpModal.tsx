@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { CustomButton } from "../atoms/CustomButton";
 import { VerifyOtpApi, SignupApi } from "@/infrastructure/api/auth";
 import { useNavigate } from "react-router-dom";
+import { ResendOtpApi } from "@/infrastructure/api/auth";
 
 // type OtpModalProps = {
 //   open: boolean;
@@ -52,11 +53,18 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
     return `${min}:${sec}`;
   };
 
-  // const handleResend = () => {
-  //   console.log("OTP 재전송");
-  //   setTimer(180);
-  //   // 나중에 백엔드 재전송 API 연결
-  // };
+  const handleResend = async () => {
+  try {
+    setTimer(180);
+    await ResendOtpApi(email);
+    alert("OTP가 전송되었습니다.");
+  } catch (error: any) {
+    console.error("OTP 재전송 실패", error);
+    const message =
+      error?.response?.data || "OTP 재전송 중 알 수 없는 오류가 발생했습니다.";
+    alert(message);
+  }
+};
 
   const handleConfirm = async () => {
     const code = otp.join("");
@@ -92,7 +100,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword }: Ot
           email={email}
           timer={timer}
           formatTime={formatTime}
-          // onResendClick={handleResend}
+          onResendClick={handleResend}
           setOtp={setOtp}
         />
         <CustomButton title="확인" loading={loading} onClick={handleConfirm} />

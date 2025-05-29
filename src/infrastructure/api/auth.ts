@@ -53,6 +53,13 @@ export const VerifyOtpApi = async (
   return response.data;
 };
 
+export const ResendOtpApi = async (
+  email: string
+): Promise<string> => {
+  const response = await axiosInstance.post("/auth/signup/resend-otp", { email });
+  return response.data;
+};
+
 export const SignupApi = async (
   email: string,
   password: string,
