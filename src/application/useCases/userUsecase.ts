@@ -10,7 +10,7 @@ export class UserUsecase {
   }
 
     // 예시로 추후 추가 될 수도 있는 기능
-  async fetchUserInfo(userNo: number): Promise<any> {
+  async fetchUserInfo({/*userNo: number*/}): Promise<any> {
     // repository.getUserInfo(...) 등
   }
 }

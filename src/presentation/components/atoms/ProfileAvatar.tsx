@@ -1,8 +1,8 @@
 // @/presentation/components/atoms/ProfileAvatar.tsx
 import { useState, useRef, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { /*Link,*/ useNavigate } from "react-router-dom";
 import profileImage from "@/assets/profile.png";
-import axiosInstance from "@/infrastructure/api/Axios";
+// import axiosInstance from "@/infrastructure/api/Axios";
 import { LogoutButton } from "../molecules/LogoutButton";
 import { CustomButton } from "../atoms/CustomButton";
 

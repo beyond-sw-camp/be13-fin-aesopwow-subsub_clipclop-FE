@@ -31,8 +31,8 @@ export class ModalSignupUseCase {
       return json;
   };
 
-  async signup(email: string, password: string, name: string): Promise<SignupRequestOtp> {
-      const res = await SignupRepository.signup(email, password, name);
+  async signup(email: string, password: string, confirmPassword: string, name: string): Promise<SignupRequestOtp> {
+      const res = await SignupRepository.signup(email, confirmPassword, password, name);
       const json: SignupRequestOtp = JSON.parse(res);
       return json;
     };

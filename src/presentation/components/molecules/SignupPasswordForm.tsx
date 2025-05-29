@@ -55,6 +55,7 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent, emailCheckResult 
       });
 
       await SignupOtpApi(form.email, form.password, form.name);
+    alert("aa");
       onOtpSent(form.password);
     } catch (err: any) {
       console.error("회원가입 중 오류:", err);

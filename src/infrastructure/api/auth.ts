@@ -39,7 +39,7 @@ export const SignupOtpApi = async (
   password: string,
   name: string,
 ): Promise<SignupRequestOtp> => {
-  const requestData = { email, password, name };
+  const requestData = { email, password, name }
 
   return await axiosInstance.post(`/auth/signup/otp`, requestData); // 경로 수정
 };
