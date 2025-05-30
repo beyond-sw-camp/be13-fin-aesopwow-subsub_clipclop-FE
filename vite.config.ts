@@ -25,7 +25,7 @@ export default defineConfig({
       '/api': {
         target: 'https://dagudok-service.com',
         changeOrigin: true,
-        secure: false,
+        secure: true,
       }
     }
   },
