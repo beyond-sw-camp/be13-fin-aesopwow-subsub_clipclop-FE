@@ -49,3 +49,14 @@
 - [유저 데이터 페이지](https://www.notion.so/203d943bcac280e5a2cef542dfc67180?pvs=21)
 - [유저 데이터 필드 선택](https://www.notion.so/203d943bcac28094ad03df6b1456d69b?pvs=21)
 - [유저 클러스터 선택](https://www.notion.so/203d943bcac280dbaff1d2bf23404ee5?pvs=21)
+
+### 📌 프로그램 사양서
+
+| **구성 요소**      | **사양**                                                                 |
+|--------------------|--------------------------------------------------------------------------|
+| **프론트엔드** | React, TypeScript, Zustand, Tailwind CSS, Material Tailwind, Vite, Chart.js, PapaParse, Axios, Lucide/Heroicons       |
+| **백엔드**  | Spring Boot 3.4.4, Java 21, Spring Security, Spring Data JPA, Spring Validation, Spring Mail, Redis, JWT, Swagger (SpringDoc), Lombok, Gradle |
+| **분석 서버**       | Flask 3.1.0, Gunicorn, XGBoost, Pandas, NumPy, SciPy, Flask-SQLAlchemy, PyMySQL, Marshmallow, Boto3 (S3), python-dotenv         |
+| **데이터베이스**            | MariaDB (RDS, db.t3.medium)                                 |
+| **스토리지**             | AWS S3 (5GB 표준 스토리지, 5개 버킷 사용)     |
+| **배포 서버**             | AWS EC2 (Frontend: t2.medium, Backend: t3.large, AI: t2.medium)     |
