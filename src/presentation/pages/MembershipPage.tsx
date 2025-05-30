@@ -2,15 +2,25 @@ import React, { useState } from 'react';
 import { Header } from '@/presentation/layout/Header';
 import PricingCard from '@/presentation/components/molecules/PricingCard';
 import { MEMBERSHIP_PLANS } from '@/constants/membership';
+import { usePaymentViewModel } from '@/application/viewModels/PaymentViewModel';
 
 const MembershipPage: React.FC = () => {
     const [isMonthly, setIsMonthly] = useState(true);
     const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
+    // 월간/연간 플랜 선택
     const plans = isMonthly ? MEMBERSHIP_PLANS.monthly : MEMBERSHIP_PLANS.yearly;
 
-    const handleSubscribe = (title: string, price: number) => {
-        alert(`${title} ${isMonthly ? '월간' : '연간'} 플랜 가입 완료 (가격: ₩${price.toLocaleString()})`);
+    // 결제 뷰모델에서 결제 요청 함수 가져오기
+    const { requestPayment } = usePaymentViewModel();
+
+    // 가입 버튼 클릭 시 결제 요청
+    const handleSubscribe = async (title: string, price: number) => {
+        // 결제 요청 함수에 주문명, 금액 전달
+        await requestPayment({
+            orderName: `${title} ${isMonthly ? '월간' : '연간'} 구독`,
+            totalAmount: price,
+        });
     };
 
     return (
@@ -22,6 +32,7 @@ const MembershipPage: React.FC = () => {
             <div className="flex-grow flex flex-col items-center justify-center px-4 sm:px-8 lg:px-12 py-12">
                 <h1 className="text-white text-4xl font-extrabold mb-8">멤버십 구독 플랜</h1>
 
+                {/* 월간/연간 버튼 */}
                 <div className="flex justify-center mb-10 space-x-4">
                     <button
                         className={`px-4 py-2 rounded-full font-semibold transition ${
@@ -41,6 +52,7 @@ const MembershipPage: React.FC = () => {
                     </button>
                 </div>
 
+                {/* 플랜 카드 리스트 */}
                 <div className="flex justify-center gap-12 flex-wrap max-w-[100vw] px-4">
                     {plans.map((plan, index) => (
                         <PricingCard
@@ -49,6 +61,7 @@ const MembershipPage: React.FC = () => {
                             price={plan.price}
                             features={plan.features}
                             buttonText="가입하기"
+                            // 가입하기 버튼 클릭 시 결제 요청 함수 실행 (수정된 부분)
                             onButtonClick={() => handleSubscribe(plan.title, plan.price)}
                             period={isMonthly ? '월' : '년'}
                             onClick={() => setSelectedPlan(plan.title)}

@@ -6,7 +6,7 @@ type InputOneTimePasswordProps = {
   email: string;
   timer: number;
   formatTime: (seconds: number) => string;
-  // onResendClick: () => void;
+  onResendClick: () => void;
   setOtp: React.Dispatch<React.SetStateAction<string[]>>; // 부모 전달용
 };
 
@@ -14,7 +14,7 @@ export function InputOneTimePassword({
   email,
   timer,
   formatTime,
-  // onResendClick,
+  onResendClick,
   setOtp,
 }: InputOneTimePasswordProps) {
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -79,11 +79,11 @@ export function InputOneTimePassword({
         ))}
       </div>
 
-      <Text className="text-center font-normal text-blue-gray-500">
-        메일을 받지 못하셨나요?{" "}
-        {/* <Text className="underline cursor-pointer" onClick={onResendClick}>
-          다시 보내기
-        </Text> */}
+      <Text
+        onClick={onResendClick}
+        className="text-center font-normal text-blue-500 underline cursor-pointer hover:text-blue-700"
+      >
+        메일을 받지 못하셨나요?
       </Text>
     </div>
   );

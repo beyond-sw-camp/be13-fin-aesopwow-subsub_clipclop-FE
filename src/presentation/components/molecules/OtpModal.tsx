@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { CustomButton } from "../atoms/CustomButton";
 import { VerifyOtpApi, SignupApi } from "@/infrastructure/api/auth";
 import { useNavigate } from "react-router-dom";
+import { ResendOtpApi, EmailCheckApi } from "@/infrastructure/api/auth";
+import { Text } from "@/presentation/components/atoms/TextLabel";
 
 // type OtpModalProps = {
 //   open: boolean;
@@ -28,6 +30,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword, name
   const [timer, setTimer] = useState(180);
   const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
   const [loading, setLoading] = useState(false);
+  const [resendMessage, setResendMessage] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -52,11 +55,25 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword, name
     return `${min}:${sec}`;
   };
 
-  // const handleResend = () => {
-  //   console.log("OTP 재전송");
-  //   setTimer(180);
-  //   // 나중에 백엔드 재전송 API 연결
-  // };
+  const handleResend = async () => {
+    setLoading(true);
+    setResendMessage(null);
+
+    try {
+      await EmailCheckApi({ email });
+      setTimer(180);
+      await ResendOtpApi(email);
+      setResendMessage("✅ OTP가 전송되었습니다.");
+    } catch (error: any) {
+      console.error("OTP 재전송 실패", error);
+      const message =
+        error?.response?.data || "❌ OTP 재전송 중 알 수 없는 오류가 발생했습니다.";
+      setResendMessage(message);
+    } finally {
+    setLoading(false);
+    }
+  };
+
 
   const handleConfirm = async () => {
     const code = otp.join("");
@@ -92,9 +109,12 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword, name
           email={email}
           timer={timer}
           formatTime={formatTime}
-          // onResendClick={handleResend}
+          onResendClick={handleResend}
           setOtp={setOtp}
         />
+        {resendMessage && (
+        <Text className="text-sm text-red-500 mt-2">{resendMessage}</Text>
+      )}
         <CustomButton title="확인" loading={loading} onClick={handleConfirm} />
       </div>
     </Modals>
