@@ -1,14 +1,15 @@
+import { Link } from "react-router-dom";
+
 interface LinkTextProps {
-    href: string;
+    to: string;
     children: string;
     className?: string;
-  }
-  
-  export const LinkText = ({ href, children, className = "" }: LinkTextProps) => {
+}
+
+export const LinkText = ({ to, children, className = "" }: LinkTextProps) => {
     return (
-      <a href={href} className={`text-sm font-semibold text-blue-700 ${className}`}>
-        {children}
-      </a>
+        <Link to={to} className={`text-sm font-semibold text-blue-700 ${className}`}>
+            {children}
+        </Link>
     );
-  };
-  
+};
