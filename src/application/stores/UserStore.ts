@@ -4,49 +4,80 @@ import { ErrorCode } from '@/error/ErrorCode';
 
 type UserRole = 'USER' | 'ADMIN' | null;
 
-interface UserState {
-  userNo: number | null;
-  companyNo: number | null;
-  infoDbNo: number | null;
-  originTable: string | null;
-  role: UserRole;
-  roleNo: number | null;
-  setUserNo: (userNo: number) => void;
-  setCompanyNo: (companyNo: number) => void;
-  setInfoDbNo: (infoDbNo: number) => void;
-  setOriginTable: (originTable: string) => void;
-  setRole: (role: UserRole) => void;
-  setRoleNo: (roleNo: number) => void;
+export interface UserState {
+    userNo: number | null;
+    companyNo: number | null;
+    infoDbNo: number | null;
+    originTable: string | null;
+    role: UserRole;
+    roleNo: number | null;
+
+    // 고객 정보
+    name: string;
+    phone: string;
+    email: string;
+
+    // Setter
+    setUserNo: (userNo: number) => void;
+    setCompanyNo: (companyNo: number) => void;
+    setInfoDbNo: (infoDbNo: number) => void;
+    setOriginTable: (originTable: string) => void;
+    setRole: (role: UserRole) => void;
+    setRoleNo: (roleNo: number) => void;
+
+    setName: (name: string) => void;
+    setPhone: (phone: string) => void;
+    setEmail: (email: string) => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
-  userNo: null,           // 실제 초기값은 null로
-  companyNo: null,
-  infoDbNo: null,
-  originTable: null,
-  role: null,
-  roleNo: null,
-  setUserNo: (userNo: number) => set({ userNo }),
-  setCompanyNo: (companyNo: number) => set({ companyNo }),
-  setInfoDbNo: (infoDbNo: number) => set({ infoDbNo }),
-  setOriginTable: (originTable: string) => set({ originTable }),
-  setRole: (role: UserRole) => set({ role }),
-  setRoleNo: (roleNo: number) => set({ roleNo }),
+    // 권한/식별자 정보
+    userNo: null,
+    companyNo: null,
+    infoDbNo: null,
+    originTable: null,
+    role: null,
+    roleNo: null,
+
+    // 고객 정보
+    name: "",
+    phone: "",
+    email: "",
+
+    // Setter
+    setUserNo: (userNo: number) => set({ userNo }),
+    setCompanyNo: (companyNo: number) => set({ companyNo }),
+    setInfoDbNo: (infoDbNo: number) => set({ infoDbNo }),
+    setOriginTable: (originTable: string) => set({ originTable }),
+    setRole: (role: UserRole) => set({ role }),
+    setRoleNo: (roleNo: number) => set({ roleNo }),
+
+    setName: (name: string) => set({ name }),
+    setPhone: (phone: string) => set({ phone }),
+    setEmail: (email: string) => set({ email }),
 }));
 
-// 유틸 함수: 로그인 상태 + 관리자 여부 확인 포함
+/**
+ * 유틸 함수: 로그인 상태 + 관리자 여부 확인 포함
+ */
 export function getUser() {
-  const { userNo, companyNo, infoDbNo, originTable, role, roleNo } = useUserStore.getState();
-  // null 체크로 수정 (0도 허용)
-  if (
-    userNo === null ||
-    companyNo === null ||
-    infoDbNo === null ||
-    originTable === null ||
-    role === null ||
-    roleNo === null
-  ) {
-    throw new CustomError(ErrorCode.USER_NOT_FOUND);
-  }
-  return { userNo, companyNo, infoDbNo, originTable, role, roleNo };
+    const {
+        userNo, companyNo, infoDbNo, originTable, role, roleNo,
+        name, phone, email
+    } = useUserStore.getState();
+    
+    if (
+        userNo === null ||
+        companyNo === null ||
+        infoDbNo === null ||
+        originTable === null ||
+        role === null ||
+        roleNo === null
+    ) {
+        throw new CustomError(ErrorCode.USER_NOT_FOUND);
+    }
+    return {
+        userNo, companyNo, infoDbNo, originTable, role, roleNo,
+        name, phone, email
+    };
 }

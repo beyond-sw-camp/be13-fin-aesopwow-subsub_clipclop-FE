@@ -4,11 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/application/stores/AuthStore";
 import { UserRepository } from "@/infrastructure/repositories/UserRepository";
 import { jwtDecode } from "jwt-decode";
+import { toast } from "react-toastify";
 
 interface JwtPayload {
     email: string;
     role: string;
-    user_no: string | number; // userNo 타입에 맞게 수정
+    user_no: number; // userNo 타입에 맞게 수정
     // ... 필요시 다른 필드 추가
 }
 
@@ -42,9 +43,7 @@ export const useLoginViewModel = () => {
 
             // 3. 토큰에서 userNo 추출 (jwt-decode 사용)
             const decoded = jwtDecode<JwtPayload>(accessToken);
-            const userNo = decoded.user_no; // 언더스코어로!
-
-            console.log(decoded); // userNo가 실제로 있는지 확인
+            const userNo = decoded.user_no;
 
             if (!userNo) throw new Error("토큰에서 userNo를 받아오지 못했습니다.");
 
@@ -54,7 +53,7 @@ export const useLoginViewModel = () => {
             // 5. localStorage에 사용자 정보 저장
             localStorage.setItem("user", JSON.stringify(user));
 
-            alert("로그인 성공!");
+            toast.success("로그인 성공!");
             navigate("/dash-board");
         } catch (err) {
             console.error("로그인 실패:", err);
