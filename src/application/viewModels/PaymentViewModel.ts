@@ -1,10 +1,22 @@
+import { useEffect } from "react";
 import { usePaymentStore } from "@/application/stores/PaymentStore";
+import { useUserStore } from "@/application/stores/UserStore";
 import { PaymentUseCase } from "@/application/useCases/PaymentUseCase";
 import type { PaymentRequest } from "@portone/browser-sdk/v2";
 
 export const usePaymentViewModel = () => {
+    const { name, phone, email } = useUserStore();
     const customer = usePaymentStore((state) => state.customer);
+    const setCustomer = usePaymentStore((state) => state.setCustomer);
     const useCase = new PaymentUseCase();
+
+    useEffect(() => {
+        setCustomer({
+            fullName: name,
+            phoneNumber: phone,
+            email: email,
+        });
+    }, [name, phone, email, setCustomer]);
 
     const requestPayment = async ({
         orderName,
