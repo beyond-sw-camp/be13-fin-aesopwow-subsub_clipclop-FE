@@ -8,7 +8,7 @@ interface TextProps {
     onClick?: () => void;
   }
   
-  export const Text = ({ children, size = 'base', weight = 'normal', className = '' }: TextProps) => {
+  export const Text = ({ children, size = 'base', weight = 'normal', className = '', onClick, }: TextProps) => {
     const sizeClass = {
       xs: 'text-xs',
       sm: 'text-sm',
@@ -23,6 +23,13 @@ interface TextProps {
       bold: 'font-bold',
     }[weight];
   
-    return <p className={`${sizeClass} ${weightClass} ${className}`}>{children}</p>;
-  };
+    return (
+    <p
+      className={`${sizeClass} ${weightClass} ${className}`}
+      onClick={onClick}
+    >
+      {children}
+    </p>
+  );
+};
   
