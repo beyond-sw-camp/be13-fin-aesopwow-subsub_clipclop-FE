@@ -29,7 +29,7 @@ export class DashBoardUsecase {
         let fullText: string = '';
 
         try {
-            const response = await axios.get(`/api/dash-board/${infoDbNo}/${originTable}`, {
+            const response = await axios.get(`/dash-board/${infoDbNo}/${originTable}`, {
                 responseType: 'blob',
             });
             fullText = await response.data.text();

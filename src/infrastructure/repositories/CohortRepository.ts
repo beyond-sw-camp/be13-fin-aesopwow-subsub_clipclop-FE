@@ -1,153 +1,130 @@
-// /src/infrastructure/repositories/CohortRepository.ts
-import {
-  fetchSingleVisualizationApi,
-  fetchSingleInsightApi,
-  fetchSingleRemainHeatmapApi,
-  fetchSingleUserDataSearchResultApi,
-  fetchDoubleInsightApi,
-  fetchDoubleVisualizationApi,
-  fetchDoubleRemainHeatmapApi,
-  fetchDoubleUserDataSearchResultApi
-} from "@/infrastructure/api/CohortApi.ts";
+import Papa from "papaparse";
+import { fetchCohortCsvApi } from "@/infrastructure/api/CohortApi";
+import { ChartData as DoughnutChartData, ChartData as LineChartData } from "chart.js";
+import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 
-import {
-  CohortSingleVisualizationResponse,
-  CohortSingleInsightResponse,
-  CohortSingleHeatmapResponse,
-  CohortSingleUserResponse,
-  CohortDoubleInsightResponse,
-  CohortDoubleVisualizationResponse,
-  CohortDoubleHeatmapResponse,
-  CohortDoubleUserResponse
-} from "@/core/model/CohortModel";
+interface HeatmapCell {
+  row: string;
+  col: string;
+  value: string;
+}
 
-import { CustomError } from "@/error/CustomError";
-import { ErrorResponse } from "@/error/ErrorResponse";
-import { ErrorCode } from "@/error/ErrorCode";
+interface SubscriptionTypeRow {
+  month: string;
+  type: string;
+  "basic(%)": string;
+  "standard(%)": string;
+  "premium(%)": string;
+}
+
+interface IncreaseRateRow {
+  month: string;
+  subscribers: string;
+  "rate(%)": string;
+}
+
+interface InsightRow {
+  content: string;
+}
 
 export class CohortRepository {
-  // MARK: - Single 시각화
-  async fetchSingleVisualization(clusterType: string): Promise<CohortSingleVisualizationResponse> {
-    if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
+  async fetchCohortCsvParsed(
+    cluster:
+      | { clusterType: string } // 단일 분석
+      | { firstClusterType: string; secondClusterType: string } // 이중 분석
+  ): Promise<
+    {
+      heatmap: HeatmapCell[];
+      doughnutChart: DoughnutChartData;
+      lineChart: LineChartData<"line", number[]>;
+      insight: string;
+      userData: CohortSingleUserResponse[];
+    }[]
+  > {
+    const csvText = await fetchCohortCsvApi(cluster);
+    const blocks = csvText.split(/\n\s*\n/); // 빈 줄 기준으로 분할
 
-    try {
-      const rawData = await fetchSingleVisualizationApi(clusterType);
-      return {
-        imageBase64A: rawData?.imageBase64A ?? '',
-        imageBase64B: rawData?.imageBase64B ?? '',
-      };
-    } catch (error) {
-      throw new ErrorResponse(error);
+    const result: {
+      heatmap: HeatmapCell[];
+      doughnutChart: DoughnutChartData;
+      lineChart: LineChartData<"line", number[]>;
+      insight: string;
+      userData: CohortSingleUserResponse[];
+    }[] = [];
+
+    for (let i = 0; i < blocks.length; i += 5) {
+      const [heatmapBlock, donutBlock, lineBlock, insightBlock, userBlock] = blocks.slice(i, i + 5);
+
+      // 1. Heatmap
+      let heatmap: HeatmapCell[] = [];
+      if (heatmapBlock?.includes("row,col,value")) {
+        const parsed = Papa.parse(heatmapBlock.trim(), { header: true });
+        heatmap = parsed.data as HeatmapCell[];
+      }
+
+      // 2. Doughnut
+      let doughnutChart: DoughnutChartData = { labels: [], datasets: [] };
+      if (donutBlock?.includes("month,type")) {
+        const parsed = Papa.parse(donutBlock.trim(), { header: true });
+        const monthAgo = new Date();
+        monthAgo.setMonth(monthAgo.getMonth() - 1);
+        const targetMonth = monthAgo.toISOString().slice(0, 7);
+
+        const targetRow = (parsed.data as SubscriptionTypeRow[]).find(
+          (row) => row.month === targetMonth && row.type === "new"
+        );
+
+        if (targetRow) {
+          doughnutChart = {
+            labels: ["Basic", "Standard", "Premium"],
+            datasets: [
+              {
+                label: `${targetMonth} 신규 유저 비율`,
+                data: [
+                  parseFloat(targetRow["basic(%)"]),
+                  parseFloat(targetRow["standard(%)"]),
+                  parseFloat(targetRow["premium(%)"]),
+                ],
+                backgroundColor: ["#60A5FA", "#A78BFA", "#34D399"],
+              },
+            ],
+          };
+        }
+      }
+
+      // 3. Line Chart
+      let lineChart: LineChartData<"line", number[]> = { labels: [], datasets: [] };
+      if (lineBlock?.includes("rate(%)")) {
+        const parsed = Papa.parse(lineBlock.trim(), { header: true });
+        const rows = parsed.data as IncreaseRateRow[];
+        lineChart = {
+          labels: rows.map((r) => r.month),
+          datasets: [
+            {
+              label: "구독 증감률(%)",
+              data: rows.map((r) => parseFloat(r["rate(%)"])),
+              borderColor: "#4F46E5",
+              backgroundColor: "#C7D2FE",
+              tension: 0.3,
+            },
+          ],
+        };
+      }
+
+      // 4. Insight
+      const parsedInsight = Papa.parse<InsightRow>(insightBlock?.trim() || "", { header: true });
+      const insight = parsedInsight.data?.[0]?.content || "";
+
+      // 5. User Data
+      let userData: CohortSingleUserResponse[] = [];
+      if (userBlock?.includes("userId")) {
+        const parsedUser = Papa.parse(userBlock.trim(), { header: true });
+        userData = parsedUser.data as CohortSingleUserResponse[];
+      }
+
+      result.push({ heatmap, doughnutChart, lineChart, insight, userData });
     }
-  }
 
-  // MARK: - Single 인사이트
-  async fetchSingleInsight(clusterType: string): Promise<CohortSingleInsightResponse> {
-    if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-    try {
-      const rawData = await fetchSingleInsightApi(clusterType);
-      return { content: rawData?.content ?? '' };
-    } catch (error) {
-      throw new ErrorResponse(error);
-    }
-  }
-
-  // MARK: - Single 히트맵
-  async fetchSingleRemainHeatmap(clusterType: string): Promise<CohortSingleHeatmapResponse> {
-    if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-    try {
-      const rawData = await fetchSingleRemainHeatmapApi(clusterType);
-      return {
-        content: rawData?.content ?? '',
-        columnLabels: rawData?.columnLabels ?? [],
-        dataRows: rawData?.dataRows ?? []
-      };
-    } catch (error) {
-      throw new ErrorResponse(error);
-    }
-  }
-
-  // MARK: - Single 유저 데이터
-  async fetchSingleUserDataSearchResult(clusterType: string, fields: string[]): Promise<CohortSingleUserResponse[]> {
-    if (!clusterType || !fields.length) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-    try {
-      const rawData = await fetchSingleUserDataSearchResultApi(clusterType, fields);
-      return (rawData?.tableData ?? []) as CohortSingleUserResponse[];
-    } catch (error) {
-      throw new ErrorResponse(error);
-    }
-  }
-
-  // MARK: - Double 시각화
-  async fetchDoubleVisualization(firstClusterType: string, secondClusterType: string): Promise<CohortDoubleVisualizationResponse> {
-    if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-    try {
-      const rawData = await fetchDoubleVisualizationApi(firstClusterType, secondClusterType);
-      return {
-        firstImageBase64A: rawData?.firstImageBase64A ?? '',
-        firstImageBase64B: rawData?.firstImageBase64B ?? '',
-        secondImageBase64A: rawData?.secondImageBase64A ?? '',
-        secondImageBase64B: rawData?.secondImageBase64B ?? ''
-      };
-    } catch (error) {
-      throw new ErrorResponse(error);
-    }
-  }
-
-  // MARK: - Double 인사이트
-  async fetchDoubleInsight(firstClusterType: string, secondClusterType: string): Promise<CohortDoubleInsightResponse> {
-    if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-    try {
-      const rawData = await fetchDoubleInsightApi(firstClusterType, secondClusterType);
-      return {
-        firstContent: rawData?.firstContent ?? '',
-        secondContent: rawData?.secondContent ?? ''
-      };
-    } catch (error) {
-      throw new ErrorResponse(error);
-    }
-  }
-
-  // MARK: - Double 히트맵
-  async fetchDoubleRemainHeatmap(firstClusterType: string, secondClusterType: string): Promise<CohortDoubleHeatmapResponse> {
-    if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-    try {
-      const rawData = await fetchDoubleRemainHeatmapApi(firstClusterType, secondClusterType);
-      return {
-        firstContent: rawData?.firstContent ?? '',
-        firstColumnLabels: rawData?.firstColumnLabels ?? [],
-        firstDataRows: rawData?.firstDataRows ?? [],
-        secondContent: rawData?.secondContent ?? '',
-        secondColumnLabels: rawData?.secondColumnLabels ?? [],
-        secondDataRows: rawData?.secondDataRows ?? []
-      };
-    } catch (error) {
-      throw new ErrorResponse(error);
-    }
-  }
-
-  // MARK: - Double 유저 데이터
-  async fetchDoubleUserDataSearchResult(
-    firstClusterType: string,
-    secondClusterType: string,
-    fields: string[]
-  ): Promise<{ firstTableData: CohortDoubleUserResponse[]; secondTableData: CohortDoubleUserResponse[] }> {
-    if (!firstClusterType || !secondClusterType || !fields.length) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-    try {
-      const rawData = await fetchDoubleUserDataSearchResultApi(firstClusterType, secondClusterType, fields);
-      return {
-        firstTableData: (rawData?.firstTableData ?? []) as CohortDoubleUserResponse[],
-        secondTableData: (rawData?.secondTableData ?? []) as CohortDoubleUserResponse[]
-      };
-    } catch (error) {
-      throw new ErrorResponse(error);
-    }
+    return result;
   }
 }

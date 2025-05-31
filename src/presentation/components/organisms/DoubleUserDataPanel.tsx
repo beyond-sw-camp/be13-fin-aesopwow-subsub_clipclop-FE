@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
-import { useCohortDoubleUserDataSearchResultViewModel } from "@/application/viewModels/CohortViewModel";
+// 📁 /presentation/components/organisms/DoubleUserDataPanel.tsx
+import { useMemo, useState } from "react";
+import { useCohortDoubleAnalysisViewModel } from "@/application/viewModels/CohortViewModel";
 import { UserDataKeywordSelector } from "@/presentation/components/molecules/UserDataKeywordSelector";
 import { CohortDoubleUserResponse } from "@/core/model/CohortModel";
 import { PanelTitle } from "../atoms/PanelTitle";
@@ -29,26 +30,27 @@ export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: Dou
       .map(([key]) => key as keyof CohortDoubleUserResponse);
   }, [filters]);
 
-  const { firstData, secondData, error, isLoading, search } = useCohortDoubleUserDataSearchResultViewModel();
+  // ✅ userData 가져오는 부분 수정됨
+  const { resultA, resultB, isLoading, error } = useCohortDoubleAnalysisViewModel(
+    firstClusterType,
+    secondClusterType
+  );
 
-  useEffect(() => {
-    search(firstClusterType, secondClusterType, selectedFields as string[]);
-  }, [firstClusterType, secondClusterType, selectedFields]);
-
-  const activeData = activeCluster === 'A' ? firstData : secondData;
+  const activeData = activeCluster === 'A' ? resultA.userData : resultB.userData;
+  const noData = !isLoading && !error && activeData.length === 0;
 
   const handleExport = () => {
     const csvContent = [
-      selectedFields.join(","), // 헤더
-      ...activeData.map((row) => selectedFields.map((field) => {
-        const rawValue = row[field] ?? ''; // null, undefined 방어
-        const value = String(rawValue);    // 항상 string 처리
-
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-          return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value;
-      }).join(",")),
+      selectedFields.join(","),
+      ...activeData.map((row) =>
+        selectedFields.map((field) => {
+          const rawValue = row[field] ?? "";
+          const value = String(rawValue);
+          return value.includes(",") || value.includes('"') || value.includes("\n")
+            ? `"${value.replace(/"/g, '""')}"`
+            : value;
+        }).join(",")
+      ),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -62,7 +64,7 @@ export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: Dou
 
   const getButtonStyle = (cluster: 'A' | 'B') =>
     `px-4 py-2 text-sm font-semibold transition rounded-lg ${
-      activeCluster === cluster ? 'bg-orange-400 text-black' : 'bg-transparent text-black'
+      activeCluster === cluster ? 'bg-orange-400 text-black' : 'bg-gray-200 text-gray-800'
     }`;
 
   return (
@@ -92,10 +94,8 @@ export function DoubleUserDataPanel({ firstClusterType, secondClusterType }: Dou
         <div className="flex-1 overflow-x-auto">
           {error && <p className="text-sm text-red-500">{error.message}</p>}
           {isLoading && <p className="text-gray-500">로딩 중...</p>}
-          {!isLoading && activeData.length === 0 && !error && (
-            <p className="text-gray-500">표시할 데이터가 없습니다.</p>
-          )}
-          {activeData.length > 0 && (
+          {noData && <p className="text-gray-500">표시할 데이터가 없습니다.</p>}
+          {!isLoading && activeData.length > 0 && (
             <table className="min-w-full text-sm border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>

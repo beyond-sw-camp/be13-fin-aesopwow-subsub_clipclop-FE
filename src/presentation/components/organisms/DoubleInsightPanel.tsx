@@ -1,13 +1,24 @@
-import { useCohortDoubleInsightViewModel } from "@/application/viewModels/CohortViewModel";
+// 📁 /presentation/components/organisms/DoubleInsightPanel.tsx
 import { PanelTitle } from "../atoms/PanelTitle";
 
 interface DoubleInsightPanelProps {
-  firstClusterType: string;
-  secondClusterType: string;
+  insightA: string;
+  insightB: string;
+  isLoading: boolean;
+  error: Error | null;
 }
 
-export function DoubleInsightPanel({ firstClusterType, secondClusterType }: DoubleInsightPanelProps) {
-  const { data, isLoading, error } = useCohortDoubleInsightViewModel(firstClusterType, secondClusterType);
+export function DoubleInsightPanel({
+  insightA,
+  insightB,
+  isLoading,
+  error,
+}: DoubleInsightPanelProps) {
+  const noData =
+    !isLoading &&
+    !error &&
+    insightA.trim() === "" &&
+    insightB.trim() === "";
 
   return (
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px]">
@@ -16,10 +27,18 @@ export function DoubleInsightPanel({ firstClusterType, secondClusterType }: Doub
       {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
 
-      {data && (
+      {noData && (
+        <p className="text-sm text-gray-400">표시할 인사이트가 없습니다.</p>
+      )}
+
+      {!isLoading && !error && (
         <div className="space-y-2 text-sm text-gray-600">
-          <p><strong>A:</strong> {data.firstContent}</p>
-          <p><strong>B:</strong> {data.secondContent}</p>
+          <p>
+            <strong>A:</strong> {insightA || "인사이트가 없습니다."}
+          </p>
+          <p>
+            <strong>B:</strong> {insightB || "인사이트가 없습니다."}
+          </p>
         </div>
       )}
     </div>

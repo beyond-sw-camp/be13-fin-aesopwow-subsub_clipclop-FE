@@ -1,6 +1,6 @@
-// /presentation/components/organisms/SingleUserDataPanel.tsx
-import { useEffect, useMemo, useState } from "react";
-import { useSingleUserDataSearchResultViewModel } from "@/application/viewModels/CohortViewModel";
+// 📁 /presentation/components/organisms/SingleUserDataPanel.tsx
+import { useMemo, useState } from "react";
+import { useCohortSingleAnalysisViewModel } from "@/application/viewModels/CohortViewModel";
 import { UserDataKeywordSelector } from "@/presentation/components/molecules/UserDataKeywordSelector";
 import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 
@@ -26,24 +26,22 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
       .map(([key]) => key as keyof CohortSingleUserResponse);
   }, [filters]);
 
-  const { data, error, isLoading, search } = useSingleUserDataSearchResultViewModel();
-
-  useEffect(() => {
-    search(clusterType, selectedFields as string[]);
-  }, [clusterType, selectedFields]);
+  const { userData = [], isLoading, error } = useCohortSingleAnalysisViewModel(clusterType);
 
   const handleExport = () => {
     const csvContent = [
       selectedFields.join(","),
-      ...data.map((row) => selectedFields.map((field) => {
-        const rawValue = row[field] ?? '';
-        const value = String(rawValue);
-
-        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
-          return `"${value.replace(/"/g, '""')}"`;
-        }
-        return value;
-      }).join(",")),
+      ...userData.map((row) =>
+        selectedFields
+          .map((field) => {
+            const rawValue = row[field] ?? "";
+            const value = String(rawValue);
+            return value.includes(",") || value.includes('"') || value.includes("\n")
+              ? `"${value.replace(/"/g, '""')}"`
+              : value;
+          })
+          .join(",")
+      ),
     ].join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -61,7 +59,12 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
         <h2 className="text-xl font-bold">유저 데이터</h2>
         <button
           onClick={handleExport}
-          className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold py-2 px-4 rounded"
+          disabled={isLoading || userData.length === 0}
+          className={`text-white text-sm font-semibold py-2 px-4 rounded ${
+            isLoading || userData.length === 0
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-green-500 hover:bg-green-600"
+          }`}
         >
           데이터 내보내기
         </button>
@@ -69,13 +72,13 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
 
       <div className="flex gap-6">
         <UserDataKeywordSelector filters={filters} onChange={setFilters} />
-        <div className="flex-1 overflow-x-auto">
+        <div className="flex-1 overflow-x-auto max-h-[400px] overflow-y-auto">
           {error && <p className="text-sm text-red-500">{error.message}</p>}
-            {isLoading && <p className="text-gray-500">로딩 중...</p>}
-            {!isLoading && data.length === 0 && !error && (
-              <p className="text-gray-500">표시할 데이터가 없습니다.</p>
-            )}
-          {data.length > 0 && (
+          {isLoading && <p className="text-gray-500">로딩 중...</p>}
+          {!isLoading && userData.length === 0 && !error && (
+            <p className="text-gray-500">표시할 데이터가 없습니다.</p>
+          )}
+          {!isLoading && userData.length > 0 && (
             <table className="min-w-full text-sm border border-gray-200">
               <thead className="bg-gray-100">
                 <tr>
@@ -85,7 +88,7 @@ export function SingleUserDataPanel({ clusterType }: SingleUserProps) {
                 </tr>
               </thead>
               <tbody>
-                {data.map((row, rowIdx) => (
+                {userData.map((row, rowIdx) => (
                   <tr key={rowIdx} className="text-center">
                     {selectedFields.map((field, colIdx) => (
                       <td key={colIdx} className="border px-3 py-2">

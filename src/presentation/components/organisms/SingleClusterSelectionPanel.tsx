@@ -1,4 +1,4 @@
-// /presentation/components/organisms/ClusterSelectionPanel.tsx
+// /presentation/components/organisms/SingleClusterSelectionPanel.tsx
 
 import { useState } from "react";
 import { Listbox } from "@headlessui/react";
