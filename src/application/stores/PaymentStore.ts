@@ -12,11 +12,10 @@ interface PaymentState {
 }
 
 export const usePaymentStore = create<PaymentState>((set) => ({
-    //FIXME: - 해당 정보는 회원가입시에 받아오게끔
     customer: {
-        fullName: "유재우",
-        phoneNumber: "010-3443-2655",
-        email: "yjw127588@gmail.com",
+        fullName: "",
+        phoneNumber: "",
+        email: "",
     },
     setCustomer: (customer) => set({ customer }),
 }));

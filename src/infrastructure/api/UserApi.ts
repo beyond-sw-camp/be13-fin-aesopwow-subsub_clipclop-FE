@@ -1,11 +1,11 @@
-import axiosInstance from "./Axios";
+import axiosInstance from "@/infrastructure/api/Axios";
 
 export interface UserDeleteRequest {
-  isDeleted: boolean;
+    reason?: string;
+    password?: string;
+    isDeleted?: boolean;
 }
 
 export async function deleteUser(userNo: number, request: UserDeleteRequest): Promise<void> {
-    console.log("🔔 deleteUser 호출됨:", userNo, request);
-    console.log("📦 request JSON:", JSON.stringify(request));
-  await axiosInstance.post(`/user?userNo=${userNo}`, request);
+    await axiosInstance.delete(`/user/${userNo}`, { data: request });
 }
