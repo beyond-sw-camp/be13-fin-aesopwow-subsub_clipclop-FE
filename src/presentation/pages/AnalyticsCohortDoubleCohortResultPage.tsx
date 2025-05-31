@@ -22,18 +22,18 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
     useCohortDoubleAnalysisViewModel(firstClusterType, secondClusterType);
 
   return (
-    <div className="min-h-screen w-screen bg-primary text-gray-800 overflow-x-hidden">
+    <div className="min-h-screen w-screen bg-primary text-gray-800 overflow-hidden">
       <Header />
 
-      <main className="flex w-full overflow-x-hidden">
+      <main className="flex w-full">
         {/* Sidebar */}
         <aside className="w-[240px] shrink-0 pt-4 pl-4">
           <SideMenu />
         </aside>
 
         {/* Main Content */}
-        <section className="flex-1 flex flex-col min-h-screen">
-          <div className="flex flex-col p-8 flex-grow">
+        <section className="flex-1 flex flex-col">
+          <div className="flex flex-col p-8">
             {/* PageBreadcrumb */}
             <div className="mb-4">
               <PageBreadcrumb title="Analysis/Cohort/Double" />
