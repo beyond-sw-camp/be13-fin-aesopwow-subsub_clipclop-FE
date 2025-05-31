@@ -40,7 +40,7 @@ export function DoubleVisualizationPanel({
   const noData = !isLoading && !error && !doughnutChart && !lineChart;
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow h-full min-h-[200px]">
+    <div className="p-6 bg-white rounded-xl shadow w-full max-w-full overflow-hidden">
       <PanelTitle title="시각화 결과 (양측 비교)" className="text-xl font-bold mb-4" />
 
       <div className="flex justify-center space-x-4 mb-6">
@@ -63,15 +63,29 @@ export function DoubleVisualizationPanel({
       {noData && <p className="text-sm text-gray-500">표시할 데이터가 없습니다.</p>}
 
       {!isLoading && !error && (
-        <div className="mt-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           {doughnutChart && (
-            <div className="w-full md:w-1/2">
-              <Chart type="doughnut" data={doughnutChart} />
+            <div className="w-full h-[300px]">
+              <Chart
+                type="doughnut"
+                data={doughnutChart}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
             </div>
           )}
           {lineChart && (
-            <div className="w-full md:w-1/2">
-              <Chart type="line" data={lineChart} />
+            <div className="w-full h-[300px]">
+              <Chart
+                type="line"
+                data={lineChart}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: false,
+                }}
+              />
             </div>
           )}
         </div>
