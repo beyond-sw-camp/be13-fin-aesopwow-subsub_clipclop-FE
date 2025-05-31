@@ -1,13 +1,17 @@
-// /presentation/components/organisms/SingleVisualizationPanel.tsx
-import { useCohortSingleVisualizationViewModel } from "@/application/viewModels/CohortViewModel";
+// 📁 /presentation/components/organisms/SingleVisualizationPanel.tsx
 import { PanelTitle } from "../atoms/PanelTitle";
+import { Chart } from "react-chartjs-2";
+import type { ChartData } from "chart.js";
 
-interface SingleVisualizationPanelProps {
-  clusterType: string;
+interface Props {
+  doughnutChart: ChartData<"doughnut", number[]> | null;
+  lineChart: ChartData<"line", number[]> | null;
+  isLoading: boolean;
+  error: Error | null;
 }
 
-export function SingleVisualizationPanel({ clusterType }: SingleVisualizationPanelProps) {
-  const { data, isLoading, error } = useCohortSingleVisualizationViewModel(clusterType);
+export function SingleVisualizationPanel({ doughnutChart, lineChart, isLoading, error }: Props) {
+  const noData = !isLoading && !error && !doughnutChart && !lineChart;
 
   return (
     <div className="p-6 bg-white rounded-xl shadow h-full min-h-[200px]">
@@ -15,19 +19,20 @@ export function SingleVisualizationPanel({ clusterType }: SingleVisualizationPan
 
       {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
+      {noData && <p className="text-sm text-gray-500">표시할 데이터가 없습니다.</p>}
 
-      {data && (
-        <div className="mt-4 flex space-x-4">
-          <img
-            src={data.imageBase64A}
-            alt="시각화 이미지 1"
-            className="w-1/2 h-auto rounded-md"
-          />
-          <img
-            src={data.imageBase64B}
-            alt="시각화 이미지 2"
-            className="w-1/2 h-auto rounded-md"
-          />
+      {!isLoading && !error && (
+        <div className="mt-4 flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+          {doughnutChart && (
+            <div className="w-full md:w-1/2">
+              <Chart type="doughnut" data={doughnutChart} />
+            </div>
+          )}
+          {lineChart && (
+            <div className="w-full md:w-1/2">
+              <Chart type="line" data={lineChart} />
+            </div>
+          )}
         </div>
       )}
     </div>
