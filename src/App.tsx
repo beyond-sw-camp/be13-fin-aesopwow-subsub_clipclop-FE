@@ -33,6 +33,9 @@ import SubscriptionPage from "@/presentation/pages/SubscriptionPage";
 import GenrePage from "@/presentation/pages/GenrePage";
 import LastLoginPage from "@/presentation/pages/LastLoginPage";
 
+import AnalyticsShapPage from "./presentation/pages/AnalyticsShapPage";
+import AnalyticsShapFilterPage from "./presentation/pages/AnalyticsShapFilterPage";
+
 function App() {
     const initializeToken = useAuthStore((state) => state.initializeToken);
     const isInitialized = useAuthStore((state) => state.isInitialized);
@@ -96,6 +99,9 @@ function App() {
                 <Route path="/segments/subscription" element={<SubscriptionPage />} />
                 <Route path="/segments/genre" element={<GenrePage />} />
                 <Route path="/segments/lastlogin" element={<LastLoginPage />} />
+
+                <Route path="/analytics/shap/full" element={<AnalyticsShapPage />} />
+                <Route path="/analytics/shap/filter" element={<AnalyticsShapFilterPage />} />
             </Routes>
         </>
     );
