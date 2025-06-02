@@ -93,7 +93,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword, name
 
       alert("회원가입에 성공하셨습니다. 로그인 페이지로 이동합니다.");
       setOpen(false); // 모달 닫기
-      navigate("/signin");
+      navigate("/login");
     } catch (error) {
       console.error("OTP 확인 또는 회원가입 실패", error);
       alert("OTP 인증 또는 회원가입에 실패했습니다.");
