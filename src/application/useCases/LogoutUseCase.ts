@@ -7,9 +7,9 @@ export const LogoutUseCase = () => {
 
   const logoutAndRedirect = () => {
     logout();
-    navigate("/signin");
+    navigate("/login");
   };
-
+  
   return {
     token,
     setToken,
