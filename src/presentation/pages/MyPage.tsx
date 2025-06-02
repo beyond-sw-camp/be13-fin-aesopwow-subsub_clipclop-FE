@@ -123,6 +123,7 @@ export default function MyPage() {
               onCompanyClick={() => setShowCompanyModal(true)}
               onStaffClick={() => setShowStaffModal(true)}
               onRequestClick={() => setShowRequestModal(true)}
+              onAlarmClick={() => setShowCompanyModal(true)}
             />
 
             {showCompanyModal && (
