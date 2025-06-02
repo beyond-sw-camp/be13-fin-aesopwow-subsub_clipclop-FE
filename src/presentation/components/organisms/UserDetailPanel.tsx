@@ -13,7 +13,7 @@ export function UserDetailPanel({
   onAlarmClick: () => void;
 }) {
 
-  const userNo = 7; //수정해라 나자신
+  // const userNo = 7; //수정해라 나자신
   const { alarms, loading } = useAlarmViewModel();
 
   return (
