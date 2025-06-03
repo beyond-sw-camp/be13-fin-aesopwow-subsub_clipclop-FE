@@ -61,8 +61,11 @@ import {
   markAlarmAsRead,
   AlarmItem,
 } from "@/infrastructure/api/Alarm";
+// import { getUser } from "@/application/stores/UserStore"; // ✅ userNo 가져오기
 
-export const useAlarmViewModel = (userNo: number) => {
+export const useAlarmViewModel = () => {
+  // const { userNo } = getUser(); // ✅ 스토어에서 직접 userNo 조회
+  const userNo = 1; // 테스트용 하드 코딩
   const [alarms, setAlarms] = useState<AlarmItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -88,10 +91,10 @@ export const useAlarmViewModel = (userNo: number) => {
     }
   };
 
-  // ✅ 알림 읽음 처리 (alarmId를 string | number 모두 허용)
+  // ✅ 알림 읽음 처리
   const markAsRead = async (alarmId: string | number) => {
     try {
-      await markAlarmAsRead(alarmId); // 내부에서 Number(alarmId) 처리됨
+      await markAlarmAsRead(alarmId);
       await loadAlarms();
     } catch (e) {
       console.error("❌ 알림 읽음 처리 실패", e);
@@ -100,7 +103,7 @@ export const useAlarmViewModel = (userNo: number) => {
 
   useEffect(() => {
     loadAlarms();
-  }, [userNo]);
+  }, [userNo]); // ✅ userNo 변경 시도 안전하게 감지
 
   return {
     alarms,

@@ -12,8 +12,7 @@ export function UserDetailPanel({
   onRequestClick: () => void;
   onAlarmClick: () => void;
 }) {
-  const userNo = 1; // ✅ 실제 사용자 번호 (임시)
-  const { alarms, loading, markAsRead } = useAlarmViewModel(userNo);
+  const { alarms, loading, markAsRead } = useAlarmViewModel();
 
   return (
     <div className="flex flex-col gap-6 w-1/2 mx-auto">

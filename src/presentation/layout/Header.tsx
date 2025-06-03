@@ -7,9 +7,8 @@ import { useAlarmViewModel } from "@/application/viewModels/useAlarmViewModel";
 export function Header() {
   const location = useLocation();
   const isLoginPage = location.pathname === "/";
-  const userNo = 1; // ✅ 실제 사용자 번호 (임시)
 
-  const { alarms } = useAlarmViewModel(userNo); // ✅ userNo 전달
+  const { alarms } = useAlarmViewModel(); // ✅ userNo 전달
   const hasUnread = alarms.some((a) => !a.isRead);
 
   return (
