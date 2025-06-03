@@ -6,19 +6,24 @@ export const LogoutUseCase = () => {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
 
-  const logoutAndRedirect = async () => {
-    try {
-      await LogoutApi();
-    } catch (error) {
-      console.error("백엔드에서 로그아웃 실패", error);
-    }
-    localStorage.clear();
-    sessionStorage.clear();
+ const logoutAndRedirect = async () => {
+  console.log("[LOG] LogoutUseCase 시작됨");
 
-    logout();
-    
-    navigate("/login");
-  };
+  try {
+    await LogoutApi();
+  } catch (error) {
+  }
+
+  // 순서 바꿈: 먼저 zustand 상태 정리
+  logout();
+
+  // 그 다음 storage 삭제
+  localStorage.clear();
+  sessionStorage.clear();
+
+  navigate("/login");
+};
+
   
   return {
     logout: logoutAndRedirect,
