@@ -14,14 +14,18 @@ export const loginApi = async (
 };
 
 export const LogoutApi = async (): Promise<void> => {
-  const token = 
-  localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+  const accessToken = 
+  localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  if (!token) return;
+  if (!accessToken) {
+    return;
+  }
+
+  console.log("[LOG] 로그아웃 요청 보냄", accessToken);
 
   await axiosInstance.post("/auth/logout", null, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   });
 };
