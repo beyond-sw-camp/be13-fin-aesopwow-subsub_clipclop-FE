@@ -123,7 +123,7 @@ export default function MyPage() {
               onCompanyClick={() => setShowCompanyModal(true)}
               onStaffClick={() => setShowStaffModal(true)}
               onRequestClick={() => setShowRequestModal(true)}
-              onAlarmClick={() => {}} // ✅ 이 줄 추가
+              onAlarmClick={() => setShowCompanyModal(true)}
             />
 
             {showCompanyModal && (

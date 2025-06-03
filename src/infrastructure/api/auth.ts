@@ -13,6 +13,19 @@ export const loginApi = async (
   return response.data;
 };
 
+export const LogoutApi = async (): Promise<void> => {
+  const token = 
+  localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+
+  if (!token) return;
+
+  await axiosInstance.post("/auth/logout", null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const EmailCheckApi = async (
   payload: CheckEmailRequest
 ): Promise<CheckEmailResponse> => {
