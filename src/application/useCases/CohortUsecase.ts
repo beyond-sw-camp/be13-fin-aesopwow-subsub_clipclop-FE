@@ -45,5 +45,8 @@ export async function fetchDoubleCohortFullAnalysis(
     userData: CohortSingleUserResponse[];
   }[]
 > {
-  return await repository.fetchCohortCsvParsed({ firstClusterType, secondClusterType });
+  return await repository.fetchCohortCsvParsed({
+    firstClusterType,
+    secondClusterType,
+  });
 }

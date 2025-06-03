@@ -1,6 +1,8 @@
 // 📁 src/presentation/components/organisms/QnaAnswerForm.tsx
 import { useState } from 'react';
 import { useQnaViewModel } from '@/application/viewModels/QnaViewModel';
+import { sendAlarm } from '@/infrastructure/api/Alarm';
+import axiosInstance from '@/infrastructure/api/Axios';
 
 interface Props {
   qnaPostNo: number;
@@ -8,10 +10,9 @@ interface Props {
 
 export default function QnaAnswerForm({ qnaPostNo }: Props) {
   const { comment, loadComment, writeComment } = useQnaViewModel();
-
   const [content, setContent] = useState('');
 
-  // 신규 답변 등록
+  // ✅ 신규 답변 등록
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -21,9 +22,27 @@ export default function QnaAnswerForm({ qnaPostNo }: Props) {
     }
 
     try {
+      // 1. 댓글 등록
       await writeComment(qnaPostNo, content);
       setContent('');
+
+      // 2. 댓글 다시 불러오기
       await loadComment(qnaPostNo);
+
+      // 3. 게시글 작성자 userNo 조회 및 알림 전송
+      try {
+        const res = await axiosInstance.get(`/qna/${qnaPostNo}`);
+        const targetUserNo = res?.data?.data?.userNo;
+
+        if (typeof targetUserNo === 'number') {
+          await sendAlarm(targetUserNo, "문의하신 글에 관리자 댓글이 등록되었습니다.");
+        } else {
+          console.warn("📛 유효하지 않은 userNo:", targetUserNo);
+        }
+      } catch (alarmErr) {
+        console.error("❌ 알림 전송 실패:", alarmErr);
+      }
+
       alert('답변이 등록되었습니다.');
     } catch (error) {
       console.error('❗답변 등록 실패:', error);
@@ -37,7 +56,6 @@ export default function QnaAnswerForm({ qnaPostNo }: Props) {
         {comment ? '등록된 답변' : '답변 작성'}
       </h3>
 
-      {/* 답변이 없는 경우 → 새로 작성 */}
       {!comment && (
         <form onSubmit={handleCreate}>
           <textarea
@@ -59,7 +77,6 @@ export default function QnaAnswerForm({ qnaPostNo }: Props) {
         </form>
       )}
 
-      {/* 답변이 있는 경우 → 읽기 전용 표시 */}
       {comment && (
         <div className="bg-gray-50 text-gray-800 whitespace-pre-wrap p-4 rounded border border-gray-300">
           {comment.content}

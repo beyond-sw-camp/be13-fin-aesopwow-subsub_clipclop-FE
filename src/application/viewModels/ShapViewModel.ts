@@ -1,15 +1,18 @@
 // 📁 /src/application/viewModels/ShapViewModel.ts
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   fetchEntireShapAnalysis,
   fetchFilteredShapAnalysis,
 } from "@/application/useCases/ShapUsecase";
 import { ShapResult } from "@/infrastructure/repositories/ShapRepository";
+import { getUser } from "@/application/stores/UserStore";
+import { sendAlarm } from "@/infrastructure/api/Alarm";
 
 export function useShapEntireViewModel() {
   const [result, setResult] = useState<ShapResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const hasNotifiedRef = useRef(false);
 
   useEffect(() => {
     const load = async () => {
@@ -19,6 +22,12 @@ export function useShapEntireViewModel() {
         // ✅ 실제 서버 요청
         const data = await fetchEntireShapAnalysis();
         setResult(data);
+
+        // ✅ 성공 알림 전송
+        const { userNo } = getUser();
+        if (typeof userNo === "number") {
+          await sendAlarm(userNo, "SHAP 분석이 완료되었습니다.");
+        }
 
         // 🔽 더미 데이터 (테스트용)
         // const dummy: ShapResult = {
@@ -33,7 +42,21 @@ export function useShapEntireViewModel() {
         // };
         // setResult(dummy);
       } catch (e) {
-        setError(e instanceof Error ? e : new Error("SHAP 전체 분석 실패"));
+        const err = e instanceof Error ? e : new Error("SHAP 전체 분석 실패");
+        setError(err);
+
+        // ✅ 실패 알림 단 1회 전송
+        if (!hasNotifiedRef.current) {
+          hasNotifiedRef.current = true;
+          const { userNo } = getUser();
+          if (typeof userNo === "number") {
+            try {
+              await sendAlarm(userNo, "SHAP 분석 중 오류가 발생했습니다.");
+            } catch (alarmError) {
+              console.error("❌ SHAP 실패 알림 전송 실패:", alarmError);
+            }
+          }
+        }
       } finally {
         setIsLoading(false);
       }
@@ -58,6 +81,7 @@ export function useShapFilteredViewModel(
   const [result, setResult] = useState<ShapResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const hasNotifiedRef = useRef(false);
 
   useEffect(() => {
     const load = async () => {
@@ -67,6 +91,12 @@ export function useShapFilteredViewModel(
         // ✅ 실제 서버 요청
         const data = await fetchFilteredShapAnalysis(keyword, filters);
         setResult(data);
+
+        // ✅ 성공 알림 전송
+        const { userNo } = getUser();
+        if (typeof userNo === "number") {
+          await sendAlarm(userNo, "SHAP 분석이 완료되었습니다.");
+        }
 
         // 🔽 더미 데이터 (테스트용)
         // const dummy: ShapResult = {
@@ -81,7 +111,21 @@ export function useShapFilteredViewModel(
         // };
         // setResult(dummy);
       } catch (e) {
-        setError(e instanceof Error ? e : new Error("SHAP 필터 분석 실패"));
+        const err = e instanceof Error ? e : new Error("SHAP 필터 분석 실패");
+        setError(err);
+
+        // ✅ 실패 알림 단 1회 전송
+        if (!hasNotifiedRef.current) {
+          hasNotifiedRef.current = true;
+          const { userNo } = getUser();
+          if (typeof userNo === "number") {
+            try {
+              await sendAlarm(userNo, "SHAP 분석 중 오류가 발생했습니다.");
+            } catch (alarmError) {
+              console.error("❌ SHAP 실패 알림 전송 실패:", alarmError);
+            }
+          }
+        }
       } finally {
         setIsLoading(false);
       }

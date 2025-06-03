@@ -1,11 +1,13 @@
 // 📁 /src/application/viewModels/CohortViewModel.ts
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   fetchCohortFullAnalysis,
   fetchDoubleCohortFullAnalysis,
 } from "@/application/useCases/CohortUsecase";
 import { ChartData } from "chart.js";
 import { CohortSingleUserResponse } from "@/core/model/CohortModel";
+import { getUser } from "@/application/stores/UserStore";
+import { sendAlarm } from "@/infrastructure/api/Alarm";
 
 interface HeatmapCell {
   row: string;
@@ -26,6 +28,7 @@ export function useCohortSingleAnalysisViewModel(clusterType: string) {
   const [result, setResult] = useState<CohortResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const hasNotifiedRef = useRef(false);
 
   useEffect(() => {
     const load = async () => {
@@ -37,8 +40,28 @@ export function useCohortSingleAnalysisViewModel(clusterType: string) {
           doughnutChart: data.doughnutChart as ChartData<"doughnut", number[], unknown>,
           lineChart: data.lineChart as ChartData<"line", number[], unknown>,
         });
+
+        // ✅ 성공 알림 전송
+        const { userNo } = getUser();
+        if (typeof userNo === "number") {
+          await sendAlarm(userNo, "코호트 분석이 완료되었습니다.");
+        }
       } catch (e) {
-        setError(e instanceof Error ? e : new Error("단일 Cohort 분석 실패"));
+        const err = e instanceof Error ? e : new Error("단일 Cohort 분석 실패");
+        setError(err);
+
+        // ✅ 실패 알림 단 1회 전송
+        if (!hasNotifiedRef.current) {
+          hasNotifiedRef.current = true;
+          const { userNo } = getUser();
+          if (typeof userNo === "number") {
+            try {
+              await sendAlarm(userNo, "코호트 분석 중 오류가 발생했습니다.");
+            } catch (alarmError) {
+              console.error("❌ 코호트 실패 알림 전송 실패:", alarmError);
+            }
+          }
+        }
       } finally {
         setIsLoading(false);
       }
@@ -69,6 +92,7 @@ export function useCohortDoubleAnalysisViewModel(
   const [resultB, setResultB] = useState<CohortResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+  const hasNotifiedRef = useRef(false);
 
   useEffect(() => {
     const load = async () => {
@@ -90,8 +114,28 @@ export function useCohortDoubleAnalysisViewModel(
           doughnutChart: results[1].doughnutChart as ChartData<"doughnut", number[], unknown>,
           lineChart: results[1].lineChart as ChartData<"line", number[], unknown>,
         });
+
+        // ✅ 성공 알림 전송
+        const { userNo } = getUser();
+        if (typeof userNo === "number") {
+          await sendAlarm(userNo, "코호트 분석이 완료되었습니다.");
+        }
       } catch (e) {
-        setError(e instanceof Error ? e : new Error("이중 Cohort 분석 실패"));
+        const err = e instanceof Error ? e : new Error("이중 Cohort 분석 실패");
+        setError(err);
+
+        // ✅ 실패 알림 단 1회 전송
+        if (!hasNotifiedRef.current) {
+          hasNotifiedRef.current = true;
+          const { userNo } = getUser();
+          if (typeof userNo === "number") {
+            try {
+              await sendAlarm(userNo, "코호트 분석 중 오류가 발생했습니다.");
+            } catch (alarmError) {
+              console.error("❌ 코호트 실패 알림 전송 실패:", alarmError);
+            }
+          }
+        }
       } finally {
         setIsLoading(false);
       }
