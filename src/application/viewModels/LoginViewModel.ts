@@ -1,4 +1,4 @@
-// 📁 /src/application/viewModels/LoginViewModel.ts
+// /src/application/viewModels/LoginViewModel.ts
 
 import { useState } from "react";
 import { LoginUseCase } from "../useCases/LoginUseCase";
@@ -8,7 +8,8 @@ import { UserRepository } from "@/infrastructure/repositories/UserRepository";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 import { sendAlarm } from "@/infrastructure/api/Alarm";
-import dayjs from "dayjs"; // ✅ 날짜 계산용
+import dayjs from "dayjs";
+import { useUserStore } from "../stores/UserStore";
 
 interface JwtPayload {
   email: string;
@@ -34,26 +35,17 @@ export const useLoginViewModel = () => {
     setError(null);
 
     try {
-      // 1. 로그인 수행 → 토큰 수신
       const { accessToken } = await loginUseCase.execute(email, password);
+      if (!accessToken) throw new Error("서버에서 토큰이 오지 않았습니다.");
 
-      if (!accessToken) {
-        throw new Error("서버에서 토큰이 오지 않았습니다.");
-      }
-
-      // 2. 토큰 저장
       setToken(accessToken, remember);
 
-      // 3. 토큰 디코딩 → 사용자 번호 추출
       const decoded = jwtDecode<JwtPayload>(accessToken);
       const userNo = decoded.user_no;
-
       if (!userNo) throw new Error("토큰에서 userNo를 받아오지 못했습니다.");
 
-      // 4. 사용자 정보 조회
-      const user = await userRepository.getMyPageUserInfo(Number(userNo));
+      const user = await userRepository.getMyPageUserInfo(userNo);
 
-      // 5. 남은 일수 계산 및 7일 이하일 경우 알림 전송
       const expiredAt = user.membershipExpiredAt;
       if (expiredAt) {
         const today = dayjs();
@@ -69,9 +61,32 @@ export const useLoginViewModel = () => {
         }
       }
 
-      // 6. 사용자 정보 localStorage에 저장
-      localStorage.setItem("user", JSON.stringify(user));
+      // basicInfo 먼저 선언
+      const basicInfo = await userRepository.getUserBasicInfo(userNo);
 
+      const role = await userRepository.getRoleNameByRoleNo(basicInfo.roleNo);
+      const originTable = await userRepository.getOriginTableByInfoDbNo(basicInfo.infoDbNo);
+
+      // UserStore에 저장
+      const store = useUserStore.getState();
+      store.setUserNo(basicInfo.userNo);
+      store.setCompanyNo(basicInfo.companyNo);
+      store.setInfoDbNo(basicInfo.infoDbNo);
+      store.setRoleNo(basicInfo.roleNo);
+      store.setRole(role);
+      store.setOriginTable(originTable);
+      // localStorage 저장
+      const userObject = {
+        userNo: basicInfo.userNo,
+        companyNo: basicInfo.companyNo,
+        infoDbNo: basicInfo.infoDbNo,
+        roleNo: basicInfo.roleNo,
+        role,
+        originTable,
+      };
+      localStorage.setItem("user", JSON.stringify(userObject));
+
+      console.log("최종 UserStore 상태: ", useUserStore.getState());
       toast.success("로그인 성공!");
       navigate("/dash-board");
     } catch (err) {

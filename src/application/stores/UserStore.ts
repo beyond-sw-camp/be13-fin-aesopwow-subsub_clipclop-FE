@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { CustomError } from '@/error/CustomError';
 import { ErrorCode } from '@/error/ErrorCode';
 
-type UserRole = 'USER' | 'ADMIN' | null;
+export type UserRole = 'ADMIN' | 'CLIENT_ADMIN' | 'CLIENT_USER' | 'USER' | null;
 
 export interface UserState {
     userNo: number | null;

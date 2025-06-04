@@ -1,4 +1,4 @@
-// 📁 src/presentation/components/organisms/QnaForm.tsx
+// src/presentation/components/organisms/QnaForm.tsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQnaViewModel } from '@/application/viewModels/QnaViewModel';
@@ -7,7 +7,7 @@ export default function QnaForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
-  const { writePost } = useQnaViewModel(); // ✅ ViewModel 사용
+  const { writePost } = useQnaViewModel();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

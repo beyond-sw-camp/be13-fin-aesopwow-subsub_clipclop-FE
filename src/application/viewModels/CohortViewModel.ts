@@ -115,7 +115,7 @@ export function useCohortDoubleAnalysisViewModel(
           lineChart: results[1].lineChart as ChartData<"line", number[], unknown>,
         });
 
-        // ✅ 성공 알림 전송
+        // 성공 알림 전송
         const { userNo } = getUser();
         if (typeof userNo === "number") {
           await sendAlarm(userNo, "코호트 분석이 완료되었습니다.");
@@ -124,7 +124,7 @@ export function useCohortDoubleAnalysisViewModel(
         const err = e instanceof Error ? e : new Error("이중 Cohort 분석 실패");
         setError(err);
 
-        // ✅ 실패 알림 단 1회 전송
+        // 실패 알림 단 1회 전송
         if (!hasNotifiedRef.current) {
           hasNotifiedRef.current = true;
           const { userNo } = getUser();
