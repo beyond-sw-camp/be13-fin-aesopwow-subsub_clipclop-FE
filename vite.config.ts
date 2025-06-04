@@ -1,15 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import svgr from "vite-plugin-svgr";
+import string from 'vite-plugin-string';
 
 export default defineConfig({
-  base: '/',
   plugins: [
     react(),
-    svgr({
-      include: "**/*.svg?react",
-      // exportAsDefault: true,
+    string({
+      include: '**/*.ttf',  // ttf 파일을 base64 문자열로 불러오기 위해 추가
     }),
   ],
   resolve: {
@@ -17,28 +15,5 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
-  build: {
-    rollupOptions: {},
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://dagudok-service.com',
-        changeOrigin: true,
-        secure: true,
-      }
-    }
-  },
-  // server: {
-  //   proxy: {
-  //     '/api': {
-  //       target: 'http://localhost:8001', // ✅ Spring 서버가 실제 실행 중인 주소
-  //       changeOrigin: true,
-  //     },
-  //   },
-  // }
-
-  // define: {
-  //   ''
-  // }
+  assetsInclude: ['**/*.ttf'], // 폰트를 정적 자산으로 인식
 });
