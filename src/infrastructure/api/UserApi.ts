@@ -7,8 +7,13 @@ export interface UserDeleteRequest {
   isDeleted?: boolean;
 }
 
+// 관리자 계정으로 직원을 삭제(추후 개발)
+// export async function deleteUser(userNo: number, request: UserDeleteRequest): Promise<void> {
+//   await axiosInstance.delete(`/user/${userNo}`, { data: request });
+// }
+
 export async function deleteUser(userNo: number, request: UserDeleteRequest): Promise<void> {
-  await axiosInstance.delete(`/user/${userNo}`, { data: request });
+  await axiosInstance.post(`/user/${userNo}`, request);
 }
 
 export async function fetchUserBasicInfo(userNo: number): Promise<{

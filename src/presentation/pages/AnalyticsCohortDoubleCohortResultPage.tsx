@@ -21,16 +21,15 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
 
   return (
     <div className="w-screen bg-primary text-gray-800">
-      {/* ✅ 일반 Header (스크롤에 포함됨) */}
+
       <Header />
-      {/* ✅ 본문 전체 스크롤 */}
+
       <main className="flex">
-        {/* ✅ 사이드 메뉴 (스크롤에 포함됨) */}
+
         <aside className="w-[240px] shrink-0 pt-4 pl-4">
           <SideMenu />
         </aside>
 
-        {/* ✅ 본문 콘텐츠 (스크롤 포함) */}
         <section className="flex-1 flex flex-col p-8">
           <div className="mb-4">
             <PageBreadcrumb title="Analysis/Cohort/Double" />
