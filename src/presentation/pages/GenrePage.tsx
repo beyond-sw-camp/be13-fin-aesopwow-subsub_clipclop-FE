@@ -9,16 +9,7 @@ import notoFont from "@/assets/fonts/NotoSansKR-Regular.ttf?url";
 import { sortUsersByKey } from "@/core/utils/sortUsersByKey";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
-
-// 날짜를 yyyy-MM-dd 형식 문자열로 변환하는 유틸 함수
-function formatDate(date: Date | string | undefined) {
-  if (!date) return "";
-  if (typeof date === "string") return date;
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
+import { formatDate } from "@/utils/FormAtDate";
 
 export default function GenrePage() {
   const { filters, setFilters, users, isLoading, error } = useSegmentViewModel("genre");
@@ -54,53 +45,61 @@ export default function GenrePage() {
   type SelectedField = typeof selectedFields[number];
 
   const handleExport = async () => {
-  const doc = new jsPDF();
 
-  const fontBinary = await fetch(notoFont)
-    .then(res => res.arrayBuffer())
-    .then(buffer => {
-      const binary = new Uint8Array(buffer)
-        .reduce((data, byte) => data + String.fromCharCode(byte), "");
-      return btoa(binary);
-    });
+    try {
 
-  doc.addFileToVFS("NotoSansKR-Regular.ttf", fontBinary);
-  doc.addFont("NotoSansKR-Regular.ttf", "NotoSansKR", "normal");
-  doc.setFont("NotoSansKR");
-  doc.setFontSize(14);
-  doc.text("User Favorite Genre Data", 14, 15);
-
-  const rows = sortedUsers.map((user) =>
-    selectedFields.map((field: SelectedField) => {
-      const value = user[field];
-      if (field === "lastLogin") {
-        return formatDate(value);
-      }
-      return String(value ?? "");
-    })
-  );
-
-  autoTable(doc, {
-    startY: 25,
-    head: [selectedFields.map((field) => ({ content: field }))],
-    body: rows,
-    styles: {
-      fontSize: 10,
-      font: "NotoSansKR",
-    },
-    headStyles: {
-      fillColor: [67, 160, 71],
-      textColor: 255,
-    },
-    columnStyles: {
-      0: { cellWidth: 20 },
-      1: { cellWidth: 30 },
-    },
-  });
-
-  doc.save("user_favorite_genre_data.pdf");
-};
-
+        const doc = new jsPDF();
+        
+        const fontBinary = await fetch(notoFont)
+        .then(res => res.arrayBuffer())
+        .then(buffer => {
+            const binary = new Uint8Array(buffer)
+            .reduce((data, byte) => data + String.fromCharCode(byte), "");
+            return btoa(binary);
+        });
+        
+        doc.addFileToVFS("NotoSansKR-Regular.ttf", fontBinary);
+        doc.addFont("NotoSansKR-Regular.ttf", "NotoSansKR", "normal");
+        doc.setFont("NotoSansKR");
+        doc.setFontSize(14);
+        doc.text("User Favorite Genre Data", 14, 15);
+        
+        const rows = sortedUsers.map((user) =>
+            selectedFields.map((field: SelectedField) => {
+                const value = user[field];
+                if (field === "lastLogin") {
+                    return formatDate(value);
+                }
+                return String(value ?? "");
+            })
+        );
+        
+        autoTable(doc, {
+            startY: 25,
+            head: [selectedFields.map((field) => ({ content: field }))],
+            body: rows,
+            styles: {
+                fontSize: 10,
+                font: "NotoSansKR",
+            },
+            headStyles: {
+                fillColor: [67, 160, 71],
+                textColor: 255,
+            },
+            columnStyles: {
+                0: { cellWidth: 20 },
+                1: { cellWidth: 30 },
+            },
+        });
+        
+        const fileName = `user_favorite_genre_data_${new Date().toISOString().split('T')[0]}.pdf`;
+        doc.save(fileName);
+        } catch (error) {
+            console.error("PDF 내보내기 실패", error);
+            alert("PDF 내보내기에 실패했습니다.")
+        }
+    };
+    
   return (
     <div className="min-h-screen w-screen bg-primary text-gray-800">
       <Header />

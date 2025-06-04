@@ -9,15 +9,8 @@ import { sortUsersByKey } from "@/core/utils/sortUsersByKey";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import notoFont from "@/assets/fonts/NotoSansKR-Regular.ttf?url";
+import { formatDate } from "@/utils/FormAtDate";
 
-function formatDate(date: Date | string | undefined) {
-  if (!date) return "";
-  if (typeof date === "string") return date;
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
 
 export default function SubscriptionPage() {
   const { filters, setFilters, users, isLoading, error } = useSegmentViewModel("subscription");
@@ -53,45 +46,53 @@ export default function SubscriptionPage() {
   type SelectedField = typeof selectedFields[number];
 
   const handleExport = async () => {
-    const doc = new jsPDF();
+    try {
 
-    const fontBinary = await fetch(notoFont)
+      const doc = new jsPDF();
+      
+      const fontBinary = await fetch(notoFont)
       .then((res) => res.arrayBuffer())
       .then((buffer) => {
         const binary = new Uint8Array(buffer).reduce(
-            (data, byte) => data + String.fromCharCode(byte), 
-            ""
+          (data, byte) => data + String.fromCharCode(byte), 
+          ""
         );
         return btoa(binary);
       });
-
-    doc.addFileToVFS("NotoSansKR-Regular.ttf", fontBinary);
-    doc.addFont("NotoSansKR-Regular.ttf", "NotoSansKR", "normal");
-    doc.setFont("NotoSansKR");
-    doc.setFontSize(14);
-    doc.text("User Subscription Data", 14, 15);
-
-    const rows = sortedUsers.map((user) =>
-      selectedFields.map((field: SelectedField) =>
-        field === "lastLogin" ? formatDate(user[field]) : String(user[field] ?? "")
-      )
-    );
-
-    autoTable(doc, {
-      startY: 25,
-      head: [selectedFields.map((field) => ({ content: field }))],
-      body: rows,
-      styles: {
-        fontSize: 10,
-        font: "NotoSansKR",
-      },
-      headStyles: {
-        fillColor: [67, 160, 71],
-        textColor: 255,
-      },
-    });
-
-    doc.save("user_subscription_data.pdf");
+      
+      doc.addFileToVFS("NotoSansKR-Regular.ttf", fontBinary);
+      doc.addFont("NotoSansKR-Regular.ttf", "NotoSansKR", "normal");
+      doc.setFont("NotoSansKR");
+      doc.setFontSize(14);
+      doc.text("User Subscription Data", 14, 15);
+      
+      const rows = sortedUsers.map((user) =>
+        selectedFields.map((field: SelectedField) =>
+          field === "lastLogin" ? formatDate(user[field]) : String(user[field] ?? "")
+        )
+      );
+  
+      autoTable(doc, {
+        startY: 25,
+        head: [selectedFields.map((field) => ({ content: field }))],
+        body: rows,
+        styles: {
+          fontSize: 10,
+          font: "NotoSansKR",
+        },
+        headStyles: {
+          fillColor: [67, 160, 71],
+          textColor: 255,
+        },
+      });
+  
+      const fileName = `user_subscription_data_${new Date().toISOString().split('T')[0]}.pdf`;
+      doc.save(fileName);
+  
+    } catch (error) {
+      console.error("PDF 내보내기 실패", error);
+      alert("PDF 내보내기에 실패했습니다.")
+    }
   };
 
   return (

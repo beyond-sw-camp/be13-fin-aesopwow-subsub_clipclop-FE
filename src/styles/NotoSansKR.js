@@ -1,5 +1,4 @@
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import notoSansKRBase64 from "../fonts/NotoSansKR-Regular.base64";
 
 // 1. 폰트 등록
