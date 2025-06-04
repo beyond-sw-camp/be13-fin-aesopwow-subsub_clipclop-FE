@@ -1,24 +1,23 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
+    "typeRoots": [
+      "./types",
+      "./node_modules/@types"
+    ],
     "types": [
-      "vite-plugin-svgr/client"
+      "vite-plugin-svgr/client",
+      "jspdf"
     ],
     "paths": {
-      "@/*": [
-        "*"
-      ]
+      "@/*": ["*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"
   },
   "files": [],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }
