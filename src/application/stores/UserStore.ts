@@ -1,63 +1,83 @@
-// /src/application/stores/UserStore.ts
-// import { create } from "zustand";
-// import { CustomError } from "@/error/CustomError";
-// import { ErrorCode } from "@/error/ErrorCode";
+import { create } from 'zustand';
+import { CustomError } from '@/error/CustomError';
+import { ErrorCode } from '@/error/ErrorCode';
 
-// interface UserState {
-//   companyNo: number | null;
-//   infoDbNo: number | null;
-//   originTable: string | null;
-//   setCompanyNo: (companyNo: number) => void;
-//   setInfoDbNo: (infoDbNo: number) => void;
-//   setOriginTable: (originTable: string) => void;
-// }
+type UserRole = 'USER' | 'ADMIN' | null;
 
-// export const useUserStore = create<UserState>((set) => ({
-//   companyNo: null,
-//   infoDbNo: null,
-//   originTable: null,
-//   setCompanyNo: (companyNo: number) => set({ companyNo }),
-//   setInfoDbNo: (infoDbNo: number) => set({ infoDbNo }),
-//   setOriginTable: (originTable: string) => set({ originTable }),
-// }));
+export interface UserState {
+    userNo: number | null;
+    companyNo: number | null;
+    infoDbNo: number | null;
+    originTable: string | null;
+    role: UserRole;
+    roleNo: number | null;
 
-// // 유틸 함수: 반드시 모든 정보가 존재해야 한다는 전제
-// export function getUser() {
-//   const { companyNo, infoDbNo, originTable } = useUserStore.getState();
-//   if (!companyNo || !infoDbNo || !originTable) {
-//     throw new CustomError(ErrorCode.USER_NOT_FOUND);
-//   }
-//   return { companyNo, infoDbNo, originTable };
-// }
+    // 고객 정보
+    name: string;
+    phone: string;
+    email: string;
 
-// /src/application/stores/UserStore.ts
-import { create } from "zustand";
-import { CustomError } from "@/error/CustomError";
-import { ErrorCode } from "@/error/ErrorCode";
+    // Setter
+    setUserNo: (userNo: number) => void;
+    setCompanyNo: (companyNo: number) => void;
+    setInfoDbNo: (infoDbNo: number) => void;
+    setOriginTable: (originTable: string) => void;
+    setRole: (role: UserRole) => void;
+    setRoleNo: (roleNo: number) => void;
 
-interface UserState {
-  companyNo: number | null;
-  infoDbNo: number | null;
-  originTable: string | null;
-  setCompanyNo: (companyNo: number) => void;
-  setInfoDbNo: (infoDbNo: number) => void;
-  setOriginTable: (originTable: string) => void;
+    setName: (name: string) => void;
+    setPhone: (phone: string) => void;
+    setEmail: (email: string) => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
-  companyNo: 1,              // ✅ 하드코딩된 테스트 값
-  infoDbNo: 1,               // ✅ 하드코딩된 테스트 값
-  originTable: "subscription_user",  // ✅ 하드코딩된 테스트 값
-  setCompanyNo: (companyNo: number) => set({ companyNo }),
-  setInfoDbNo: (infoDbNo: number) => set({ infoDbNo }),
-  setOriginTable: (originTable: string) => set({ originTable }),
+    // 권한/식별자 정보
+    userNo: null,
+    companyNo: null,
+    infoDbNo: null,
+    originTable: null,
+    role: null,
+    roleNo: null,
+
+    // 고객 정보
+    name: "",
+    phone: "",
+    email: "",
+
+    // Setter
+    setUserNo: (userNo: number) => set({ userNo }),
+    setCompanyNo: (companyNo: number) => set({ companyNo }),
+    setInfoDbNo: (infoDbNo: number) => set({ infoDbNo }),
+    setOriginTable: (originTable: string) => set({ originTable }),
+    setRole: (role: UserRole) => set({ role }),
+    setRoleNo: (roleNo: number) => set({ roleNo }),
+
+    setName: (name: string) => set({ name }),
+    setPhone: (phone: string) => set({ phone }),
+    setEmail: (email: string) => set({ email }),
 }));
 
-// 유틸 함수: 반드시 모든 정보가 존재해야 한다는 전제
+/**
+ * 유틸 함수: 로그인 상태 + 관리자 여부 확인 포함
+ */
 export function getUser() {
-  const { companyNo, infoDbNo, originTable } = useUserStore.getState();
-  if (!companyNo || !infoDbNo || !originTable) {
-    throw new CustomError(ErrorCode.USER_NOT_FOUND);
-  }
-  return { companyNo, infoDbNo, originTable };
+    const {
+        userNo, companyNo, infoDbNo, originTable, role, roleNo,
+        name, phone, email
+    } = useUserStore.getState();
+    
+    if (
+        userNo === null ||
+        companyNo === null ||
+        infoDbNo === null ||
+        originTable === null ||
+        role === null ||
+        roleNo === null
+    ) {
+        throw new CustomError(ErrorCode.USER_NOT_FOUND);
+    }
+    return {
+        userNo, companyNo, infoDbNo, originTable, role, roleNo,
+        name, phone, email
+    };
 }

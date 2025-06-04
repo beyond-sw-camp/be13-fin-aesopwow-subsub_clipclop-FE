@@ -13,6 +13,19 @@ export const loginApi = async (
   return response.data;
 };
 
+export const LogoutApi = async (): Promise<void> => {
+  const token = 
+  localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken");
+
+  if (!token) return;
+
+  await axiosInstance.post("/auth/logout", null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
 export const EmailCheckApi = async (
   payload: CheckEmailRequest
 ): Promise<CheckEmailResponse> => {
@@ -39,7 +52,7 @@ export const SignupOtpApi = async (
   password: string,
   name: string,
 ): Promise<SignupRequestOtp> => {
-  const requestData = { email, password, name };
+  const requestData = { email, password, name }
 
   return await axiosInstance.post(`/auth/signup/otp`, requestData); // 경로 수정
 };
@@ -53,13 +66,21 @@ export const VerifyOtpApi = async (
   return response.data;
 };
 
+export const ResendOtpApi = async (
+  email: string
+): Promise<string> => {
+  const response = await axiosInstance.post("/auth/signup/resend-otp", { email });
+  return response.data;
+};
+
 export const SignupApi = async (
   email: string,
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
+  name: string
 ): Promise<string> => {
-  const payload= { email, password, confirmPassword };
-  const response = await axiosInstance.post("/auth/signup", payload); // 경로 수정
+  const payload = { email, password, confirmPassword, name };
+  const response = await axiosInstance.post("/auth/signup", payload);
   return response.data;
 };
 

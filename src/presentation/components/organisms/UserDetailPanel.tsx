@@ -1,14 +1,20 @@
 import { InfoSection } from "@/presentation/components/molecules/InfoSection";
+import { useAlarmViewModel } from "@/application/viewModels/useAlarmViewModel";
 
 export function UserDetailPanel({
   onCompanyClick,
   onStaffClick,
   onRequestClick,
+  onAlarmClick,
 }: {
   onCompanyClick: () => void;
   onStaffClick: () => void;
   onRequestClick: () => void;
+  onAlarmClick: () => void;
 }) {
+
+  const { alarms, loading } = useAlarmViewModel();
+
   return (
     <div className="flex flex-col gap-6 w-1/2 mx-auto">
       <InfoSection
@@ -41,18 +47,21 @@ export function UserDetailPanel({
       />
       <InfoSection
         title="알림"
-        items={[
-          {
-            id: "alert-1",
-            subtitle: "분석 결과 생성",
-            content: "분석 결과가 성공적으로 생성되었습니다!",
-          },
-          {
-            id: "alert-2",
-            subtitle: "Ultimate 모델 구독",
-            content: "결제 성공하였습니다.",
-          },
-        ]}
+        items={loading
+          ? [
+            {
+              id: "loading",
+              subtitle: "불러오는중..",
+              content: "알림 데이터를 가져오는 중 입니다.",
+            },
+          ]
+          : alarms.map((n) => ({
+            id: `alarm-${n.id}`,
+            subtitle: n.subtitle,
+            content: n.content,
+            onClick: onAlarmClick,
+          }))
+        }
       />
     </div>
   );

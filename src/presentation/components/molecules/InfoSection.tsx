@@ -19,7 +19,7 @@ export function InfoSection({ title, items }: InfoSectionProps) {
       </h2>
 
       <div className="flex flex-col gap-4">
-        {items.map((item, idx) => (
+        {items.map((item, {/*idx*/}) => (
           <div
             key={item.id}
             onClick={item.onClick}

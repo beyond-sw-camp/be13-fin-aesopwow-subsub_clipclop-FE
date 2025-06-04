@@ -25,7 +25,7 @@ interface Props {
 
 export const ChangePasswordCard = ({ form, setForm }: Props) => {
   const [otpOpen, setOtpOpen] = useState(false);
-  const [verified, setVerified] = useState(false);
+  // const [verified, setVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -52,7 +52,7 @@ export const ChangePasswordCard = ({ form, setForm }: Props) => {
   const handleOtpVerify = async (otp: string) => {
     try {
       await ForgotPasswordVerifyOtpApi(form.email, otp);
-      setVerified(true);
+      // setVerified(true);
       setOtpOpen(false);
       alert("OTP 인증이 완료되었습니다. 새 비밀번호를 입력해주세요.");
     } catch (error) {

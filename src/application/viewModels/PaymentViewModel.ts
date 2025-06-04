@@ -1,21 +1,36 @@
+import { useEffect } from "react";
 import { usePaymentStore } from "@/application/stores/PaymentStore";
+import { useUserStore } from "@/application/stores/UserStore";
 import { PaymentUseCase } from "@/application/useCases/PaymentUseCase";
 import type { PaymentRequest } from "@portone/browser-sdk/v2";
 
 export const usePaymentViewModel = () => {
+    const { name, phone, email } = useUserStore();
     const customer = usePaymentStore((state) => state.customer);
+    const setCustomer = usePaymentStore((state) => state.setCustomer);
     const useCase = new PaymentUseCase();
 
-    const requestPayment = async () => {
+    useEffect(() => {
+        setCustomer({
+            fullName: name,
+            phoneNumber: phone,
+            email: email,
+        });
+    }, [name, phone, email, setCustomer]);
+
+    const requestPayment = async ({
+        orderName,
+        totalAmount,
+    }: { orderName: string; totalAmount: number }) => {
         const paymentRequest: PaymentRequest = {
             storeId: "store-5f8fa9bc-3f56-4951-8657-d3e3cc2d659d",
             channelKey: "channel-key-81e88f40-9419-409b-846c-51ef52139e1d",
             paymentId: useCase.generateOrderId(),
-            orderName: "Basic 구독",
-            totalAmount: 3900,
+            orderName,
+            totalAmount,
             currency: "CURRENCY_KRW",
             payMethod: "CARD",
-            customer, // 하드코딩된 email 제거
+            customer,
         };
         try {
             const response = await useCase.requestPayment(paymentRequest);
