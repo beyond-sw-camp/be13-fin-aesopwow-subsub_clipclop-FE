@@ -2,6 +2,7 @@ interface InfoItem {
   id: string;
   subtitle: string;
   content: string;
+  isRead?: boolean; // ✅ 알림의 읽음 여부 (선택적)
   onClick?: () => void;
 }
 
@@ -19,13 +20,14 @@ export function InfoSection({ title, items }: InfoSectionProps) {
       </h2>
 
       <div className="flex flex-col gap-4">
-        {items.map((item, {/*idx*/}) => (
+        {items.map((item) => (
           <div
             key={item.id}
             onClick={item.onClick}
-            className={`flex flex-col items-center w-full cursor-pointer transition ${
-              item.onClick ? "hover:bg-gray-100 p-3 rounded-md" : ""
-            }`}
+            className={`flex flex-col items-center w-full cursor-pointer transition
+              ${item.isRead === false ? "bg-purple-100" : ""}
+              ${item.onClick ? "hover:bg-gray-100 p-3 rounded-md" : ""}
+            `}
           >
             <div className="text-sm font-semibold text-gray-700 text-left w-full">
               {item.subtitle}

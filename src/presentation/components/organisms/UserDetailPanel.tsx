@@ -12,9 +12,7 @@ export function UserDetailPanel({
   onRequestClick: () => void;
   onAlarmClick: () => void;
 }) {
-
-  // const userNo = 7; //수정해라 나자신
-  const { alarms, loading } = useAlarmViewModel();
+  const { alarms, loading, markAsRead } = useAlarmViewModel();
 
   return (
     <div className="flex flex-col gap-6 w-1/2 mx-auto">
@@ -48,20 +46,25 @@ export function UserDetailPanel({
       />
       <InfoSection
         title="알림"
-        items={loading
-          ? [
-            {
-              id: "loading",
-              subtitle: "불러오는중..",
-              content: "알림 데이터를 가져오는 중 입니다.",
-            },
-          ]
-          : alarms.map((n) => ({
-            id: `alarm-${n.id}`,
-            subtitle: n.subtitle,
-            content: n.content,
-            onClick: onAlarmClick,
-          }))
+        items={
+          loading
+            ? [
+                {
+                  id: "loading",
+                  subtitle: "불러오는중..",
+                  content: "알림 데이터를 가져오는 중 입니다.",
+                },
+              ]
+            : alarms.map((n) => ({
+                id: n.id, // ✅ 숫자 그대로 넘김
+                subtitle: n.subtitle,
+                content: n.content,
+                isRead: n.isRead,
+                onClick: () => {
+                  markAsRead(n.id); // ✅ 숫자 그대로 사용
+                  onAlarmClick();
+                },
+              }))
         }
       />
     </div>

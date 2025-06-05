@@ -25,14 +25,27 @@ a:hover {
   color: #535bf2;
 }
 
+/* ✅ 수정: body는 더 이상 display: flex 아님 */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
+  overflow-x: hidden;
+  background-color: #ffffff; /* 또는 프로젝트 기본 배경색 */
 }
 
+/* ✅ root 전체 height 흐름 보장 */
+html,
+body,
+#root {
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ✅ 기타 요소 스타일 유지 */
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -68,8 +81,4 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
-}
-
-html, body {
-  overflow: auto !important;
 }

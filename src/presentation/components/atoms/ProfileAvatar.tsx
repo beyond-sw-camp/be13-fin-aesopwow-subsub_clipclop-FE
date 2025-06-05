@@ -6,12 +6,11 @@ import profileImage from "@/assets/profile.png";
 import { LogoutButton } from "../molecules/LogoutButton";
 import { CustomButton } from "../atoms/CustomButton";
 
-export function ProfileAvatar() {
+export function ProfileAvatar({ hasUnread }: { hasUnread?: boolean }) {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
-  // 외부 클릭 시 팝업 닫기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -24,13 +23,20 @@ export function ProfileAvatar() {
 
   return (
     <div className="fixed top-4 right-4 z-50" ref={dropdownRef}>
-      {/* 프로필 이미지 클릭 */}
-      <img
-        src={profileImage}
-        alt="User Avatar"
-        className="w-10 h-10 rounded-full cursor-pointer border-2 border-white shadow-md"
-        onClick={() => setOpen((prev) => !prev)}
-      />
+      <div className="relative w-10 h-10">
+        {/* 프로필 이미지 */}
+        <img
+          src={profileImage}
+          alt="User Avatar"
+          className="w-10 h-10 rounded-full cursor-pointer border-2 border-white shadow-md"
+          onClick={() => setOpen((prev) => !prev)}
+        />
+
+        {/* 🔴 안 읽은 알림 표시 */}
+        {hasUnread && (
+          <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border border-white" />
+        )}
+      </div>
 
       {/* 드롭다운 팝업 */}
       {open && (

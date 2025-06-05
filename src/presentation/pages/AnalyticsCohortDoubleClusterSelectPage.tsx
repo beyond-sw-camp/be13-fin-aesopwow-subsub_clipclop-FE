@@ -4,7 +4,6 @@ import { DoubleClusterSelectionPanel } from "../components/organisms/DoubleClust
 import { StepProgress } from "@/presentation/components/molecules/StepProgress";
 import { Header } from "@/presentation/layout/Header";
 import ProtectedRoute from "../components/organisms/LoginProtectedRoute";
-import { LogoutButton } from "../components/molecules/LogoutButton";
 
 export default function AnalyticsCohortSingleClusterSelectPage() {
   return (
@@ -38,7 +37,6 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
             {/* 본문 콘텐츠 */}
             <div className="w-full mb-6">
               <DoubleClusterSelectionPanel />
-              <LogoutButton></LogoutButton>
             </div>
           </div>
         </div>

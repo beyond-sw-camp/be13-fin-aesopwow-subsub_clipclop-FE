@@ -1,110 +1,44 @@
-// /src/infrastructure/api/CohortApi.ts
-import axiosInstance from "@/infrastructure/api/Axios.ts";
-import { getUser } from "@/application/stores/UserStore.ts";
-import { CustomError } from "@/error/CustomError";
-import { ErrorResponse } from "@/error/ErrorResponse";
-import { ErrorCode } from "@/error/ErrorCode";
+// 📁 /src/infrastructure/api/CohortApi.ts
+import axiosInstance from "@/infrastructure/api/Axios";
+import { getUser } from "@/application/stores/UserStore";
 
-// MARK: - Single 시각화
-export async function fetchSingleVisualizationApi(clusterType: string) {
-  if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
+/**
+ * 📌 Cohort 분석 결과 요청 (Single & Double 겸용)
+ */
+export async function fetchCohortCsvApi(
+  options:
+    | { clusterType: string }
+    | { firstClusterType: string; secondClusterType: string }
+): Promise<string> {
+  const { infoDbNo, originTable } = getUser();
 
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/single/visualization", { companyNo, clusterType });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
+  if (!infoDbNo || !originTable) {
+    throw new Error("필수 파라미터 누락 (infoDbNo, originTable)");
   }
-}
 
-// MARK: - Single 인사이트
-export async function fetchSingleInsightApi(clusterType: string) {
-  if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
+  // 📌 단일 Cohort 분석
+  if ("clusterType" in options) {
+    const { clusterType } = options;
+    if (!clusterType) throw new Error("단일 분석: clusterType 누락");
 
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/single/insight", { companyNo, clusterType });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
+    const response = await axiosInstance.get(`/analysis/cohort`, {
+      params: { infoDbNo, originTable, clusterType },
+      responseType: "blob",
+    });
+
+    return await response.data.text();
   }
-}
 
-// MARK: - Single 히트맵
-export async function fetchSingleRemainHeatmapApi(clusterType: string) {
-  if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/single/remain-heatmap", { companyNo, clusterType });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
+  // 📌 이중 Cohort 분석
+  const { firstClusterType, secondClusterType } = options;
+  if (!firstClusterType || !secondClusterType) {
+    throw new Error("이중 분석: firstClusterType 또는 secondClusterType 누락");
   }
-}
 
-// MARK: - Single 유저 데이터
-export async function fetchSingleUserDataSearchResultApi(clusterType: string, fields: string[]) {
-  if (!clusterType || !fields.length) throw new CustomError(ErrorCode.INVALID_PARAMS);
+  const response = await axiosInstance.get(`/analysis/cohort`, {
+    params: { infoDbNo, originTable, firstClusterType, secondClusterType },
+    responseType: "blob",
+  });
 
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/single/user-data", { companyNo, clusterType, fields });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
-  }
-}
-
-// MARK: - Double 시각화
-export async function fetchDoubleVisualizationApi(firstClusterType: string, secondClusterType: string) {
-  if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/double/visualization", { companyNo, firstClusterType, secondClusterType });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
-  }
-}
-
-// MARK: - Double 인사이트
-export async function fetchDoubleInsightApi(firstClusterType: string, secondClusterType: string) {
-  if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/double/insight", { companyNo, firstClusterType, secondClusterType });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
-  }
-}
-
-// MARK: - Double 히트맵
-export async function fetchDoubleRemainHeatmapApi(firstClusterType: string, secondClusterType: string) {
-  if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/double/remain-heatmap", { companyNo, firstClusterType, secondClusterType });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
-  }
-}
-
-// MARK: - Double 유저 데이터
-export async function fetchDoubleUserDataSearchResultApi(firstClusterType: string, secondClusterType: string, fields: string[]) {
-  if (!firstClusterType || !secondClusterType || !fields.length) throw new CustomError(ErrorCode.INVALID_PARAMS);
-
-  try {
-    const { companyNo } = getUser();
-    const res = await axiosInstance.post("/analysis/cohort/double/user-data", { companyNo, firstClusterType, secondClusterType, fields });
-    return res.data;
-  } catch (error) {
-    throw new ErrorResponse(error);
-  }
+  return await response.data.text();
 }

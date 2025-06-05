@@ -1,233 +1,171 @@
-// /src/application/viewModels/CohortViewModel.ts
-import { useState, useEffect } from "react";
+// 📁 /src/application/viewModels/CohortViewModel.ts
+import { useState, useEffect, useRef } from "react";
 import {
-  fetchCohortSingleVisualization,
-  fetchCohortSingleInsight,
-  fetchCohortSingleRemainHeatmap,
-  fetchCohortSingleUserDataSearchResult,
-  fetchCohortDoubleInsight,
-  fetchCohortDoubleVisualization,
-  fetchCohortDoubleRemainHeatmap,
-  fetchCohortDoubleUserDataSearchResult
+  fetchCohortFullAnalysis,
+  fetchDoubleCohortFullAnalysis,
 } from "@/application/useCases/CohortUsecase";
+import { ChartData } from "chart.js";
+import { CohortSingleUserResponse } from "@/core/model/CohortModel";
+import { getUser } from "@/application/stores/UserStore";
+import { sendAlarm } from "@/infrastructure/api/Alarm";
 
-import {
-  CohortSingleUserResponse,
-  CohortSingleInsightResponse,
-  CohortSingleHeatmapResponse,
-  CohortSingleVisualizationResponse,
-  CohortDoubleInsightResponse,
-  CohortDoubleVisualizationResponse,
-  CohortDoubleHeatmapResponse,
-  CohortDoubleUserResponse
-} from "@/core/model/CohortModel";
+interface HeatmapCell {
+  row: string;
+  col: string;
+  value: string;
+}
 
-import { ErrorResponse } from "@/error/ErrorResponse";
-import { CustomError } from "@/error/CustomError";
-import { ErrorCode } from "@/error/ErrorCode";
+interface CohortResult {
+  heatmap: HeatmapCell[];
+  doughnutChart: ChartData<"doughnut", number[], unknown> | null;
+  lineChart: ChartData<"line", number[], unknown> | null;
+  insight: string;
+  userData: CohortSingleUserResponse[];
+}
 
-// MARK: - Single 시각화
-export function useCohortSingleVisualizationViewModel(clusterType: string) {
-  const [data, setData] = useState<CohortSingleVisualizationResponse | null>(null);
+// ✅ 단일 Cohort 분석 ViewModel
+export function useCohortSingleAnalysisViewModel(clusterType: string) {
+  const [result, setResult] = useState<CohortResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ErrorResponse | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const hasNotifiedRef = useRef(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const load = async () => {
       try {
-        if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
         setIsLoading(true);
-        const result = await fetchCohortSingleVisualization(clusterType);
-        setData(result);
-        setError(null);
+        const data = await fetchCohortFullAnalysis(clusterType);
+        setResult({
+          ...data,
+          doughnutChart: data.doughnutChart as ChartData<"doughnut", number[], unknown>,
+          lineChart: data.lineChart as ChartData<"line", number[], unknown>,
+        });
+
+        // ✅ 성공 알림 전송
+        const { userNo } = getUser();
+        if (typeof userNo === "number") {
+          await sendAlarm(userNo, "코호트 분석이 완료되었습니다.");
+        }
       } catch (e) {
-        setError(new ErrorResponse(e));
+        const err = e instanceof Error ? e : new Error("단일 Cohort 분석 실패");
+        setError(err);
+
+        // ✅ 실패 알림 단 1회 전송
+        if (!hasNotifiedRef.current) {
+          hasNotifiedRef.current = true;
+          const { userNo } = getUser();
+          if (typeof userNo === "number") {
+            try {
+              await sendAlarm(userNo, "코호트 분석 중 오류가 발생했습니다.");
+            } catch (alarmError) {
+              console.error("❌ 코호트 실패 알림 전송 실패:", alarmError);
+            }
+          }
+        }
       } finally {
         setIsLoading(false);
       }
     };
-    fetchData();
-  }, [clusterType]);
 
-  return { data, isLoading, error };
-}
-
-// MARK: - Single 인사이트
-export function useCohortSingleInsightViewModel(clusterType: string) {
-  const [data, setData] = useState<CohortSingleInsightResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ErrorResponse | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-        setIsLoading(true);
-        const result = await fetchCohortSingleInsight(clusterType);
-        setData(result);
-        setError(null);
-      } catch (e) {
-        setError(new ErrorResponse(e));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [clusterType]);
-
-  return { data, isLoading, error };
-}
-
-// MARK: - Single 히트맵
-export function useCohortSingleRemainHeatmapViewModel(clusterType: string) {
-  const [data, setData] = useState<CohortSingleHeatmapResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<ErrorResponse | null>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!clusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-        setIsLoading(true);
-        const result = await fetchCohortSingleRemainHeatmap(clusterType);
-        setData(result);
-        setError(null);
-      } catch (e) {
-        setError(new ErrorResponse(e));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [clusterType]);
-
-  return { data, isLoading, error };
-}
-
-// MARK: - Single 유저 데이터
-export function useSingleUserDataSearchResultViewModel() {
-  const [data, setData] = useState<CohortSingleUserResponse[]>([]);
-  const [error, setError] = useState<ErrorResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const search = async (clusterType: string, fields: string[]) => {
-    try {
-      if (!clusterType || !fields.length) throw new CustomError(ErrorCode.INVALID_PARAMS);
-      setIsLoading(true);
-      const result = await fetchCohortSingleUserDataSearchResult(clusterType, fields);
-      setData(result);
-      setError(null);
-    } catch (e) {
-      setError(new ErrorResponse(e));
-    } finally {
-      setIsLoading(false);
+    if (clusterType) {
+      load();
     }
+  }, [clusterType]);
+
+  return {
+    heatmap: result?.heatmap ?? [],
+    doughnutChart: result?.doughnutChart ?? null,
+    lineChart: result?.lineChart ?? null,
+    insight: result?.insight ?? "",
+    userData: result?.userData ?? [],
+    isLoading,
+    error,
   };
-
-  return { data, error, isLoading, search };
 }
 
-// MARK: - Double 시각화
-export function useCohortDoubleVisualizationViewModel(firstClusterType: string, secondClusterType: string) {
-  const [data, setData] = useState<CohortDoubleVisualizationResponse | null>(null);
-  const [error, setError] = useState<ErrorResponse | null>(null);
+// ✅ 이중 Cohort 분석 ViewModel
+export function useCohortDoubleAnalysisViewModel(
+  firstClusterType: string,
+  secondClusterType: string
+) {
+  const [resultA, setResultA] = useState<CohortResult | null>(null);
+  const [resultB, setResultB] = useState<CohortResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const hasNotifiedRef = useRef(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const load = async () => {
       try {
-        if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
         setIsLoading(true);
-        const result = await fetchCohortDoubleVisualization(firstClusterType, secondClusterType);
-        setData(result);
-        setError(null);
+        const results = await fetchDoubleCohortFullAnalysis(
+          firstClusterType,
+          secondClusterType
+        );
+
+        setResultA({
+          ...results[0],
+          doughnutChart: results[0].doughnutChart as ChartData<"doughnut", number[], unknown>,
+          lineChart: results[0].lineChart as ChartData<"line", number[], unknown>,
+        });
+
+        setResultB({
+          ...results[1],
+          doughnutChart: results[1].doughnutChart as ChartData<"doughnut", number[], unknown>,
+          lineChart: results[1].lineChart as ChartData<"line", number[], unknown>,
+        });
+
+        // 성공 알림 전송
+        const { userNo } = getUser();
+        if (typeof userNo === "number") {
+          await sendAlarm(userNo, "코호트 분석이 완료되었습니다.");
+        }
       } catch (e) {
-        setError(new ErrorResponse(e));
+        const err = e instanceof Error ? e : new Error("이중 Cohort 분석 실패");
+        setError(err);
+
+        // 실패 알림 단 1회 전송
+        if (!hasNotifiedRef.current) {
+          hasNotifiedRef.current = true;
+          const { userNo } = getUser();
+          if (typeof userNo === "number") {
+            try {
+              await sendAlarm(userNo, "코호트 분석 중 오류가 발생했습니다.");
+            } catch (alarmError) {
+              console.error("❌ 코호트 실패 알림 전송 실패:", alarmError);
+            }
+          }
+        }
       } finally {
         setIsLoading(false);
       }
     };
-    fetchData();
-  }, [firstClusterType, secondClusterType]);
 
-  return { data, error, isLoading };
-}
-
-// MARK: - Double 인사이트
-export function useCohortDoubleInsightViewModel(firstClusterType: string, secondClusterType: string) {
-  const [data, setData] = useState<CohortDoubleInsightResponse | null>(null);
-  const [error, setError] = useState<ErrorResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-        setIsLoading(true);
-        const result = await fetchCohortDoubleInsight(firstClusterType, secondClusterType);
-        setData(result);
-        setError(null);
-      } catch (e) {
-        setError(new ErrorResponse(e));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [firstClusterType, secondClusterType]);
-
-  return { data, error, isLoading };
-}
-
-// MARK: - Double 히트맵
-export function useCohortDoubleRemainHeatmapViewModel(firstClusterType: string, secondClusterType: string) {
-  const [data, setData] = useState<CohortDoubleHeatmapResponse | null>(null);
-  const [error, setError] = useState<ErrorResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (!firstClusterType || !secondClusterType) throw new CustomError(ErrorCode.INVALID_PARAMS);
-        setIsLoading(true);
-        const result = await fetchCohortDoubleRemainHeatmap(firstClusterType, secondClusterType);
-        setData(result);
-        setError(null);
-      } catch (e) {
-        setError(new ErrorResponse(e));
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchData();
-  }, [firstClusterType, secondClusterType]);
-
-  return { data, error, isLoading };
-}
-
-// MARK: - Double 유저 데이터
-export function useCohortDoubleUserDataSearchResultViewModel() {
-  const [firstData, setFirstData] = useState<CohortDoubleUserResponse[]>([]);
-  const [secondData, setSecondData] = useState<CohortDoubleUserResponse[]>([]);
-  const [error, setError] = useState<ErrorResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const search = async (firstClusterType: string, secondClusterType: string, fields: string[]) => {
-    try {
-      if (!firstClusterType || !secondClusterType || !fields.length) {
-        throw new CustomError(ErrorCode.INVALID_PARAMS);
-      }
-      setIsLoading(true);
-      const result = await fetchCohortDoubleUserDataSearchResult(firstClusterType, secondClusterType, fields);
-      setFirstData(result.firstTableData);
-      setSecondData(result.secondTableData);
-      setError(null);
-    } catch (e) {
-      setError(new ErrorResponse(e));
-    } finally {
-      setIsLoading(false);
+    if (
+      firstClusterType &&
+      secondClusterType &&
+      firstClusterType !== secondClusterType
+    ) {
+      load();
     }
-  };
+  }, [firstClusterType, secondClusterType]);
 
-  return { firstData, secondData, error, isLoading, search };
+  return {
+    resultA: {
+      heatmap: resultA?.heatmap ?? [],
+      doughnutChart: resultA?.doughnutChart ?? null,
+      lineChart: resultA?.lineChart ?? null,
+      insight: resultA?.insight ?? "",
+      userData: resultA?.userData ?? [],
+    },
+    resultB: {
+      heatmap: resultB?.heatmap ?? [],
+      doughnutChart: resultB?.doughnutChart ?? null,
+      lineChart: resultB?.lineChart ?? null,
+      insight: resultB?.insight ?? "",
+      userData: resultB?.userData ?? [],
+    },
+    isLoading,
+    error,
+  };
 }

@@ -8,7 +8,7 @@ export interface AlarmItem {
     createAt: string;
 }
 
-// 인증된 사용자 기준 알림 조회
+// ✅ 알림 전체 조회 (GET /alarms)
 export const fetchAlarms = async (): Promise<AlarmItem[]> => {
     const response = await axiosInstance.get(`/alarms`);
     return response.data.map((alarm: any) => ({
@@ -20,11 +20,15 @@ export const fetchAlarms = async (): Promise<AlarmItem[]> => {
     }));
 };
 
-// 인증된 사용자 기준 알림 전송
+// ✅ 알림 전송 (POST /alarms/send)
 export const sendAlarm = async (userNo: number, content: string): Promise<void> => {
     await axiosInstance.post(`/alarms/send`, null, {
         params: { userNo, content },
     });
 };
 
-
+// ✅ 알림 읽음 처리 (PATCH /alarms/{alarmId}/read)
+// ✅ alarmId를 string | number 모두 받을 수 있도록 변경
+export const markAlarmAsRead = async (alarmId: string | number): Promise<void> => {
+  await axiosInstance.patch(`/alarms/${Number(alarmId)}/read`);
+};
