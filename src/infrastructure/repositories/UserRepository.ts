@@ -3,8 +3,6 @@
 import {
   deleteUser as apiDeleteUser,
   fetchUserBasicInfo,
-  fetchRoleName,
-  fetchOriginTable,
   UserDeleteRequest,
 } from "@/infrastructure/api/UserApi";
 import { fetchMyPageUserInfo } from "@/infrastructure/api/MypageApi";
@@ -16,6 +14,13 @@ export interface UserBasicInfo {
   companyNo: number;
   infoDbNo: number;
   roleNo: number;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  companyName: string;
+  departmentName: string;
+  roleName: UserRole;
 }
 
 export class UserRepository {
@@ -30,14 +35,5 @@ export class UserRepository {
   async getUserBasicInfo(userNo: number): Promise<UserBasicInfo> {
     const res = await fetchUserBasicInfo(userNo);
     return res.data;
-  }
-
-  async getRoleNameByRoleNo(roleNo: number): Promise<UserRole> {
-    const name = await fetchRoleName(roleNo);
-    return name as UserRole;
-  }
-
-  async getOriginTableByInfoDbNo(infoDbNo: number): Promise<string> {
-    return fetchOriginTable(infoDbNo);
   }
 }

@@ -11,6 +11,7 @@ export interface UserState {
     originTable: string | null;
     role: UserRole;
     roleNo: number | null;
+    departmentName: string | null;
 
     // 고객 정보
     name: string;
@@ -28,6 +29,8 @@ export interface UserState {
     setName: (name: string) => void;
     setPhone: (phone: string) => void;
     setEmail: (email: string) => void;
+
+    setDepartmentName: (departmentName: string) => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
@@ -38,6 +41,7 @@ export const useUserStore = create<UserState>((set) => ({
     originTable: null,
     role: null,
     roleNo: null,
+    departmentName: null,
 
     // 고객 정보
     name: "",
@@ -55,6 +59,8 @@ export const useUserStore = create<UserState>((set) => ({
     setName: (name: string) => set({ name }),
     setPhone: (phone: string) => set({ phone }),
     setEmail: (email: string) => set({ email }),
+
+    setDepartmentName: (departmentName: string) => set({ departmentName }),
 }));
 
 /**
@@ -63,7 +69,7 @@ export const useUserStore = create<UserState>((set) => ({
 export function getUser() {
     const {
         userNo, companyNo, infoDbNo, originTable, role, roleNo,
-        name, phone, email
+        name, email, departmentName
     } = useUserStore.getState();
     
     if (
@@ -78,6 +84,6 @@ export function getUser() {
     }
     return {
         userNo, companyNo, infoDbNo, originTable, role, roleNo,
-        name, phone, email
+        name, email, departmentName
     };
 }

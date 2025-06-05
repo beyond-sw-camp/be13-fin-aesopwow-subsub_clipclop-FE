@@ -64,9 +64,8 @@ export const useLoginViewModel = () => {
       // basicInfo 불러오기
       const basicInfo = await userRepository.getUserBasicInfo(userNo);
 
+      console.log("basicInfo:", basicInfo);
       console.log("roleNo:", basicInfo.roleNo);
-      const role = await userRepository.getRoleNameByRoleNo(basicInfo.roleNo);
-      const originTable = await userRepository.getOriginTableByInfoDbNo(basicInfo.infoDbNo);
 
       // UserStore에 저장
       const store = useUserStore.getState();
@@ -74,8 +73,10 @@ export const useLoginViewModel = () => {
       store.setCompanyNo(basicInfo.companyNo);
       store.setInfoDbNo(basicInfo.infoDbNo);
       store.setRoleNo(basicInfo.roleNo);
-      store.setRole(role);
-      store.setOriginTable(originTable);
+      store.setName(basicInfo.name);
+      store.setEmail(basicInfo.email);
+      store.setRole(basicInfo.roleName);
+      store.setDepartmentName(basicInfo.departmentName);
 
       // localStorage 저장
       const userObject = {
@@ -83,8 +84,13 @@ export const useLoginViewModel = () => {
         companyNo: basicInfo.companyNo,
         infoDbNo: basicInfo.infoDbNo,
         roleNo: basicInfo.roleNo,
-        role,
-        originTable,
+        name: basicInfo.name,
+        email: basicInfo.email,
+        createdAt: basicInfo.createdAt,
+        updatedAt: basicInfo.updatedAt,
+        companyName: basicInfo.companyName,
+        departmentName: basicInfo.departmentName,
+        role: basicInfo.roleName
       };
       localStorage.setItem("user", JSON.stringify(userObject));
 

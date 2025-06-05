@@ -1,4 +1,5 @@
 // 📁 /infrastructure/api/UserApi.ts
+import { UserRole } from "@/application/stores/UserStore";
 import axiosInstance from "@/infrastructure/api/Axios";
 
 export interface UserDeleteRequest {
@@ -12,6 +13,13 @@ export interface UserBasicInfo {
   companyNo: number;
   infoDbNo: number;
   roleNo: number;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+  email: string;
+  companyName: string;
+  departmentName: string;
+  roleName: UserRole;
 }
 
 export interface ApiResponse<T> {
@@ -33,13 +41,3 @@ export async function fetchUserBasicInfo(userNo: number): Promise<ApiResponse<Us
   const response = await axiosInstance.get(`/user/basic-info/${userNo}`);
   return response.data;
 } 
-
-export async function fetchRoleName(roleNo: number): Promise<string> {
-  const response = await axiosInstance.get(`/user/role/${roleNo}`);
-  return response.data.name;
-}
-
-export async function fetchOriginTable(infoDbNo: number): Promise<string> {
-  const response = await axiosInstance.get(`/user/info-column/${infoDbNo}`);
-  return response.data.origin_table;
-}

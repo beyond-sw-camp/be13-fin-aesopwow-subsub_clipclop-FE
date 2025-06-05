@@ -1,7 +1,15 @@
 // /models/StaffItem.ts
 
 export interface StaffItem {
-    id: number;
-    title: string;
-    subtitle: string;
+    companyName: string;
+    companyNo: number;
+    createdAt: string;
+    departmentName: string | null;
+    email: string;
+    infoDbNo: number;
+    name: string;
+    roleName: string;
+    roleNo: number;
+    updatedAt: string;
+    userNo: number;
 }
