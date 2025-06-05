@@ -1,22 +1,43 @@
 // /viewmodels/useStaffViewModel.ts
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { StaffItem } from "@/core/model/StaffItem";
+import axiosInstance from "@/infrastructure/api/Axios";
 
 export function useStaffViewModel() {
     const [staffList, setStaffList] = useState<StaffItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    // const token = localStorage.getItem("token"); // 저장된 JWT
+    const token = sessionStorage.getItem("token"); // 저장된 JWT
+
     useEffect(() => {
-        axios.get("/api/staffs")
-            .then((res) => setStaffList(res.data))
-            .catch((err) => console.error("직원 정보 로딩 실패:", err))
-            .finally(() => setIsLoading(false));
-    }, []);
+        if (!token) {
+            console.error("토큰이 없습니다. 로그인 후 다시 시도해주세요.");
+            setIsLoading(false);
+            return;
+        }
+        handleGetStaffList();
+    }, [token]);
+
+    const handleGetStaffList = async () => {
+        setIsLoading(true);
+        try {
+            const res = await axiosInstance.get("/user/staffs/list", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setStaffList(res.data.data);
+        } catch (error) {
+            alert("직원 목록을 불러오는 데 실패했습니다.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleAdd = async () => {
         try {
-            const res = await axios.post("/api/staffs", {
+            const res = await axiosInstance.post("/user/staffs/add", {
                 title: "새 직원",
                 subtitle: "신규 팀",
             });
@@ -29,7 +50,7 @@ export function useStaffViewModel() {
 
     const handleEdit = async (id: number, newTitle: string, newSubtitle: string) => {
         try {
-            await axios.put(`/api/staffs/${id}`, {
+            await axiosInstance.put(`/user/staffs/${id}/update`, {
                 title: newTitle,
                 subtitle: newSubtitle,
             });
@@ -48,7 +69,7 @@ export function useStaffViewModel() {
         if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
         try {
-            await axios.delete(`/api/staffs/${id}`);
+            await axiosInstance.delete(`/staffs/${id}`);
             setStaffList((prev) => prev.filter((item) => item.id !== id));
         } catch (err) {
             console.error("직원 삭제 실패:", err);
