@@ -6,7 +6,7 @@ export function ProjectLogo() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/dash-board");
+    navigate("/");
   };
 
   return (
