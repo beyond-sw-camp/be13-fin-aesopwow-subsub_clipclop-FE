@@ -11,6 +11,13 @@ import { fetchMyPageUserInfo } from "@/infrastructure/api/MypageApi";
 import { MyPageUserInfoResponse } from "@/core/model/MypageModel";
 import { UserRole } from "@/application/stores/UserStore";
 
+export interface UserBasicInfo {
+  userNo: number;
+  companyNo: number;
+  infoDbNo: number;
+  roleNo: number;
+}
+
 export class UserRepository {
   async deleteUser(userNo: number, request: UserDeleteRequest): Promise<void> {
     return apiDeleteUser(userNo, request);
@@ -20,13 +27,9 @@ export class UserRepository {
     return fetchMyPageUserInfo(userNo);
   }
 
-  async getUserBasicInfo(userNo: number): Promise<{
-    userNo: number;
-    companyNo: number;
-    infoDbNo: number;
-    roleNo: number;
-  }> {
-    return fetchUserBasicInfo(userNo);
+  async getUserBasicInfo(userNo: number): Promise<UserBasicInfo> {
+    const res = await fetchUserBasicInfo(userNo);
+    return res.data;
   }
 
   async getRoleNameByRoleNo(roleNo: number): Promise<UserRole> {

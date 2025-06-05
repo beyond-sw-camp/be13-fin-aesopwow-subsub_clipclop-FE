@@ -61,9 +61,10 @@ export const useLoginViewModel = () => {
         }
       }
 
-      // basicInfo 먼저 선언
+      // basicInfo 불러오기
       const basicInfo = await userRepository.getUserBasicInfo(userNo);
 
+      console.log("roleNo:", basicInfo.roleNo);
       const role = await userRepository.getRoleNameByRoleNo(basicInfo.roleNo);
       const originTable = await userRepository.getOriginTableByInfoDbNo(basicInfo.infoDbNo);
 
@@ -75,6 +76,7 @@ export const useLoginViewModel = () => {
       store.setRoleNo(basicInfo.roleNo);
       store.setRole(role);
       store.setOriginTable(originTable);
+
       // localStorage 저장
       const userObject = {
         userNo: basicInfo.userNo,
