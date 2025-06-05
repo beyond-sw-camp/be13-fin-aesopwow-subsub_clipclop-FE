@@ -3,6 +3,7 @@ import { create } from "zustand";
 interface AuthState {
   token: string | null;
   isInitialized: boolean;
+  isLoggedIn: boolean;
   setToken: (token: string, remember: boolean) => void;
   logout: () => void;
   initializeToken: () => void;
@@ -11,13 +12,14 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set) => ({
   token: null,
   isInitialized: false,
+  isLoggedIn: false,
   setToken: (token: string, remember: boolean) => {
-    set({ token });
+    set({ token, isLoggedIn: true });
     const storage = remember ? localStorage : sessionStorage;
     storage.setItem("token", token);
   },
   logout: () => {
-    set({ token: null });
+    set({ token: null, isLoggedIn: false });
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
   },
@@ -25,6 +27,6 @@ export const useAuthStore = create<AuthState>((set) => ({
     const localToken = localStorage.getItem("token");
     const sessionToken = sessionStorage.getItem("token");
     const token = localToken || sessionToken;
-    set({ token, isInitialized: true });
+    set({ token, isInitialized: true, isLoggedIn: !!token });
   },
 }));
