@@ -1,4 +1,4 @@
-// 📁 /src/application/viewModels/CohortViewModel.ts
+// /src/application/viewModels/CohortViewModel.ts
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
@@ -9,7 +9,6 @@ import {
 import { ChartData } from "chart.js";
 import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 import { useUserStore } from "@/application/stores/UserStore";
-import { sendAlarm } from "@/infrastructure/api/Alarm";
 
 import { CohortRepository } from "@/infrastructure/repositories/CohortRepository";
 import { CohortRequestDto, CohortFileInfo } from "@/core/model/CohortModels";
@@ -62,7 +61,7 @@ export function useSingleClusterViewModel() {
       setLoading(true);
       await useCase.execute(dto);
 
-      navigate("/analytics/single/requirelist");
+      navigate(`/analytics/single/requirelist?clusterType=${encodeURIComponent(selectedCluster)}`);
     } catch (error) {
       console.error("분석 요청 실패:", error);
       alert("분석 요청 중 문제가 발생했습니다.");
@@ -119,6 +118,7 @@ interface CohortResult {
   lineChart: ChartData<"line", number[]> | null;
   insight: string;
   userData: CohortSingleUserResponse[];
+  groupData: Record<string, number[]>;
 }
 
 export function useCohortSingleCsvResultViewModel({
@@ -140,10 +140,12 @@ export function useCohortSingleCsvResultViewModel({
       try {
         const analysisNo = clusterMap[clusterType];
         const useCase = new GetCohortResultCsvUseCase(new CohortRepository());
-        const csvData = await useCase.execute(infoDbNo, analysisNo, filename);
 
-        const parsed = parseCsvToCohortResult(csvData); // 💡 CSV → 차트 데이터 변환 유틸
+        const cleanFilename = filename.replace(/\.csv$/, "");
 
+        const csvData = await useCase.execute(infoDbNo, analysisNo, cleanFilename);
+
+        const parsed = parseCsvToCohortResult(csvData);
         setResult(parsed);
       } catch (e) {
         setError(e instanceof Error ? e : new Error("CSV 분석 실패"));
@@ -157,12 +159,14 @@ export function useCohortSingleCsvResultViewModel({
     }
   }, [clusterType, infoDbNo, filename]);
 
+
   return {
     heatmap: result?.heatmap ?? [],
     doughnutChart: result?.doughnutChart ?? null,
     lineChart: result?.lineChart ?? null,
     insight: result?.insight ?? "",
     userData: result?.userData ?? [],
+    groupData: result?.groupData ?? {},
     isLoading,
     error,
   };

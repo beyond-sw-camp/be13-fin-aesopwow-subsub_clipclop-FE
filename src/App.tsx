@@ -18,7 +18,7 @@ import AboutUsPage from "./presentation/pages/AboutUsPage";
 
 import AnalyticsCohortSingleClusterSelectPage from "./presentation/pages/AnalyticsCohortSingleClusterSelectPage";
 import AnalyticsCohortSingleRequireListPage from "./presentation/pages/AnalyticsCohortSingleRequireListPage";
-// import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
+import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
 import AnalyticsCohortDoubleClusterSelectPage from "./presentation/pages/AnalyticsCohortDoubleClusterSelectPage";
 // import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
 
@@ -91,7 +91,7 @@ function App() {
           }
         />
         <Route path="/analytics/single/requirelist" element={<AnalyticsCohortSingleRequireListPage/>} />
-        {/* <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} /> */}
+        <Route path="/analytics/single/result" element={<AnalyticsCohortSingleCohortResultPage />} />
 
         <Route
           path="/analytics/double/clusterselect"

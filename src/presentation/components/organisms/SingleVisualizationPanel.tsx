@@ -1,5 +1,5 @@
-// ✅ 수정된 SingleVisualizationPanel.tsx (Chart 크기 문제 해결)
-
+// SingleVisualizationPanel.tsx
+import { useState } from "react";
 import { PanelTitle } from "../atoms/PanelTitle";
 import { Chart } from "react-chartjs-2";
 import type { ChartData } from "chart.js";
@@ -9,9 +9,30 @@ interface Props {
   lineChart: ChartData<"line", number[]> | null;
   isLoading: boolean;
   error: Error | null;
+  groupData: Record<string, number[]>;
 }
 
-export function SingleVisualizationPanel({ doughnutChart, lineChart, isLoading, error }: Props) {
+export function SingleVisualizationPanel({
+  doughnutChart,
+  lineChart,
+  isLoading,
+  error,
+  groupData,
+}: Props) {
+  const groupLabels = Object.keys(groupData);
+  const [selectedGroup, setSelectedGroup] = useState(groupLabels[0] || "");
+
+  const currentValue = groupData[selectedGroup]?.[5] || 0;
+  const dynamicDoughnut: ChartData<"doughnut", number[]> = {
+    labels: ["잔존", "이탈"],
+    datasets: [
+      {
+        data: [currentValue, 100 - currentValue],
+        backgroundColor: ["#4CAF50", "#F44336"],
+      },
+    ],
+  };
+
   const noData = !isLoading && !error && !doughnutChart && !lineChart;
 
   return (
@@ -24,27 +45,41 @@ export function SingleVisualizationPanel({ doughnutChart, lineChart, isLoading, 
 
       {!isLoading && !error && (
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-          {doughnutChart && (
-            <div className="w-full h-[300px]">
-              <Chart
-                type="doughnut"
-                data={doughnutChart}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                }}
-              />
+          {/* 도넛 차트 컨테이너 */}
+          <div className="w-full h-[350px] flex flex-col justify-start">
+            <div className="mb-2">
+              <label className="text-sm font-semibold mr-2">그룹 선택:</label>
+              <select
+                className="border rounded px-2 py-1 text-sm"
+                value={selectedGroup}
+                onChange={(e) => setSelectedGroup(e.target.value)}
+              >
+                {groupLabels.map((label) => (
+                  <option key={label} value={label}>
+                    {label}
+                  </option>
+                ))}
+              </select>
             </div>
-          )}
+            {/* 도넛 차트 영역 */}
+            <div className="flex-1 flex items-center justify-center">
+              <div className="w-[250px] h-[250px]">
+                <Chart
+                  type="doughnut"
+                  data={dynamicDoughnut}
+                  options={{ responsive: true, maintainAspectRatio: false }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* 꺾은선 그래프 */}
           {lineChart && (
-            <div className="w-full h-[300px]">
+            <div className="w-full h-[350px]">
               <Chart
                 type="line"
                 data={lineChart}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                }}
+                options={{ responsive: true, maintainAspectRatio: false }}
               />
             </div>
           )}
