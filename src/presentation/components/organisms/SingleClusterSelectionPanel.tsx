@@ -1,24 +1,19 @@
 // /presentation/components/organisms/SingleClusterSelectionPanel.tsx
 
-import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { CustomButton } from "../atoms/CustomButton";
-import { useNavigate } from "react-router-dom";
+import { useSingleClusterViewModel } from "@/application/viewModels/CohortViewModel";
 
-const clusters = ["활동", "구독 유형", "장르", "접속"];
+const clusters = ["PCL", "SubscriptionType", "FavGenre", "LastLogin"];
 
 export function SingleClusterSelectionPanel() {
-  const [selectedCluster, setSelectedCluster] = useState("");
-  const navigate = useNavigate();
-
-  const handleStartAnalysis = () => {
-    if (!selectedCluster) {
-      alert("군집을 선택하세요!");
-      return;
-    }
-    navigate(`/analytics/single/cohortresult?clusterType=${encodeURIComponent(selectedCluster)}`);
-  };
+  const {
+    selectedCluster,
+    setSelectedCluster,
+    requestAnalysis,
+    loading,
+  } = useSingleClusterViewModel();
 
   return (
     <div className="w-[90%] h-[500px] mx-auto my-2 bg-white rounded-2xl shadow-lg flex flex-col justify-center items-center">
@@ -63,7 +58,11 @@ export function SingleClusterSelectionPanel() {
             )}
           </Listbox>
         </div>
-        <CustomButton title="분석 시작" loading={false} onClick={handleStartAnalysis} />
+        <CustomButton
+          title="분석 시작"
+          loading={loading}
+          onClick={requestAnalysis}
+        />
       </div>
     </div>
   );

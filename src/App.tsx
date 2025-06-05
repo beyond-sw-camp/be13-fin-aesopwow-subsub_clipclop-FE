@@ -17,11 +17,10 @@ import MembershipPage from "./presentation/pages/MembershipPage";
 import AboutUsPage from "./presentation/pages/AboutUsPage";
 
 import AnalyticsCohortSingleClusterSelectPage from "./presentation/pages/AnalyticsCohortSingleClusterSelectPage";
-import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
-import AnalyticsCohortSingleUserDataPage from "./presentation/pages/AnalyticsCohortSingleUserDataPage";
+import AnalyticsCohortSingleRequireListPage from "./presentation/pages/AnalyticsCohortSingleRequireListPage";
+// import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
 import AnalyticsCohortDoubleClusterSelectPage from "./presentation/pages/AnalyticsCohortDoubleClusterSelectPage";
-import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
-import AnalyticsCohortDoubleUserDataPage from "./presentation/pages/AnalyticsCohortDoubleUserDataPage";
+// import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
 
 import QnaListPage from "./presentation/pages/QnaListPage";
 import QnaWritePage from "./presentation/pages/QnaWritePage";
@@ -91,8 +90,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} />
-        <Route path="/analytics/single/user-data" element={<AnalyticsCohortSingleUserDataPage />} />
+        <Route path="/analytics/single/requirelist" element={<AnalyticsCohortSingleRequireListPage/>} />
+        {/* <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} /> */}
 
         <Route
           path="/analytics/double/clusterselect"
@@ -102,8 +101,7 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/analytics/double/cohortresult" element={<AnalyticsCohortDoubleCohortResultPage />} />
-        <Route path="/analytics/double/user-data" element={<AnalyticsCohortDoubleUserDataPage />} />
+        {/* <Route path="/analytics/double/cohortresult" element={<AnalyticsCohortDoubleCohortResultPage />} /> */}
 
         <Route path="/qna" element={<QnaListPage />} />
         <Route path="/qna/write" element={<QnaWritePage />} />
