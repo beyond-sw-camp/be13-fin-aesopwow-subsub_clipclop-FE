@@ -3,13 +3,44 @@ import { CohortRepository } from "@/infrastructure/repositories/CohortRepository
 import { ChartData as DoughnutChartData, ChartData as LineChartData } from "chart.js";
 import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 
+import { CohortRequestDto, CohortFileInfo } from "@/core/model/CohortModels";
+
 const repository = new CohortRepository();
+
+// 분석 요청
+export class RequestCohortAnalysisUseCase {
+  constructor(private readonly repository: CohortRepository) {}
+
+  async execute(dto: CohortRequestDto): Promise<void> {
+    await this.repository.requestCohort(dto);
+  }
+}
+
+// 분석 리스트
+export class GetCohortHistoryUseCase {
+  constructor(private readonly repository: CohortRepository) {}
+
+  async execute(infoDbNo: number, analysisNo: number): Promise<CohortFileInfo[]> {
+    return await this.repository.getCohortHistory(infoDbNo, analysisNo);
+  }
+}
+
+// 분석 결과
+export class GetCohortResultCsvUseCase {
+  constructor(private readonly repository: CohortRepository) {}
+
+  async execute(infoDbNo: number, analysisNo: number, filename: string): Promise<string> {
+    return await this.repository.fetch(infoDbNo, analysisNo, filename);
+  }
+}
+
 
 interface HeatmapCell {
   row: string;
   col: string;
   value: string;
 }
+
 
 /**
  * 📌 단일 Cohort 분석 전체 결과 요청
