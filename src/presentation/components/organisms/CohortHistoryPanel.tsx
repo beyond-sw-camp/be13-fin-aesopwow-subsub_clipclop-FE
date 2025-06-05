@@ -18,7 +18,6 @@ export function CohortHistoryPanel({ clusterType }: Props) {
   };
 
   const handleClick = (key: string) => {
-    // key 예시: "2/cohort/PCL/Cohort_PCL_2025-06-04_15-47-49.csv"
     const parts = key.split("/");
     if (parts.length < 4) return;
 
@@ -26,6 +25,7 @@ export function CohortHistoryPanel({ clusterType }: Props) {
     const clusterType = parts[2];
     const filename = parts[3];
 
+    // ✅ 항상 싱글 결과 페이지로 이동
     navigate(
       `/analytics/single/result?infoDbNo=${encodeURIComponent(infoDbNo)}&clusterType=${encodeURIComponent(
         clusterType

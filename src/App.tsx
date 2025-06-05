@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useAuthStore } from "@/application/stores/AuthStore";
-import { useUserStore } from "@/application/stores/UserStore"; // ✅ 추가
+import { useUserStore } from "@/application/stores/UserStore";
 import ProtectedRoute from "./presentation/components/organisms/LoginProtectedRoute";
 
 // 페이지 컴포넌트 import
@@ -20,6 +20,7 @@ import AnalyticsCohortSingleClusterSelectPage from "./presentation/pages/Analyti
 import AnalyticsCohortSingleRequireListPage from "./presentation/pages/AnalyticsCohortSingleRequireListPage";
 import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
 import AnalyticsCohortDoubleClusterSelectPage from "./presentation/pages/AnalyticsCohortDoubleClusterSelectPage";
+import AnalyticsCohortDoubleRequireListPage from "./presentation/pages/AnalyticsCohortDoubleRequireListPage";
 // import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
 
 import QnaListPage from "./presentation/pages/QnaListPage";
@@ -101,6 +102,7 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route path="/analytics/double/requirelist" element={ <AnalyticsCohortDoubleRequireListPage/> } />
         {/* <Route path="/analytics/double/cohortresult" element={<AnalyticsCohortDoubleCohortResultPage />} /> */}
 
         <Route path="/qna" element={<QnaListPage />} />
