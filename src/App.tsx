@@ -21,7 +21,7 @@ import AnalyticsCohortSingleRequireListPage from "./presentation/pages/Analytics
 import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
 import AnalyticsCohortDoubleClusterSelectPage from "./presentation/pages/AnalyticsCohortDoubleClusterSelectPage";
 import AnalyticsCohortDoubleRequireListPage from "./presentation/pages/AnalyticsCohortDoubleRequireListPage";
-// import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
+import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
 
 import QnaListPage from "./presentation/pages/QnaListPage";
 import QnaWritePage from "./presentation/pages/QnaWritePage";
@@ -40,7 +40,6 @@ import AnalyticsShapFilterPage from "./presentation/pages/AnalyticsShapFilterPag
 function App() {
   const initializeToken = useAuthStore((state) => state.initializeToken);
   const isInitialized = useAuthStore((state) => state.isInitialized);
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   // 사용자 정보를 localStorage에서 UserStore로 복구
   useEffect(() => {
@@ -69,25 +68,18 @@ function App() {
   if (!isInitialized) {
     return <div>Loading...</div>;
   }
-    return (
-        <>
-            <ToastContainer />
-            <Routes>
-                {/* 인증/비인증 라우트 구분 */}
-                <Route path="/" element={isLoggedIn ? <DashBoardPage /> : <AboutUsPage />} />
-               {/*<Route path="//" element={<Navigate to={isLoggedIn ? "/dash-board" : "/aboutus"} />} />*/}
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
-                <Route path="/forgot/password" element={<ForgotPasswordPage />} />
-        
-            <Route path="/dash-board" element={
-                <ProtectedRoute>
-                    <DashBoardPage />
-                </ProtectedRoute>
-            } />
-            <Route path="/mypage" element={<MyPage />} />
-        
 
+  return (
+    <>
+      <ToastContainer />
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/forgot/password" element={<ForgotPasswordPage />} />
+
+        <Route path="/dash-board" element={<DashBoardPage />} />
+        <Route path="/mypage" element={<MyPage />} />
         <Route path="/membership" element={<MembershipPage />} />
         <Route path="/aboutus" element={<AboutUsPage />} />
 
@@ -111,7 +103,8 @@ function App() {
           }
         />
         <Route path="/analytics/double/requirelist" element={ <AnalyticsCohortDoubleRequireListPage/> } />
-        {/* <Route path="/analytics/double/cohortresult" element={<AnalyticsCohortDoubleCohortResultPage />} /> */}
+        <Route path="/analytics/double/result" element={<AnalyticsCohortDoubleCohortResultPage />} />
+
 
         <Route path="/qna" element={<QnaListPage />} />
         <Route path="/qna/write" element={<QnaWritePage />} />

@@ -81,33 +81,60 @@ export function useSingleClusterViewModel() {
 // 분석 리스트
 export function useCohortHistoryViewModel(clusterType: string) {
   const [history, setHistory] = useState<CohortFileInfo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [page, setPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+
   const infoDbNo = useUserStore((state) => state.infoDbNo);
+  const PAGE_SIZE = 10;
+
+  const fetch = async (pageNumber: number) => {
+    if (!infoDbNo || !clusterType) return;
+
+    const analysisNo = clusterMap[clusterType];
+    const useCase = new GetCohortHistoryUseCase(new CohortRepository());
+
+    try {
+      setLoading(true);
+      const result = await useCase.execute(infoDbNo, analysisNo);
+
+      const start = pageNumber * PAGE_SIZE;
+      const end = start + PAGE_SIZE;
+      const newItems = result.slice(start, end);
+
+      if (newItems.length < PAGE_SIZE) {
+        setHasMore(false);
+      }
+
+      setHistory((prev) => [...prev, ...newItems]);
+    } catch (err) {
+      console.error("분석 이력 조회 실패:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetch = async () => {
-      if (!infoDbNo || !clusterType) return;
+    setHistory([]);
+    setPage(0);
+    setHasMore(true);
+  }, [clusterType, infoDbNo]);
 
-      const analysisNo = clusterMap[clusterType];
-      const useCase = new GetCohortHistoryUseCase(new CohortRepository());
+  useEffect(() => {
+    fetch(page);
+  }, [page]);
 
-      try {
-        setLoading(true);
-        const result = await useCase.execute(infoDbNo, analysisNo);
-        setHistory(result);
-      } catch (err) {
-        console.error("분석 이력 조회 실패:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetch();
-  }, [infoDbNo, clusterType]);
+  const loadMore = () => {
+    if (!loading && hasMore) {
+      setPage((prev) => prev + 1);
+    }
+  };
 
   return {
     history,
     loading,
+    hasMore,
+    loadMore,
   };
 }
 
