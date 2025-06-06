@@ -7,8 +7,8 @@ import useIntersectionObserver from "@/core/utils/useIntersectionObserver";
 
 interface Props {
   clusterType: string;
-  selectedKeys: string[];
-  onSelect: (key: string) => void;
+  selectedKeys?: string[]; // ✅ optional로 변경
+  onSelect?: (key: string) => void; // ✅ optional로 변경
 }
 
 export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Props) {
@@ -48,7 +48,11 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
     const infoDbNo = parts[0];
     const clusterType = parts[2];
     const filename = parts[3];
-    navigate(`/analytics/single/result?infoDbNo=${encodeURIComponent(infoDbNo)}&clusterType=${encodeURIComponent(clusterType)}&filename=${encodeURIComponent(filename)}`);
+    navigate(
+      `/analytics/single/result?infoDbNo=${encodeURIComponent(infoDbNo)}&clusterType=${encodeURIComponent(
+        clusterType
+      )}&filename=${encodeURIComponent(filename)}`
+    );
   };
 
   return (
@@ -61,11 +65,13 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
           {history.map((item, idx) => (
             <li key={idx} className="flex justify-between items-center border-b pb-2 hover:bg-gray-50">
               <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  checked={selectedKeys.includes(item.key)}
-                  onChange={() => onSelect(item.key)}
-                />
+                {selectedKeys && onSelect && (
+                  <input
+                    type="checkbox"
+                    checked={selectedKeys.includes(item.key)}
+                    onChange={() => onSelect(item.key)}
+                  />
+                )}
                 <div className="cursor-pointer" onClick={() => handleClick(item.key)}>
                   <p className="text-sm font-medium">{item.lastModified}</p>
                   <p className="text-xs text-gray-500 break-all">{item.key}</p>
