@@ -49,8 +49,8 @@ export function EditableListModal({
               <EditableInfoItem
                 key={item.id}
                 id={item.id}
-                title={item.title}
-                subtitle={item.subtitle}
+                title={item.name}
+                subtitle={item.departmentName}
                 onEdit={onEdit}
                 onDelete={() => onDelete(item.id)}
               />
