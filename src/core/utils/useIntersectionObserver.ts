@@ -1,5 +1,5 @@
 // src/core/utils/useIntersectionObserver.ts
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 
 interface UseIntersectionObserverProps {
   callback: () => void;
@@ -10,13 +10,19 @@ interface UseIntersectionObserverProps {
 export default function useIntersectionObserver({
   callback,
   unObserve = false,
-  options = {
-    root: null,
-    rootMargin: "30px",
-    threshold: 0,
-  },
+  options,
 }: UseIntersectionObserverProps) {
   const targetRef = useRef<HTMLDivElement | null>(null);
+
+  const observerOptions = useMemo<IntersectionObserverInit>(
+    () => ({
+      root: null,
+      rootMargin: "30px",
+      threshold: 0,
+      ...options,
+    }),
+    [options]
+  );
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
@@ -31,13 +37,15 @@ export default function useIntersectionObserver({
   );
 
   useEffect(() => {
-    if (!targetRef.current || !window.IntersectionObserver) return;
+    if (typeof window === "undefined" || !targetRef.current || !window.IntersectionObserver) return;
 
-    const observer = new IntersectionObserver(handleObserver, options);
+    const observer = new IntersectionObserver(handleObserver, observerOptions);
     observer.observe(targetRef.current);
 
-    return () => observer.disconnect();
-  }, [handleObserver, options]);
+    return () => {
+      observer.disconnect();
+    };
+  }, [handleObserver, observerOptions]);
 
   return targetRef;
 }

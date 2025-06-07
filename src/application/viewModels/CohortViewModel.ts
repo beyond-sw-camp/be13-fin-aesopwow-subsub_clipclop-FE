@@ -234,26 +234,21 @@ export function useDoubleClusterViewModel() {
 
     const useCase = new RequestCohortAnalysisUseCase(new CohortRepository());
 
+    // DTO 생성 헬퍼 함수
+    const createCohortDto = (clusterName: string, analysisNo: number): CohortRequestDto => ({
+      infoDbNo,
+      analysisNo,
+      targetTableUser: "user_info",
+      targetTableSub: "user_sub_info",
+      targetDate: "2025-01-01",
+      filename: `${clusterName}_cohort.csv`,
+    });
+
     try {
       setLoading(true);
 
-      const dto1: CohortRequestDto = {
-        infoDbNo,
-        analysisNo: analysisNo1,
-        targetTableUser: "user_info",
-        targetTableSub: "user_sub_info",
-        targetDate: "2025-01-01",
-        filename: `${firstCluster}_cohort.csv`,
-      };
-
-      const dto2: CohortRequestDto = {
-        infoDbNo,
-        analysisNo: analysisNo2,
-        targetTableUser: "user_info",
-        targetTableSub: "user_sub_info",
-        targetDate: "2025-01-01",
-        filename: `${secondCluster}_cohort.csv`,
-      };
+      const dto1 = createCohortDto(firstCluster, analysisNo1);
+      const dto2 = createCohortDto(secondCluster, analysisNo2);
 
       // 병렬 분석 요청
       await Promise.all([useCase.execute(dto1), useCase.execute(dto2)]);

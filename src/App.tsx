@@ -41,7 +41,6 @@ function App() {
   const initializeToken = useAuthStore((state) => state.initializeToken);
   const isInitialized = useAuthStore((state) => state.isInitialized);
 
-  // 사용자 정보를 localStorage에서 UserStore로 복구
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -91,8 +90,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/analytics/single/requirelist" element={<AnalyticsCohortSingleRequireListPage/>} />
-        <Route path="/analytics/single/result" element={<AnalyticsCohortSingleCohortResultPage />} />
+        <Route path="/analytics/single/requirelist" element={<AnalyticsCohortSingleRequireListPage />} />
+        <Route
+          path="/analytics/single/result"
+          element={
+            <ProtectedRoute>
+              <AnalyticsCohortSingleCohortResultPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/analytics/double/clusterselect"
@@ -102,9 +108,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/analytics/double/requirelist" element={ <AnalyticsCohortDoubleRequireListPage/> } />
+        <Route
+          path="/analytics/double/requirelist"
+          element={
+            <ProtectedRoute>
+              <AnalyticsCohortDoubleRequireListPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/analytics/double/result" element={<AnalyticsCohortDoubleCohortResultPage />} />
-
 
         <Route path="/qna" element={<QnaListPage />} />
         <Route path="/qna/write" element={<QnaWritePage />} />

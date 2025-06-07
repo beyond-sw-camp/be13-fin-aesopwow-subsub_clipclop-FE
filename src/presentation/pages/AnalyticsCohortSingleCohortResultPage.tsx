@@ -73,13 +73,22 @@ export default function AnalyticsCohortSingleCohortResultPage() {
 
           <div className="w-full pb-20 space-y-6">
             <SingleRemainHeatmapPanel heatmap={heatmap} isLoading={isLoading} error={error} />
-            <SingleVisualizationPanel
-              doughnutChart={doughnutChart as ChartData<"doughnut", number[]>}
-              lineChart={lineChart as ChartData<"line", number[]>}
-              isLoading={isLoading}
-              error={error}
-              groupData={groupData}
-            />
+
+            {Object.keys(groupData).length === 0 && !isLoading && !error ? (
+              <div className="p-6 bg-white rounded-xl shadow w-full max-w-full overflow-hidden">
+                <h2 className="text-xl font-bold mb-2">시각화 결과</h2>
+                <p className="text-sm text-gray-500">그룹 데이터를 찾을 수 없습니다.</p>
+              </div>
+            ) : (
+              <SingleVisualizationPanel
+                doughnutChart={doughnutChart as ChartData<"doughnut", number[]>}
+                lineChart={lineChart as ChartData<"line", number[]>}
+                isLoading={isLoading}
+                error={error}
+                groupData={groupData}
+              />
+            )}
+
             <SingleInsightPanel insight={insight} isLoading={isLoading} error={error} />
           </div>
         </section>

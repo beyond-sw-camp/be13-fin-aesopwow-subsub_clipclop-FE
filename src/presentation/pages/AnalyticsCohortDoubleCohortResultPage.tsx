@@ -13,7 +13,7 @@ import { SingleVisualizationPanel } from "@/presentation/components/organisms/Si
 function parseKey(key: string | null) {
   if (!key) return null;
   const parts = key.split("/");
-  if (parts.length < 4) return null;
+  if (parts.length < 4 || !parts[0] || !parts[2] || !parts[3]) return null;
   return {
     infoDbNo: Number(parts[0]),
     clusterType: parts[2],
@@ -29,7 +29,7 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
   if (!parsed1 || !parsed2 || isNaN(parsed1.infoDbNo) || isNaN(parsed2.infoDbNo)) {
     return (
       <div className="min-h-screen flex items-center justify-center text-gray-700 text-lg">
-        ❌ 필수 파라미터가 누락되었습니다. 이전 단계에서 다시 시도해주세요.
+        필수 파라미터가 누락되었습니다. 이전 단계에서 다시 시도해주세요.
       </div>
     );
   }
@@ -90,13 +90,22 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
                 {parsed1.clusterType || "왼쪽 분석"}
               </h2>
               <SingleRemainHeatmapPanel heatmap={heatmap1} isLoading={isLoading1} error={error1} />
-              <SingleVisualizationPanel
-                doughnutChart={doughnut1}
-                lineChart={line1}
-                isLoading={isLoading1}
-                error={error1}
-                groupData={groupData1}
-              />
+
+              {Object.keys(groupData1).length === 0 && !isLoading1 && !error1 ? (
+                <div className="p-6 bg-white rounded-xl shadow w-full max-w-full overflow-hidden">
+                  <h2 className="text-xl font-bold mb-2">시각화 결과</h2>
+                  <p className="text-sm text-gray-500">그룹 데이터를 찾을 수 없습니다.</p>
+                </div>
+              ) : (
+                <SingleVisualizationPanel
+                  doughnutChart={doughnut1}
+                  lineChart={line1}
+                  isLoading={isLoading1}
+                  error={error1}
+                  groupData={groupData1}
+                />
+              )}
+
               <SingleInsightPanel insight={insight1} isLoading={isLoading1} error={error1} />
             </div>
 
@@ -106,13 +115,22 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
                 {parsed2.clusterType || "오른쪽 분석"}
               </h2>
               <SingleRemainHeatmapPanel heatmap={heatmap2} isLoading={isLoading2} error={error2} />
-              <SingleVisualizationPanel
-                doughnutChart={doughnut2}
-                lineChart={line2}
-                isLoading={isLoading2}
-                error={error2}
-                groupData={groupData2}
-              />
+
+              {Object.keys(groupData2).length === 0 && !isLoading2 && !error2 ? (
+                <div className="p-6 bg-white rounded-xl shadow w-full max-w-full overflow-hidden">
+                  <h2 className="text-xl font-bold mb-2">시각화 결과</h2>
+                  <p className="text-sm text-gray-500">그룹 데이터를 찾을 수 없습니다.</p>
+                </div>
+              ) : (
+                <SingleVisualizationPanel
+                  doughnutChart={doughnut2}
+                  lineChart={line2}
+                  isLoading={isLoading2}
+                  error={error2}
+                  groupData={groupData2}
+                />
+              )}
+
               <SingleInsightPanel insight={insight2} isLoading={isLoading2} error={error2} />
             </div>
           </div>

@@ -7,33 +7,50 @@ import useIntersectionObserver from "@/core/utils/useIntersectionObserver";
 
 interface Props {
   clusterType: string;
-  selectedKeys?: string[]; // ✅ optional로 변경
-  onSelect?: (key: string) => void; // ✅ optional로 변경
+  selectedKeys?: string[];
+  onSelect?: (key: string) => void;
 }
 
 export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Props) {
   const { history, loading, hasMore, loadMore } = useCohortHistoryViewModel(clusterType);
-  const [isFetching, setIsFetching] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [rootElement, setRootElement] = useState<HTMLElement | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      setRootElement(scrollContainerRef.current);
+    }
+  }, []);
 
   const loaderRef = useIntersectionObserver({
     callback: () => {
       if (!loading && hasMore) {
         setIsFetching(true);
         loadMore();
-        setTimeout(() => setIsFetching(false), 1000);
+        timeoutRef.current = setTimeout(() => {
+          setIsFetching(false);
+        }, 1000);
       }
     },
-    options: {
-      root: scrollContainerRef.current,
-      rootMargin: "30px",
-      threshold: 0,
-    },
+    options: rootElement
+      ? {
+          root: rootElement,
+          rootMargin: "30px",
+          threshold: 0,
+        }
+      : undefined,
   });
 
   useEffect(() => {
-    return () => setIsFetching(false);
+    return () => {
+      setIsFetching(false);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   const renderStatusIcon = (key: string) => {
@@ -45,6 +62,12 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
   const handleClick = (key: string) => {
     const parts = key.split("/");
     if (parts.length < 4) return;
+
+    if (!parts[0] || !parts[2] || !parts[3]) {
+      console.warn("Invalid key format:", key);
+      return;
+    }
+
     const infoDbNo = parts[0];
     const clusterType = parts[2];
     const filename = parts[3];
