@@ -102,6 +102,59 @@
 
 <br /><br />
 
+### 📌 CI/CD 계획서
+
+<details>
+<summary><strong>BackEnd</strong></summary><br />
+
+![BE 배포 계획서1](https://github.com/user-attachments/assets/90296c6e-5b1b-420c-bd13-d34416e75121)
+![BE 배포 계획서2](https://github.com/user-attachments/assets/ce189fd0-e925-499f-a453-027389f43327)
+![BE 배포 계획서3](https://github.com/user-attachments/assets/04a68471-cf56-4ee0-9c6a-4db1ab3aab8d)
+![BE 배포 계획서4](https://github.com/user-attachments/assets/3cc829f1-de9b-4748-be34-b021fddcc6a4)
+![BE 배포 계획서5](https://github.com/user-attachments/assets/580bfb49-f11f-451d-9ebe-0578d88a483d)
+![BE 배포 계획서6](https://github.com/user-attachments/assets/f938356b-d206-4f35-9a03-2c5c07edde22)
+![BE 배포 계획서7](https://github.com/user-attachments/assets/d23b646e-fbe8-4ed1-9089-6986e4d07929)
+![BE 배포 계획서8](https://github.com/user-attachments/assets/9a988986-6b99-4552-9774-12481dd342f4)
+
+
+</details>
+
+<details>
+<summary><strong>FrontEnd</strong></summary><br />
+
+![FE 배포 계획서1](https://github.com/user-attachments/assets/d5832583-d640-45cb-ac92-762235b47ddd)
+![FE 배포 계획서2](https://github.com/user-attachments/assets/b8d0c467-db3a-4529-b288-66ab9e300e45)
+![FE 배포 계획서3](https://github.com/user-attachments/assets/36f07251-3111-4b67-adf9-a2051ba7f409)
+![FE 배포 계획서4](https://github.com/user-attachments/assets/e0e037a2-aa61-4118-b02d-50a7246c7a39)
+
+
+</details>
+
+<details>
+<summary><strong>MachineLearning</strong></summary><br />
+
+![ML 배포 계획서1](https://github.com/user-attachments/assets/92634d06-8fd3-487f-9766-9ceadca9e5cc)
+![ML 배포 계획서2](https://github.com/user-attachments/assets/43a067a3-6652-437f-a663-7f34f5bcf37d)
+![ML 배포 계획서3](https://github.com/user-attachments/assets/f08ae7af-8051-423d-b077-8c71ac21d4f2)
+![ML 배포 계획서4](https://github.com/user-attachments/assets/57566b85-56fc-4017-bad1-3950e75588ce)
+
+
+</details>
+
+<details>
+<summary><strong>AWS</strong></summary><br />
+
+![AWS 이용 항목](https://github.com/user-attachments/assets/8a1c273d-690c-45be-9491-2f8e1d4399aa)
+
+
+</details> <br /><br />
+
+
+
+
+
+
+
 ### 📌 프로그램 사양서
 
 | **구성 요소**      | **사양**                                                                 |
