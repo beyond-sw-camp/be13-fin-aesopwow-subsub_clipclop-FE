@@ -50,6 +50,58 @@
 - [유저 데이터 필드 선택](https://www.notion.so/203d943bcac28094ad03df6b1456d69b?pvs=21)
 - [유저 클러스터 선택](https://www.notion.so/203d943bcac280dbaff1d2bf23404ee5?pvs=21)
 
+<br /><br />
+### 📌 통합테스트
+
+<details>
+<summary><strong>로그인/회원가입</strong></summary>
+
+<br />
+
+- ![회원가입](https://github.com/user-attachments/assets/03a31f1b-19be-48ba-bb6c-b6aa3bcc59c4)
+- ![회원가입 OTP 재발송](https://github.com/user-attachments/assets/71ab77b8-130c-4da4-a2f2-316b3551f589)
+- ![비밀번호 변경](https://github.com/user-attachments/assets/bd66f343-8da7-4820-b8df-fe4674ba02a0)
+
+</details>
+
+<details>
+<summary><strong>대시보드</strong></summary><br />
+
+/////여기
+
+</details>
+
+
+<details>
+<summary><strong>세그먼트 분석</strong></summary><br />
+
+/////여기
+
+</details>
+
+<details>
+<summary><strong>코호트 분석</strong></summary><br />
+
+/////여기
+
+</details>
+
+<details>
+<summary><strong>마이페이지</strong></summary><br />
+
+/////여기
+
+</details>
+
+<details>
+<summary><strong>결제</strong></summary><br />
+
+/////여기
+
+</details>
+
+<br /><br />
+
 ### 📌 프로그램 사양서
 
 | **구성 요소**      | **사양**                                                                 |
