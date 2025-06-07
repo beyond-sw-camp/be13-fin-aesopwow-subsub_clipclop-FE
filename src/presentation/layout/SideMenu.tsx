@@ -35,8 +35,8 @@ export function SideMenu() {
         <div className="border-t border-gray-300 my-4" />
 
         <div className="mb-6">
-          <h2 className="font-bold text-sm mb-2">SHAP</h2>
-          <SideMenuButton label="SHAP 분석" to="/analytics/shap" />
+          <h2 className="font-bold text-sm mb-2">문의 게시판</h2>
+          <SideMenuButton label="문의 게시판" onClick={() => navigate("/qna")} />
         </div>
       </div>
 

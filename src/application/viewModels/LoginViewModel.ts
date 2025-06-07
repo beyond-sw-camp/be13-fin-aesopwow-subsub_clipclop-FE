@@ -74,6 +74,7 @@ export const useLoginViewModel = () => {
       store.setInfoDbNo(basicInfo.infoDbNo);
       store.setRoleNo(basicInfo.roleNo);
       store.setName(basicInfo.name);
+      store.setPhone(basicInfo.phone);
       store.setEmail(basicInfo.email);
       store.setRole(basicInfo.roleName);
       store.setDepartmentName(basicInfo.departmentName);
@@ -85,6 +86,7 @@ export const useLoginViewModel = () => {
         infoDbNo: basicInfo.infoDbNo,
         roleNo: basicInfo.roleNo,
         name: basicInfo.name,
+        phone: basicInfo.phone,
         email: basicInfo.email,
         createdAt: basicInfo.createdAt,
         updatedAt: basicInfo.updatedAt,

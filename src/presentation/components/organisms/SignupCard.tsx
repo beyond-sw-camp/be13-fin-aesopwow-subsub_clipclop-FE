@@ -11,6 +11,7 @@ interface SignupForm {
   password: string;
   confirmPassword: string;
   agree: boolean;
+  phone: string;
 }
 
 interface Props {
@@ -45,7 +46,7 @@ export const SignupCard = ({ form, setForm }: Props) => {
       const verifyResponse = await VerifyOtpApi(email, otp);
       console.log("OTP 검증 성공:", verifyResponse);
 
-      const signupResponse = await SignupApi(email, verifiedPassword, form.confirmPassword, form.name);
+      const signupResponse = await SignupApi(email, verifiedPassword, form.confirmPassword, form.name, form.phone);
       console.log("회원가입 성공:", signupResponse);
       alert("회원가입 되셨습니다.")
 
@@ -78,6 +79,7 @@ export const SignupCard = ({ form, setForm }: Props) => {
         password={verifiedPassword}
         confirmPassword={form.confirmPassword}
         name={form.name} // ✅ 필수
+        phone={form.phone}
         onVerify={handleOtpVerify}
       />
     </div>
