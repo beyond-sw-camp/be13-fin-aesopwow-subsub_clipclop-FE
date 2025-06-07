@@ -7,15 +7,6 @@ import { useNavigate } from "react-router-dom";
 import { ResendOtpApi, EmailCheckApi } from "@/infrastructure/api/auth";
 import { Text } from "@/presentation/components/atoms/TextLabel";
 
-// type OtpModalProps = {
-//   open: boolean;
-//   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-//   email: string;
-//   password: string;
-//   confirmPassword: string;
-//   onVerify: (otp: string) => Promise<void>;
-// };
-
 type OtpModalProps = {
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;

@@ -74,16 +74,15 @@ function App() {
             <Routes>
                 {/* 인증/비인증 라우트 구분 */}
                 <Route path="/" element={isLoggedIn ? <DashBoardPage /> : <AboutUsPage />} />
-               {/*<Route path="//" element={<Navigate to={isLoggedIn ? "/dash-board" : "/aboutus"} />} />*/}
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/forgot/password" element={<ForgotPasswordPage />} />
         
-            <Route path="/dash-board" element={
-                <ProtectedRoute>
-                    <DashBoardPage />
-                </ProtectedRoute>
-            } />
+                <Route path="/dash-board" element={
+                    <ProtectedRoute>
+                        <DashBoardPage />
+                    </ProtectedRoute>
+                } />
             <Route path="/mypage" element={<MyPage />} />
         
 
