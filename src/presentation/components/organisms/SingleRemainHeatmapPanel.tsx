@@ -1,4 +1,4 @@
-// 📁 /presentation/components/organisms/SingleRemainHeatmapPanel.tsx
+// /presentation/components/organisms/SingleRemainHeatmapPanel.tsx
 import { PanelTitle } from "../atoms/PanelTitle";
 
 interface HeatmapCell {
@@ -13,16 +13,19 @@ interface Props {
   error: Error | null;
 }
 
-function getSingleHeatmapColor(value: string, colIndex: number): string {
-  if (colIndex <= 1) return "";
+function getSingleHeatmapColor(value: string): string {
   const num = parseFloat(value.replace("%", ""));
   if (isNaN(num)) return "bg-white text-gray-500";
+
   if (num >= 90) return "bg-blue-500 text-gray-700";
-  if (num >= 75) return "bg-blue-400 text-gray-700";
-  if (num >= 60) return "bg-blue-300 text-gray-700";
-  if (num >= 45) return "bg-blue-200 text-gray-700";
-  if (num >= 30) return "bg-blue-100 text-gray-700";
-  if (num >= 1) return "bg-blue-50 text-gray-700";
+  if (num >= 80) return "bg-blue-400 text-gray-700";
+  if (num >= 70) return "bg-blue-300 text-gray-700";
+  if (num >= 60) return "bg-blue-200 text-gray-700";
+  if (num >= 50) return "bg-blue-100 text-gray-700";
+  if (num >= 40) return "bg-blue-50 text-gray-700";
+  if (num >= 30) return "bg-blue-50 text-gray-700";
+  if (num >= 20) return "bg-blue-50 text-gray-700";
+  if (num >= 10) return "bg-blue-50 text-gray-700";
   return "bg-white text-gray-500";
 }
 
@@ -34,7 +37,12 @@ export function SingleRemainHeatmapPanel({ heatmap, isLoading, error }: Props) {
     grouped[cell.row][cell.col] = cell.value;
   });
 
-  const colKeys = Array.from(new Set(heatmap.map((h) => h.col))).sort();
+  // ✅ 열(월)을 숫자 정렬
+  const colKeys = Array.from(new Set(heatmap.map((h) => h.col)))
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map(String);
+
   const rowKeys = Array.from(new Set(heatmap.map((h) => h.row)));
 
   return (
@@ -52,7 +60,15 @@ export function SingleRemainHeatmapPanel({ heatmap, isLoading, error }: Props) {
           <table className="min-w-full text-center border border-gray-300">
             <thead className="bg-gray-100">
               <tr>
-                <th className="border px-4 py-2">구간</th>
+                <th className="border px-0 py-0 diagonal-header">
+                  <svg className="diagonal-line">
+                    <line x1="0" y1="0" x2="100%" y2="100%" stroke="#d1d5db" strokeWidth="1" />
+                  </svg>
+                  <div className="diagonal-text">
+                    <div className="top-right">월</div>
+                    <div className="bottom-left">그룹</div>
+                  </div>
+                </th>
                 {colKeys.map((col) => (
                   <th key={col} className="border px-4 py-2">{col}</th>
                 ))}
@@ -61,13 +77,13 @@ export function SingleRemainHeatmapPanel({ heatmap, isLoading, error }: Props) {
             <tbody>
               {rowKeys.map((row) => (
                 <tr key={row}>
-                  <td className="border px-4 py-2">{row}</td>
-                  {colKeys.map((col, idx) => {
+                  <td className="border px-4 py-2 min-w-[140px]">{row}</td>
+                  {colKeys.map((col) => {
                     const value = grouped[row]?.[col] || "";
                     return (
                       <td
                         key={col}
-                        className={`border px-4 py-2 ${getSingleHeatmapColor(value, idx + 1)}`}
+                        className={`border px-4 py-2 ${getSingleHeatmapColor(value)}`}
                       >
                         {value}
                       </td>

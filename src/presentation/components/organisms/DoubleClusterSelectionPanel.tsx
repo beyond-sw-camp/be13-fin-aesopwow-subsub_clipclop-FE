@@ -1,43 +1,32 @@
-import { useState } from "react";
+// /presentation/components/organisms/DoubleClusterSelectionPanel.tsx
 import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { CustomButton } from "../atoms/CustomButton";
-import { useNavigate } from "react-router-dom";
+import { useDoubleClusterViewModel } from "@/application/viewModels/CohortViewModel";
 
-const clusters = ["활동", "구독 유형", "장르", "접속"];
+const clusters = ["PCL", "SubscriptionType", "FavGenre", "LastLogin"];
 
 export function DoubleClusterSelectionPanel() {
-  const [firstCluster, setFirstCluster] = useState("");
-  const [secondCluster, setSecondCluster] = useState("");
-  const navigate = useNavigate();
+  const {
+    firstCluster,
+    setFirstCluster,
+    secondCluster,
+    setSecondCluster,
+    requestAnalysis,
+    loading,
+  } = useDoubleClusterViewModel();
 
-  const handleStartAnalysis = () => {
-    if (!firstCluster || !secondCluster) {
-      alert("두 개의 군집을 모두 선택하세요!");
-      return;
-    }
-    if (firstCluster === secondCluster) {
-      alert("서로 다른 군집을 선택해주세요!");
-      return;
-    }
-    navigate(
-      `/analytics/double/cohortresult?firstClusterType=${encodeURIComponent(
-        firstCluster
-      )}&secondClusterType=${encodeURIComponent(secondCluster)}`
-    );
-  };
-
-  const renderListbox = (
+  const renderClusterDropdown = (
     value: string,
-    onChange: (val: string) => void,
+    setValue: (val: string) => void,
     placeholder: string,
-    excludeValue?: string
+    exclude: string
   ) => {
-    const filteredClusters = clusters.filter((cluster) => cluster !== excludeValue);
+    const filtered = clusters.filter((c) => c !== exclude);
 
     return (
       <div className="w-72">
-        <Listbox value={value} onChange={onChange}>
+        <Listbox value={value} onChange={setValue}>
           {({ open }) => (
             <div className="relative">
               <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-3 pl-4 pr-10 text-left shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg">
@@ -55,7 +44,7 @@ export function DoubleClusterSelectionPanel() {
                   </div>
                   <div className="border-t border-gray-300 mb-1" />
                   <Listbox.Options static className="max-h-60 overflow-y-auto text-base focus:outline-none sm:text-sm">
-                    {filteredClusters.map((cluster, idx) => (
+                    {filtered.map((cluster, idx) => (
                       <Listbox.Option
                         key={idx}
                         value={cluster}
@@ -82,10 +71,10 @@ export function DoubleClusterSelectionPanel() {
     <div className="w-[90%] h-[500px] mx-auto my-2 bg-white rounded-2xl shadow-lg flex flex-col justify-center items-center">
       <h2 className="text-3xl font-bold mb-10">분석 군집 선택 (양측 비교)</h2>
       <div className="flex items-center space-x-6">
-        {renderListbox(firstCluster, setFirstCluster, "비교 대상 1", secondCluster)}
+        {renderClusterDropdown(firstCluster, setFirstCluster, "비교 대상 1", secondCluster)}
         <span className="text-2xl font-extrabold text-black">VS</span>
-        {renderListbox(secondCluster, setSecondCluster, "비교 대상 2", firstCluster)}
-        <CustomButton title="분석 시작" loading={false} onClick={handleStartAnalysis} />
+        {renderClusterDropdown(secondCluster, setSecondCluster, "비교 대상 2", firstCluster)}
+        <CustomButton title="분석 시작" loading={loading} onClick={requestAnalysis} />
       </div>
     </div>
   );
