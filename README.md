@@ -100,6 +100,15 @@
 
 </details>
 
+<details>
+<summary><strong>About us</strong></summary><br />
+
+![about_us](https://github.com/user-attachments/assets/fae03767-3f51-45d6-9b22-ad73df185d8e)
+
+
+</details>
+
+
 <br /><br />
 
 ### 📌 CI/CD 계획서
