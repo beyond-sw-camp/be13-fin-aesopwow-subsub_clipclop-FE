@@ -67,18 +67,24 @@ function App() {
   if (!isInitialized) {
     return <div>Loading...</div>;
   }
+    return (
+        <>
+            <ToastContainer />
+            <Routes>
+                {/* 인증/비인증 라우트 구분 */}
+                <Route path="/" element={isLoggedIn ? <DashBoardPage /> : <AboutUsPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/forgot/password" element={<ForgotPasswordPage />} />
+        
+                <Route path="/dash-board" element={
+                    <ProtectedRoute>
+                        <DashBoardPage />
+                    </ProtectedRoute>
+                } />
+            <Route path="/mypage" element={<MyPage />} />
+        
 
-  return (
-    <>
-      <ToastContainer />
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/forgot/password" element={<ForgotPasswordPage />} />
-
-        <Route path="/dash-board" element={<DashBoardPage />} />
-        <Route path="/mypage" element={<MyPage />} />
         <Route path="/membership" element={<MembershipPage />} />
         <Route path="/aboutus" element={<AboutUsPage />} />
 

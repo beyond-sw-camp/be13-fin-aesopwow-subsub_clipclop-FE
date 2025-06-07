@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { ForgetPasswordForm } from "../molecules/ForgetPasswordForm";
-// import { OtpModal } from "../molecules/OtpModal";
 import { ForgotPasswordOtpModal } from "../molecules/ForgetPasswordOtpModel"
 
 import { ForgetPasswordPasswordForm } from "../molecules/ForgetPasswordPasswordForm"; // 재사용
@@ -48,6 +48,8 @@ export const ChangePasswordCard = ({ form, setForm }: Props) => {
     }
   };
 
+  const navigate = useNavigate();
+  
   // OTP 인증
   const handleOtpVerify = async (otp: string) => {
     try {
@@ -71,6 +73,7 @@ export const ChangePasswordCard = ({ form, setForm }: Props) => {
       await ForgotPasswordResetApi(form.email, form.password, form.confirmPassword);
       alert("비밀번호가 성공적으로 변경되었습니다.");
       // 필요하다면 리디렉션 등 추가
+      navigate("/login");
     } catch (error) {
       alert("비밀번호 변경에 실패했습니다.");
     } finally {
