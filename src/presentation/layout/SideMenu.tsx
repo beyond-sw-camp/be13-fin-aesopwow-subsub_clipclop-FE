@@ -36,7 +36,7 @@ export function SideMenu() {
 
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">문의 게시판</h2>
-          <SideMenuButton label="문의 게시판" to="/qna" />
+          <SideMenuButton label="문의 게시판" onClick={() => navigate("/qna")} />
         </div>
       </div>
 

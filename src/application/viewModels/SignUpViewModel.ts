@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { EmailCheckUseCase, CreateAccountUseCase, ModalSignupUseCase } from "../useCases/SignupUseCase"; // 경로 맞춰주세요
 import type { CheckEmailResponse } from "@/core/model/CheckEmail";
-// import type { OtpVerificationRequest } from "@/core/model/OtpVerificationRequest";
 
 export const useSignupViewModel = () => {
   const [email, setEmail] = useState("");
@@ -36,18 +35,6 @@ export const useSignupViewModel = () => {
       console.error("OTP 전송 실패", error);
     }
   };
-
-  // const verifyOtp = async () => {
-  //   try {
-  //     const res: OtpVerificationRequest = await modalSignupUseCase.verifyotp(email, otp);
-  //     if (res) {
-  //       setSignupComplete(true);
-  //       setShowOtpModal(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("OTP 인증 실패", error);
-  //   }
-  // };
 
   const verifyOtp = async () => {
   try {
