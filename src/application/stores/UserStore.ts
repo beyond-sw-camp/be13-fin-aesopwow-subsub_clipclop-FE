@@ -1,80 +1,88 @@
-import { create } from 'zustand';
-import { CustomError } from '@/error/CustomError';
-import { ErrorCode } from '@/error/ErrorCode';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { CustomError } from "@/error/CustomError";
+import { ErrorCode } from "@/error/ErrorCode";
+import axiosInstance from "@/infrastructure/api/Axios";
 
-export type UserRole = 'ADMIN' | 'CLIENT_ADMIN' | 'CLIENT_USER' | 'USER' | null;
+export type UserRole = "USER" | "ADMIN" | null;
 
 export interface UserState {
     userNo: number | null;
-    companyNo: number | null;
     infoDbNo: number | null;
     originTable: string | null;
     role: UserRole;
     roleNo: number | null;
-    departmentName: string | null;
-
-    // 고객 정보
     name: string;
     phone: string;
     email: string;
-
-    // Setter
+    departmentName: string;
+    companyNo: number | null;
     setUserNo: (userNo: number) => void;
-    setCompanyNo: (companyNo: number) => void;
     setInfoDbNo: (infoDbNo: number) => void;
     setOriginTable: (originTable: string) => void;
     setRole: (role: UserRole) => void;
     setRoleNo: (roleNo: number) => void;
-
     setName: (name: string) => void;
     setPhone: (phone: string) => void;
     setEmail: (email: string) => void;
-
     setDepartmentName: (departmentName: string) => void;
+    setCompanyNo: (companyNo: number) => void;
+    reset: () => void;
 }
 
-export const useUserStore = create<UserState>((set) => ({
-    // 권한/식별자 정보
-    userNo: null,
-    companyNo: null,
-    infoDbNo: null,
-    originTable: null,
-    role: null,
-    roleNo: null,
-    departmentName: null,
+export const useUserStore = create(
+    persist<UserState>(
+        (set) => ({
+            userNo: null,
+            infoDbNo: null,
+            originTable: null,
+            role: null,
+            roleNo: null,
+            name: "",
+            phone: "",
+            email: "",
+            departmentName: "",
+            companyNo: null,
+            setUserNo: (userNo) => set({ userNo }),
+            setInfoDbNo: (infoDbNo) => set({ infoDbNo }),
+            setOriginTable: (originTable) => set({ originTable }),
+            setRole: (role) => set({ role }),
+            setRoleNo: (roleNo) => set({ roleNo }),
+            setName: (name) => set({ name }),
+            setPhone: (phone) => set({ phone }),
+            setEmail: (email) => set({ email }),
+            setDepartmentName: (departmentName) => set({ departmentName }),
+            setCompanyNo: (companyNo) => set({ companyNo }),
+            reset: () =>
+                set({
+                    userNo: null,
+                    infoDbNo: null,
+                    originTable: null,
+                    role: null,
+                    roleNo: null,
+                    name: "",
+                    phone: "",
+                    email: "",
+                    departmentName: "",
+                    companyNo: null,
+                }),
+        }),
+        { name: "user-store" }
+    )
+);
 
-    // 고객 정보
-    name: "",
-    phone: "",
-    email: "",
+export async function getUser() {
+    const { userNo } = useUserStore.getState();
 
-    // Setter
-    setUserNo: (userNo: number) => set({ userNo }),
-    setCompanyNo: (companyNo: number) => set({ companyNo }),
-    setInfoDbNo: (infoDbNo: number) => set({ infoDbNo }),
-    setOriginTable: (originTable: string) => set({ originTable }),
-    setRole: (role: UserRole) => set({ role }),
-    setRoleNo: (roleNo: number) => set({ roleNo }),
+    const response = await axiosInstance.get("/user?userNo=" + userNo);
 
-    setName: (name: string) => set({ name }),
-    setPhone: (phone: string) => set({ phone }),
-    setEmail: (email: string) => set({ email }),
+    const { infoDbNo, originTable, role, roleNo, name, phone, email, departmentName, companyNo } = response.data;
 
-    setDepartmentName: (departmentName: string) => set({ departmentName }),
-}));
+    console.log(response);
+    console.log(userNo, infoDbNo, originTable, role, roleNo, name, phone, email, departmentName, companyNo);
 
-/**
- * 유틸 함수: 로그인 상태 + 관리자 여부 확인 포함
- */
-export function getUser() {
-    const {
-        userNo, companyNo, infoDbNo, originTable, role, roleNo,
-        name, email, departmentName
-    } = useUserStore.getState();
-    
     if (
         userNo === null ||
-        companyNo === null ||
         infoDbNo === null ||
         originTable === null ||
         role === null ||
@@ -82,8 +90,5 @@ export function getUser() {
     ) {
         throw new CustomError(ErrorCode.USER_NOT_FOUND);
     }
-    return {
-        userNo, companyNo, infoDbNo, originTable, role, roleNo,
-        name, email, departmentName
-    };
+    return { userNo, infoDbNo, originTable, role, roleNo, name, phone, email };
 }

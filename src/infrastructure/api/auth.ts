@@ -81,9 +81,10 @@ export const SignupApi = async (
   email: string,
   password: string,
   confirmPassword: string,
-  name: string
+  name: string,
+  phone: string
 ): Promise<string> => {
-  const payload = { email, password, confirmPassword, name };
+  const payload = { email, password, confirmPassword, name, phone };
   const response = await axiosInstance.post("/auth/signup", payload);
   return response.data;
 };

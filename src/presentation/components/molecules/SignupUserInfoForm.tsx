@@ -8,6 +8,7 @@ interface Props {
   form: {
     name: string;
     email: string;
+    phone: string;
   };
   setForm: React.Dispatch<React.SetStateAction<any>>;
   setEmailCheckResult: React.Dispatch<React.SetStateAction<CheckEmailResponse | null>>;
@@ -59,6 +60,13 @@ export const SignUpUserInfoForm = ({ form, setForm, setEmailCheckResult, emailCh
         placeholder="Name"
         value={form.name}
         onChange={(e) => setForm((prev: any) => ({ ...prev, name: e.target.value }))}
+      />
+      <InputTextBox
+        type="text"
+        label="phone"
+        placeholder="phone"
+        value={form.phone}
+        onChange={(e) => setForm((prev: any) => ({ ...prev, phone: e.target.value }))}
       />
       <InputTextBox
         type="email"
