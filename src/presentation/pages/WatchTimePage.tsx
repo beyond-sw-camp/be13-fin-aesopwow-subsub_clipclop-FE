@@ -14,7 +14,7 @@ export interface SegmentFileInfo {
 const viewModel = new SegmentFileListViewModel();
 
 export default function WatchTimePage() {
-  const infoDbNo = useUserStore((state) => state.infoDbNo); // number
+  const infoDbNo = useUserStore((state) => state.infoDbNo);
   const targetColumn = "watch_time";
   const [files, setFiles] = useState<SegmentFileInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,15 +63,11 @@ export default function WatchTimePage() {
     }
   };
 
-  // 파일명 클릭 시 분석결과 페이지로 이동
+  // 파일명 클릭 시 분석결과 페이지로 이동 (path 파라미터로 s3Key 전달)
   const handleFileClick = (fileName: string) => {
     if (!infoDbNo || !fileName) return;
-    // watch_time에 맞게 s3Key 경로 수정
     const s3Key = `${infoDbNo}/segment/watch_time/${fileName}`;
-    // 분석결과 페이지 경로도 watchtime에 맞게 수정 (필요시)
-    navigate(
-      `/analysis/watchtime?infoDbNo=${infoDbNo}&s3Key=${encodeURIComponent(s3Key)}&fileName=${encodeURIComponent(fileName)}`
-    );
+    navigate(`/analysis/watchtime/${encodeURIComponent(s3Key)}`);
   };
 
   return (
@@ -86,8 +82,11 @@ export default function WatchTimePage() {
         </div>
         {/* 메인 콘텐츠 */}
         <div className="flex-1 flex flex-col items-center">
-          {/* 상단 탭 카드 */}
-          <div className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8">
+          {/* 상단 탭 카드 - 좌측으로 220px 이동 */}
+          <div
+            className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8"
+            style={{ marginLeft: '-220px' }}
+          >
             <div className="flex flex-col items-center flex-1 cursor-pointer border-b-4 border-[#FFA726] pb-2">
               <span className="text-3xl mb-1 text-[#FFA726]">📋</span>
               <span className="text-[#FFA726] font-semibold text-lg">요청 내역 리스트</span>
@@ -97,8 +96,11 @@ export default function WatchTimePage() {
               <span className="text-gray-400 font-semibold text-lg">분석 결과</span>
             </div>
           </div>
-          {/* 리스트 카드 */}
-          <div className="w-[525px] bg-white rounded-lg shadow p-6">
+          {/* 리스트 카드 - 좌측으로 220px 이동 */}
+          <div
+            className="w-[525px] bg-white rounded-lg shadow p-6"
+            style={{ marginLeft: '-220px' }}
+          >
             <div className="font-bold text-base mb-4">요청 내역 리스트</div>
             <div className="border-b pb-2 font-semibold text-gray-700">요청 날짜</div>
             <button
