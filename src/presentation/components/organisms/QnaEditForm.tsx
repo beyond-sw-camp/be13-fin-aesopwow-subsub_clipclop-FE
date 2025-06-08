@@ -1,4 +1,4 @@
-// 📁 src/presentation/components/organisms/QnaEditForm.tsx
+// src/presentation/components/organisms/QnaEditForm.tsx
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQnaViewModel } from '@/application/viewModels/QnaViewModel';
@@ -12,7 +12,7 @@ export default function QnaEditForm() {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false); // ✅ 추가
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -74,36 +74,48 @@ export default function QnaEditForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="w-full border border-gray-300 rounded px-4 py-2"
-        placeholder="제목을 입력하세요"
-        required
-      />
-      <textarea
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
-        rows={10}
-        className="w-full border border-gray-300 rounded px-4 py-2 resize-none"
-        placeholder="내용을 입력하세요"
-        required
-      />
-      <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`px-6 py-2 rounded transition-colors ${
-            isSubmitting
-              ? 'bg-gray-400 text-white cursor-not-allowed'
-              : 'bg-blue-600 text-white hover:bg-blue-700'
-          }`}
-        >
-          {isSubmitting ? '수정 중...' : '수정 완료'}
-        </button>
+    <div className="min-h-screen bg-orange-500 flex justify-center items-start py-16 px-4">
+      <div className="bg-white w-full max-w-5xl p-10 rounded shadow-md">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">문의사항 수정</h2>
+          <div className="space-x-2">
+            <button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className={`px-4 py-1 rounded text-white ${
+                isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+              }`}
+            >
+              {isSubmitting ? '수정 중...' : '수정'}
+            </button>
+            <button
+              onClick={() => navigate('/qna')}
+              className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+            >
+              취소
+            </button>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-500"
+            placeholder="제목을 입력하세요"
+            required
+          />
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows={12}
+            className="w-full border border-gray-300 rounded px-4 py-2 resize-none focus:outline-none focus:ring focus:border-blue-500"
+            placeholder="내용을 입력하세요"
+            required
+          />
+        </form>
       </div>
-    </form>
+    </div>
   );
 }
