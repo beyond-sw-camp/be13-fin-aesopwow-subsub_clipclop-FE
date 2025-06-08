@@ -61,49 +61,61 @@ import {
   markAlarmAsRead,
   AlarmItem,
 } from "@/infrastructure/api/Alarm";
-// import { getUser } from "@/application/stores/UserStore"; // ✅ userNo 가져오기
+import { getUser } from "@/application/stores/UserStore";
 
 export const useAlarmViewModel = () => {
-  // const { userNo } = getUser(); // ✅ 스토어에서 직접 userNo 조회
-  const userNo = 1; // 테스트용 하드 코딩
   const [alarms, setAlarms] = useState<AlarmItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userNo, setUserNo] = useState<number | null>(null);
 
-  // ✅ 알림 전체 불러오기
   const loadAlarms = async () => {
     try {
       const data = await fetchAlarms();
       setAlarms(data);
     } catch (e) {
-      console.error("❌ 알림 불러오기 실패", e);
+      console.error("알림 불러오기 실패", e);
     } finally {
       setLoading(false);
     }
   };
 
-  // ✅ 알림 전송
   const send = async (content: string) => {
     try {
+      if (userNo === null) throw new Error("userNo 없음");
       await sendAlarm(userNo, content);
       await loadAlarms();
     } catch (e) {
-      console.error("❌ 알림 전송 실패", e);
+      console.error("알림 전송 실패", e);
     }
   };
 
-  // ✅ 알림 읽음 처리
   const markAsRead = async (alarmId: string | number) => {
     try {
       await markAlarmAsRead(alarmId);
       await loadAlarms();
     } catch (e) {
-      console.error("❌ 알림 읽음 처리 실패", e);
+      console.error("알림 읽음 처리 실패", e);
     }
   };
 
   useEffect(() => {
-    loadAlarms();
-  }, [userNo]); // ✅ userNo 변경 시도 안전하게 감지
+    const fetchUser = async () => {
+      try {
+        const user = await getUser();
+        if (user?.userNo) setUserNo(user.userNo);
+      } catch (e) {
+        console.error("유저 정보 불러오기 실패", e);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    if (userNo !== null) {
+      loadAlarms();
+    }
+  }, [userNo]);
 
   return {
     alarms,

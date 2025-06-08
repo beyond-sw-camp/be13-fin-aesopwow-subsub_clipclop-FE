@@ -14,6 +14,7 @@ import { CohortRepository } from "@/infrastructure/repositories/CohortRepository
 import { CohortRequestDto, CohortFileInfo } from "@/core/model/CohortModels";
 import { parseCsvToCohortResult } from "@/core/utils/csvParser";
 
+import { sendAlarm } from "@/infrastructure/api/Alarm";
 
 const clusterMap: Record<string, number> = {
   PCL: 1,
@@ -26,7 +27,10 @@ const clusterMap: Record<string, number> = {
 export function useSingleClusterViewModel() {
   const [selectedCluster, setSelectedCluster] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
   const infoDbNo = useUserStore((state) => state.infoDbNo);
+  const userNo = useUserStore((state) => state.userNo);
+
   const navigate = useNavigate();
 
   const requestAnalysis = async () => {
@@ -61,6 +65,16 @@ export function useSingleClusterViewModel() {
       setLoading(true);
       await useCase.execute(dto);
 
+      if (typeof userNo === "number") {
+        await sendAlarm(
+          userNo,
+          `선택하신 군집(${selectedCluster})에 대한 분석이 완료되었습니다.`
+        );
+      } else {
+        console.warn("userNo가 유효하지 않습니다:", userNo);
+      }
+
+      alert("분석이 완료되었습니다.");
       navigate(`/analytics/single/requirelist?clusterType=${encodeURIComponent(selectedCluster)}`);
     } catch (error) {
       console.error("분석 요청 실패:", error);
@@ -205,6 +219,7 @@ export function useDoubleClusterViewModel() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const infoDbNo = useUserStore((state) => state.infoDbNo);
+  const userNo = useUserStore((state) => state.userNo);
   const navigate = useNavigate();
 
   const requestAnalysis = async () => {
@@ -233,7 +248,6 @@ export function useDoubleClusterViewModel() {
 
     const useCase = new RequestCohortAnalysisUseCase(new CohortRepository());
 
-    // DTO 생성 헬퍼 함수
     const createCohortDto = (clusterName: string, analysisNo: number): CohortRequestDto => ({
       infoDbNo,
       analysisNo,
@@ -249,10 +263,19 @@ export function useDoubleClusterViewModel() {
       const dto1 = createCohortDto(firstCluster, analysisNo1);
       const dto2 = createCohortDto(secondCluster, analysisNo2);
 
-      // 병렬 분석 요청
       await Promise.all([useCase.execute(dto1), useCase.execute(dto2)]);
 
-      // 분석 이력 페이지로 이동
+      if (typeof userNo === "number") {
+        await sendAlarm(
+          userNo,
+          `선택하신 두 군집(${firstCluster}, ${secondCluster})에 대한 분석이 완료되었습니다.`
+        );
+      } else {
+        console.warn("userNo가 유효하지 않습니다:", userNo);
+      }
+
+      alert("분석이 완료되었습니다.");
+
       navigate(
         `/analytics/double/requirelist?` +
           `firstClusterType=${encodeURIComponent(firstCluster)}&` +
