@@ -1,11 +1,14 @@
 import axios from 'axios';
 import Papa from 'papaparse';
+import '@/chart/ChartRegister';
 import { ChartData as DoughnutChartData } from '@/core/model/ChartData';
 import { StatCardData } from '@/application/stores/DashBoardStore';
 import { getUser } from '@/application/stores/UserStore';
 import { User } from 'lucide-react';
 import { ChartData as ChartJSData } from 'chart.js';
 import { DashBoardCharts } from '@/application/stores/DashBoardStore';
+import axiosInstance from '@/infrastructure/api/Axios';
+import { userInfo } from 'os';
 
 interface SubscriptionTypeRow {
     month: string;
@@ -22,14 +25,15 @@ export class DashBoardUsecase {
     }> {
         const { infoDbNo, originTable } = getUser();
 
-        if (!infoDbNo || !originTable) {
+        if (!infoDbNo) {
             throw new Error('대시보드 데이터를 요청하기 위한 파라미터가 유효하지 않습니다.');
         }
 
         let fullText: string = '';
 
         try {
-            const response = await axios.get(`/dash-board/${infoDbNo}/${originTable}`, {
+            const response = await axiosInstance.get(`/dash-board`, {
+                params: { infoDbNo, user_info: 'user_info', user_sub_info: 'user_sub_info' },
                 responseType: 'blob',
             });
             fullText = await response.data.text();
