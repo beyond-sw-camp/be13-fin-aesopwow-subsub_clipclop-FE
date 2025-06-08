@@ -1,6 +1,7 @@
 // /src/application/viewModels/CohortViewModel.ts
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axiosInstance from "@/infrastructure/api/Axios";
 import {
   RequestCohortAnalysisUseCase,
   GetCohortHistoryUseCase,
@@ -9,6 +10,7 @@ import {
 import { ChartData } from "chart.js";
 import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 import { useUserStore } from "@/application/stores/UserStore";
+import { Insight } from "@/core/model/CohortModels";
 
 import { CohortRepository } from "@/infrastructure/repositories/CohortRepository";
 import { CohortRequestDto, CohortFileInfo } from "@/core/model/CohortModels";
@@ -174,6 +176,8 @@ export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filen
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
+  const [insightObj, setInsightObj] = useState<Insight | null>(null);
+
   useEffect(() => {
     const load = async () => {
       setIsLoading(true);
@@ -183,10 +187,16 @@ export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filen
 
         const cleanFilename = filename.replace(/\.csv$/, "");
         const csvData = await useCase.execute(infoDbNo, analysisNo, cleanFilename);
-
         const parsed = parseCsvToCohortResult(csvData);
+
         setResult(parsed);
         setRawCsv(csvData);
+
+        const insightPath = `${infoDbNo}/cohort/${clusterType}/${cleanFilename}.csv`;
+        const insightResponse = await axiosInstance.get<Insight>("/analysis/cohort/insight", {
+          params: { filename: insightPath },
+        });
+        setInsightObj(insightResponse.data);
       } catch (e) {
         setError(e instanceof Error ? e : new Error("CSV 분석 실패"));
       } finally {
@@ -203,7 +213,7 @@ export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filen
     heatmap: result?.heatmap ?? [],
     doughnutChart: result?.doughnutChart ?? null,
     lineChart: result?.lineChart ?? null,
-    insight: result?.insight ?? "",
+    insight: insightObj,
     userData: result?.userData ?? [],
     groupData: result?.groupData ?? {},
     rawCsv,
