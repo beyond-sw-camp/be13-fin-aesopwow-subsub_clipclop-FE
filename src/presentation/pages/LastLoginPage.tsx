@@ -1,145 +1,135 @@
-import { useState, useMemo } from "react";
-import { Header } from "@/presentation/layout/Header";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileListViewModel";
 import { SideMenu } from "@/presentation/layout/SideMenu";
-import { SegmentTemplate } from "@/presentation/components/organisms/SegmentTemplate";
-import { SegmentUserTable } from "@/presentation/components/organisms/SegmentUserTable";
-import { SegmentFilterBox } from "@/presentation/components/molecules/SegmentFilterBox";
-import { useSegmentViewModel } from "@/application/viewModels/useSegmentViewModel";
-import { sortUsersByKey } from "@/core/utils/sortUsersByKey";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import notoFont from "@/assets/fonts/NotoSansKR-Regular.ttf?url";
-import { formatDate } from "@/utils/FormAtDate";
+import { Header } from "@/presentation/layout/Header";
+import { useUserStore } from "@/application/stores/UserStore";
 
+// 파일 정보 타입
+export interface SegmentFileInfo {
+  fileName: string;
+  createdAt?: string;
+}
+
+const viewModel = new SegmentFileListViewModel();
 
 export default function LastLoginPage() {
-  const { filters, setFilters, users, isLoading, error } = useSegmentViewModel("lastLogin");
+  const infoDbNo = useUserStore((state) => state.infoDbNo); // number
+  const targetColumn = "last_login"; // 언더스코어 표기
+  const [files, setFiles] = useState<SegmentFileInfo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [requesting, setRequesting] = useState(false);
+  const navigate = useNavigate();
 
-  const [sortKey, setSortKey] = useState<"age" | "country" | null>(null);
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  useEffect(() => {
+    if (!infoDbNo) return;
+    setLoading(true);
 
-  const handleSortChange = (key: "age" | "country") => {
-    if (sortKey === key) {
-      setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
-    } else {
-      setSortKey(key);
-      setSortOrder("asc");
+    viewModel.getFileList(infoDbNo, targetColumn)
+      .then((res) => {
+        let mapped: SegmentFileInfo[] = [];
+        if (Array.isArray(res.files)) {
+          if (typeof res.files[0] === "string") {
+            mapped = (res.files as unknown as string[]).map((path) => ({
+              fileName: path.split("/").pop() || path,
+            }));
+          } else if (typeof res.files[0] === "object" && res.files[0]?.fileName) {
+            mapped = res.files as SegmentFileInfo[];
+          }
+        }
+        setFiles(mapped);
+      })
+      .catch(() => setFiles([]))
+      .finally(() => setLoading(false));
+  }, [infoDbNo, targetColumn]);
+
+  const handleRequestLatest = async () => {
+    if (infoDbNo == null) {
+      alert("필수 정보가 없습니다.");
+      return;
+    }
+    setRequesting(true);
+    try {
+      await viewModel.requestLatestLastLoginAnalysisGet({
+        info_db_no: infoDbNo,
+        user_info: "user_info",
+        user_sub_info: "user_sub_info",
+      });
+      window.location.reload();
+    } catch (e) {
+      alert("최신 데이터 분석 요청에 실패했습니다.");
+    } finally {
+      setRequesting(false);
     }
   };
 
-  const sortedUsers = useMemo(() => {
-    if (!sortKey) return users;
-    return sortUsersByKey(users, sortKey, sortOrder);
-  }, [users, sortKey, sortOrder]);
+  // 파일명 클릭 시 분석결과 페이지로 이동
+  const handleFileClick = (fileName: string) => {
+    if (!infoDbNo || !fileName) return;
+    const s3Key = `${infoDbNo}/segment/last_login/${fileName}`;
+    navigate(
+      `/analysis/lastlogin?infoDbNo=${infoDbNo}&s3Key=${encodeURIComponent(s3Key)}&fileName=${encodeURIComponent(fileName)}`
+    );
+  };
 
-  const selectedFields = [
-    "userId",
-    "name",
-    "age",
-    "country",
-    "watchTimeHours",
-    "favoriteGenre",
-    "lastLogin",
-    "subscription",
-  ] as const;
-  type SelectedField = typeof selectedFields[number];
-
-  const handleExport = async () => {
-    try {
-
-        const doc = new jsPDF();
-        
-        const fontBinary = await fetch(notoFont)
-        .then((res) => res.arrayBuffer())
-        .then((buffer) => {
-            const binary = new Uint8Array(buffer)
-            .reduce((data, byte) => data + String.fromCharCode(byte), "");
-            return btoa(binary);
-        });
-        
-        doc.addFileToVFS("NotoSansKR-Regular.ttf", fontBinary);
-        doc.addFont("NotoSansKR-Regular.ttf", "NotoSansKR", "normal");
-        doc.setFont("NotoSansKR");
-        doc.setFontSize(14);
-        doc.text("User Last Login Data", 14, 15);
-        
-        const rows = sortedUsers.map((user) =>
-            selectedFields.map((field: SelectedField) =>
-                field === "lastLogin" ? formatDate(user[field]) : String(user[field] ?? "")
-            )   
-        );
-
-        autoTable(doc, {
-            startY: 25,
-            head: [selectedFields.map((field) => ({ content: field }))],
-            body: rows,
-            styles: {
-                fontSize: 10,
-                font: "NotoSansKR",
-            },
-            headStyles: {
-                fillColor: [67, 160, 71],
-                textColor: 255,
-            },
-        });
-
-        const fileName = `user_last_login_data_${new Date().toISOString().split('T')[0]}.pdf`;
-        doc.save(fileName);
-    } catch (error) {
-      console.error("PDF 내보내기 실패", error);
-      alert("PDF 내보내기에 실패했습니다.")
-    }
-};
-
-return (
-    <div className="min-h-screen w-screen bg-primary text-gray-800">
+  return (
+    <div className="min-h-screen w-screen bg-[#FFA726] text-gray-800">
       <Header />
       <main className="flex">
+        {/* 사이드 메뉴 */}
         <div className="w-64 pt-4 pl-4">
           <div className="mt-4 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
             <SideMenu />
           </div>
         </div>
-
-        <section className="flex-1 p-6 overflow-y-auto">
-          <SegmentTemplate
-            title="마지막 접속일"
-            onExport={handleExport}
-            filter={
-              <SegmentFilterBox
-                segmentType="lastLogin"
-                filters={filters}
-                onChange={setFilters}
-                lockedKeys={["lastLogin"]}
-                onSortChange={handleSortChange}
-                sortKey={sortKey}
-                sortOrder={sortOrder}
-              />
-            }
-          >
-            <div className="bg-white p-4 rounded shadow">
-              {isLoading && (
-                <div className="flex items-center justify-center p-4">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-                  <p className="ml-2 text-sm text-gray-500">불러오는 중...</p>
-                </div>
-              )}
-              {error && (
-                <div className="bg-red-50 border border-red-200 text-red-600 p-3 rounded">
-                  <p className="text-sm font-medium">오류가 발생했습니다</p>
-                  <p className="text-xs">{error.message}</p>
-                </div>
-              )}
-              {!isLoading && !error && (
-                <SegmentUserTable
-                  users={sortedUsers}
-                  sortKey={sortKey}
-                  sortOrder={sortOrder}
-                />
-              )}
+        {/* 메인 콘텐츠 */}
+        <div className="flex-1 flex flex-col items-center">
+          {/* 상단 탭 카드 */}
+          <div className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8">
+            <div className="flex flex-col items-center flex-1 cursor-pointer border-b-4 border-[#FFA726] pb-2">
+              <span className="text-3xl mb-1 text-[#FFA726]">📋</span>
+              <span className="text-[#FFA726] font-semibold text-lg">요청 내역 리스트</span>
             </div>
-          </SegmentTemplate>
-        </section>
+            <div className="flex flex-col items-center flex-1 cursor-pointer opacity-60 pb-2">
+              <span className="text-3xl mb-1">📊</span>
+              <span className="text-gray-400 font-semibold text-lg">분석 결과</span>
+            </div>
+          </div>
+          {/* 리스트 카드 */}
+          <div className="w-[525px] bg-white rounded-lg shadow p-6">
+            <div className="font-bold text-base mb-4">요청 내역 리스트</div>
+            <div className="border-b pb-2 font-semibold text-gray-700">요청 날짜</div>
+            <button
+              className="w-full bg-[#1976D2] text-white font-semibold rounded py-2 mt-4 mb-2 hover:bg-[#1565C0] transition"
+              onClick={handleRequestLatest}
+              disabled={requesting}
+            >
+              {requesting ? "요청 중..." : "최신 데이터로 분석 요청하기"}
+            </button>
+            {loading ? (
+              <div className="flex justify-center items-center h-32">로딩 중...</div>
+            ) : files.length === 0 ? (
+              <div className="text-gray-400 text-center py-4">
+                데이터가 없습니다.
+              </div>
+            ) : (
+              <ul>
+                {files.map((file) =>
+                  file.fileName ? (
+                    <li
+                      key={file.fileName}
+                      className="py-2 border-b last:border-b-0 flex items-center cursor-pointer hover:text-blue-600"
+                      onClick={() => handleFileClick(file.fileName)}
+                      title="클릭하면 분석 결과 페이지로 이동"
+                    >
+                      <div className="font-medium break-all">{file.fileName}</div>
+                    </li>
+                  ) : null
+                )}
+              </ul>
+            )}
+          </div>
+        </div>
       </main>
     </div>
   );

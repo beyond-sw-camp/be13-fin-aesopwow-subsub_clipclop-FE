@@ -37,9 +37,12 @@ import LastLoginPage from "@/presentation/pages/LastLoginPage";
 import AnalyticsShapPage from "./presentation/pages/AnalyticsShapPage";
 import AnalyticsShapFilterPage from "./presentation/pages/AnalyticsShapFilterPage";
 
+import AnalysisSubscriptionPage from "./presentation/pages/AnalysisSubscriptionPage";
+
 function App() {
   const initializeToken = useAuthStore((state) => state.initializeToken);
   const isInitialized = useAuthStore((state) => state.isInitialized);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -136,6 +139,7 @@ function App() {
 
         <Route path="/analytics/shap/full" element={<AnalyticsShapPage />} />
         <Route path="/analytics/shap/filter" element={<AnalyticsShapFilterPage />} />
+        <Route path="/analysis/subscription" element={<AnalysisSubscriptionPage />} />
       </Routes>
     </>
   );
