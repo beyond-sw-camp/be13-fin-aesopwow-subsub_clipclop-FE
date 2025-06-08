@@ -9,6 +9,7 @@ import { useCohortSingleCsvResultViewModel } from "@/application/viewModels/Coho
 import { SingleRemainHeatmapPanel } from "@/presentation/components/organisms/SingleRemainHeatmapPanel";
 import { SingleInsightPanel } from "@/presentation/components/organisms/SingleInsightPanel";
 import { SingleVisualizationPanel } from "@/presentation/components/organisms/SingleVisualizationPanel";
+import { useCallback } from "react";
 
 function parseKey(key: string | null) {
   if (!key) return null;
@@ -42,6 +43,7 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
     isLoading: isLoading1,
     error: error1,
     groupData: groupData1,
+    rawCsv: rawCsv1, // ✅ 왼쪽 raw csv
   } = useCohortSingleCsvResultViewModel(parsed1);
 
   const {
@@ -52,7 +54,32 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
     isLoading: isLoading2,
     error: error2,
     groupData: groupData2,
+    rawCsv: rawCsv2, // ✅ 오른쪽 raw csv
   } = useCohortSingleCsvResultViewModel(parsed2);
+
+  // ✅ 왼쪽 다운로드
+  const handleDownload1 = useCallback(() => {
+    if (!rawCsv1) return alert("왼쪽 데이터가 아직 로딩되지 않았습니다.");
+    const blob = new Blob([rawCsv1], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = parsed1.filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [rawCsv1, parsed1.filename]);
+
+  // ✅ 오른쪽 다운로드
+  const handleDownload2 = useCallback(() => {
+    if (!rawCsv2) return alert("오른쪽 데이터가 아직 로딩되지 않았습니다.");
+    const blob = new Blob([rawCsv2], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = parsed2.filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  }, [rawCsv2, parsed2.filename]);
 
   return (
     <div className="w-screen bg-primary text-gray-800">
@@ -70,15 +97,23 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
           <div className="relative mb-6 w-full">
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-                <StepProgress currentStep={3} steps={[1, 2, 3]} />
+                <StepProgress currentStep={3} />
               </div>
             </div>
-            <div className="absolute right-0 -top-4 flex flex-col gap-2">
+            <div className="absolute right-0 top-0 inline-flex flex-col gap-2 items-stretch">
               <CustomButton
-                title="데이터 내보내기"
+                title="왼쪽 데이터 내보내기"
                 loading={false}
-                onClick={() => console.log("데이터 내보내기")}
+                onClick={handleDownload1}
                 color="green"
+                className="w-full"
+              />
+              <CustomButton
+                title="오른쪽 데이터 내보내기"
+                loading={false}
+                onClick={handleDownload2}
+                color="green"
+                className="w-full"
               />
             </div>
           </div>

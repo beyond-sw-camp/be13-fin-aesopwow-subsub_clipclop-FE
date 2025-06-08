@@ -1,5 +1,5 @@
 // SingleVisualizationPanel.tsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PanelTitle } from "../atoms/PanelTitle";
 import { Chart } from "react-chartjs-2";
 import type { ChartData } from "chart.js";
@@ -20,14 +20,23 @@ export function SingleVisualizationPanel({
   groupData,
 }: Props) {
   const groupLabels = Object.keys(groupData);
-  const [selectedGroup, setSelectedGroup] = useState(groupLabels[0] || "");
+  const [selectedGroup, setSelectedGroup] = useState("");
 
-  const currentValue = groupData[selectedGroup]?.[5] || 0;
+  // groupData가 갱신되면 selectedGroup 초기화
+  useEffect(() => {
+    if (groupLabels.length > 0 && !selectedGroup) {
+      setSelectedGroup(groupLabels[0]);
+    }
+  }, [groupLabels, selectedGroup]);
+
+  const currentValue = groupData[selectedGroup]?.[5];
+  const safeCurrentValue = typeof currentValue === "number" ? currentValue : 0;
+
   const dynamicDoughnut: ChartData<"doughnut", number[]> = {
     labels: ["잔존", "이탈"],
     datasets: [
       {
-        data: [currentValue, 100 - currentValue],
+        data: [safeCurrentValue, 100 - safeCurrentValue],
         backgroundColor: ["#4CAF50", "#F44336"],
       },
     ],
@@ -61,6 +70,7 @@ export function SingleVisualizationPanel({
                 ))}
               </select>
             </div>
+
             {/* 도넛 차트 영역 */}
             <div className="flex-1 flex items-center justify-center">
               <div className="w-[250px] h-[250px]">
