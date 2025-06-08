@@ -40,6 +40,7 @@ import AnalyticsShapFilterPage from "./presentation/pages/AnalyticsShapFilterPag
 function App() {
   const initializeToken = useAuthStore((state) => state.initializeToken);
   const isInitialized = useAuthStore((state) => state.isInitialized);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
