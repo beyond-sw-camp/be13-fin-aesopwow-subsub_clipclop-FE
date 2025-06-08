@@ -5,7 +5,6 @@ import { SideMenu } from "@/presentation/layout/SideMenu";
 import { Header } from "@/presentation/layout/Header";
 import { useUserStore } from "@/application/stores/UserStore";
 
-// 파일 정보 타입
 export interface SegmentFileInfo {
   fileName: string;
   createdAt?: string;
@@ -14,7 +13,7 @@ export interface SegmentFileInfo {
 const viewModel = new SegmentFileListViewModel();
 
 export default function SubscriptionPage() {
-  const infoDbNo = useUserStore((state) => state.infoDbNo); // number
+  const infoDbNo = useUserStore((state) => state.infoDbNo);
   const targetColumn = "subscription";
   const [files, setFiles] = useState<SegmentFileInfo[]>([]);
   const [loading, setLoading] = useState(true);
@@ -63,13 +62,11 @@ export default function SubscriptionPage() {
     }
   };
 
-  // 파일명 클릭 시 분석결과 페이지로 이동
+  // 파일명 클릭 시 분석결과 페이지로 이동 (path 파라미터로 s3Key 전달)
   const handleFileClick = (fileName: string) => {
     if (!infoDbNo || !fileName) return;
     const s3Key = `${infoDbNo}/segment/subscription/${fileName}`;
-    navigate(
-      `/analysis/subscription?infoDbNo=${infoDbNo}&s3Key=${encodeURIComponent(s3Key)}&fileName=${encodeURIComponent(fileName)}`
-    );
+    navigate(`/analysis/subscription/${encodeURIComponent(s3Key)}`);
   };
 
   return (
@@ -77,15 +74,18 @@ export default function SubscriptionPage() {
       <Header />
       <main className="flex">
         {/* 사이드 메뉴 */}
-        <div className="w-64 pt-4 pl-4">
+        <div className="w-64 pt-4 pl-4 z-10">
           <div className="mt-4 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
             <SideMenu />
           </div>
         </div>
         {/* 메인 콘텐츠 */}
-        <div className="flex-1 flex flex-col items-center">
-          {/* 상단 탭 카드 */}
-          <div className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8">
+        <div className="flex-1 flex flex-col items-center ml-0">
+          {/* 상단 탭 카드 - 좌측으로 220px 이동 */}
+          <div
+            className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8"
+            style={{ marginLeft: '-220px' }}
+          >
             <div className="flex flex-col items-center flex-1 cursor-pointer border-b-4 border-[#FFA726] pb-2">
               <span className="text-3xl mb-1 text-[#FFA726]">📋</span>
               <span className="text-[#FFA726] font-semibold text-lg">요청 내역 리스트</span>
@@ -95,8 +95,11 @@ export default function SubscriptionPage() {
               <span className="text-gray-400 font-semibold text-lg">분석 결과</span>
             </div>
           </div>
-          {/* 리스트 카드 */}
-          <div className="w-[525px] bg-white rounded-lg shadow p-6">
+          {/* 리스트 카드 - 좌측으로 220px 이동 */}
+          <div
+            className="w-[525px] bg-white rounded-lg shadow p-6"
+            style={{ marginLeft: '-220px' }}
+          >
             <div className="font-bold text-base mb-4">요청 내역 리스트</div>
             <div className="border-b pb-2 font-semibold text-gray-700">요청 날짜</div>
             <button

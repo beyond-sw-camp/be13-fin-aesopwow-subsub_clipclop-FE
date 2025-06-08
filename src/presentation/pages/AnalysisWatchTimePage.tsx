@@ -4,7 +4,7 @@ import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileLi
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 
-export default function AnalysisSubscriptionPage() {
+export default function AnalysisWatchTimePage() {
   const { s3Key } = useParams<{ s3Key: string }>();
   const [csvData, setCsvData] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
