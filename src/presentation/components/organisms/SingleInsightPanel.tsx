@@ -1,4 +1,4 @@
-// 📁 /presentation/components/organisms/SingleInsightPanel.tsx
+// /presentation/components/organisms/SingleInsightPanel.tsx
 import { PanelTitle } from "../atoms/PanelTitle";
 
 interface Props {
