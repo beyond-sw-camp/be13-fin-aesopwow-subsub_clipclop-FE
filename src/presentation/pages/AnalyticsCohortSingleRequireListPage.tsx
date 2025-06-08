@@ -25,7 +25,7 @@ export default function AnalyticsCohortSingleUserDataPage() {
             </div>
             <div className="flex justify-center mb-6">
               <div className="w-full max-w-4xl">
-                <StepProgress currentStep={2} steps={[1, 2, 3]} />
+                <StepProgress currentStep={2} />
               </div>
             </div>
             <div className="w-full">

@@ -148,16 +148,15 @@ interface CohortResult {
   groupData: Record<string, number[]>;
 }
 
-export function useCohortSingleCsvResultViewModel({
-  clusterType,
-  infoDbNo,
-  filename,
-}: {
+interface Props {
   clusterType: string;
   infoDbNo: number;
   filename: string;
-}) {
+}
+
+export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filename }: Props) {
   const [result, setResult] = useState<CohortResult | null>(null);
+  const [rawCsv, setRawCsv] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -169,11 +168,11 @@ export function useCohortSingleCsvResultViewModel({
         const useCase = new GetCohortResultCsvUseCase(new CohortRepository());
 
         const cleanFilename = filename.replace(/\.csv$/, "");
-
         const csvData = await useCase.execute(infoDbNo, analysisNo, cleanFilename);
 
         const parsed = parseCsvToCohortResult(csvData);
         setResult(parsed);
+        setRawCsv(csvData);
       } catch (e) {
         setError(e instanceof Error ? e : new Error("CSV 분석 실패"));
       } finally {
@@ -186,7 +185,6 @@ export function useCohortSingleCsvResultViewModel({
     }
   }, [clusterType, infoDbNo, filename]);
 
-
   return {
     heatmap: result?.heatmap ?? [],
     doughnutChart: result?.doughnutChart ?? null,
@@ -194,6 +192,7 @@ export function useCohortSingleCsvResultViewModel({
     insight: result?.insight ?? "",
     userData: result?.userData ?? [],
     groupData: result?.groupData ?? {},
+    rawCsv,
     isLoading,
     error,
   };
