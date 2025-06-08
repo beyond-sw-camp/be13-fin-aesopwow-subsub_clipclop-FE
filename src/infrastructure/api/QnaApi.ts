@@ -1,10 +1,10 @@
-// 📁 api/QnaApi.ts
+// api/QnaApi.ts
 import axiosInstance from './Axios';
 import { QnaPost, QnaComment } from '@/core/model/QnaModel';
 
 export const QnaApi = {
   // 게시글 조회
-  getPosts: () => axiosInstance.get<QnaPost[]>('/qna'),
+  getPosts: (page = 0, size = 1000) => axiosInstance.get(`/qna?page=${page}&size=${size}`),
   getPost: (id: number) => axiosInstance.get<QnaPost>(`/qna/${id}`),
 
   // 게시글 작성

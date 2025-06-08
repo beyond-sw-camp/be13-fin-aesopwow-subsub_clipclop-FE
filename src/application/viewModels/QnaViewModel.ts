@@ -1,4 +1,4 @@
-// 📁 viewmodel/QnaViewModel.ts
+// viewmodel/QnaViewModel.ts
 import { getUser } from '@/application/stores/UserStore';
 import { useQnaStore } from '@/application/stores/QnaStore';
 import { QnaUsecase } from '../useCases/QnaUsecase';
@@ -8,11 +8,11 @@ export const useQnaViewModel = () => {
   const store = useQnaStore();
   const qnaUsecase = useMemo(() => QnaUsecase, []);
 
-  // ✅ userNo null 방지 유틸
+  // userNo null 방지 유틸
   const getUserNoOrThrow = (): number => {
     const { userNo } = getUser();
     const user = getUser();
-    console.log("🧪 QnA 요청 시점의 사용자 상태:", user);
+    console.log("QnA 요청 시점의 사용자 상태:", user);
     if (userNo === null) throw new Error("로그인된 사용자 정보가 없습니다.");
     return userNo;
   };
@@ -39,7 +39,7 @@ export const useQnaViewModel = () => {
   // 게시글 작성
   const writePost = async (title: string, content: string) => {
     const user = getUser();
-    console.log("🧪 QnA 요청 시점의 사용자 상태:", user);
+    console.log("QnA 요청 시점의 사용자 상태:", user);
     const userNo = getUserNoOrThrow();
     return await qnaUsecase.writePost(title, content, userNo);
   };
