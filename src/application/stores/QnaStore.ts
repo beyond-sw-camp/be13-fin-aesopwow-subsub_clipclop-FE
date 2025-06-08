@@ -1,4 +1,4 @@
-// 📁 src/application/stores/QnaStore.ts
+// src/application/stores/QnaStore.ts
 import { create } from 'zustand';
 import { QnaPost, QnaComment } from '@/core/model/QnaModel';
 

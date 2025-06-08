@@ -1,9 +1,9 @@
-// 📁 usecase/QnaUsecase.ts
+// usecase/QnaUsecase.ts
 import { QnaRepository } from "@/infrastructure/repositories/QnaRepository";
 
 export const QnaUsecase = {
   // 게시글 전체 조회
-  loadPosts: () => QnaRepository.fetchPosts(),
+  loadPosts: () => QnaRepository.fetchPosts(0, 1000),
 
   // 게시글 단일 조회
   loadPost: (id: number) => QnaRepository.fetchPost(id),
