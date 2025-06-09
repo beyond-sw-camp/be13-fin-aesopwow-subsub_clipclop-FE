@@ -26,7 +26,6 @@ export function SideMenu() {
           <h2 className="font-bold text-sm mb-2">Cohorts</h2>
           <SideMenuButton label="단일 분석" to="/analytics/single/clusterselect" />
           <SideMenuButton label="양측 비교" to="/analytics/double/clusterselect" />
-          <SideMenuButton label="추천 액션" to="/cohorts/recommendation" />
         </div>
 
         <div className="border-t border-gray-300 my-4" />
