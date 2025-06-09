@@ -5,12 +5,13 @@ import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileLi
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 
+type SegmentType = "Light User" | "Core User" | "Power User" | "unknown";
+
 export default function AnalysisWatchTimePage() {
   const { s3Key } = useParams<{ s3Key: string }>();
   const [csvData, setCsvData] = useState<string | null>(null);
-  const [downloading, setDownloading] = useState(false);
   const [csvRows, setCsvRows] = useState<string[][]>([]);
-  const MAX_ROWS = 100;
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     if (!s3Key) return;
@@ -64,6 +65,75 @@ export default function AnalysisWatchTimePage() {
     }
   };
 
+  // 세그먼트별로 데이터 분류
+  const segmentTables = (() => {
+    if (csvRows.length < 2) return null;
+    const header = csvRows[0];
+    let segmentIdx = header.indexOf("segment");
+    const watchTimeIdx = header.indexOf("watch_time_hour");
+
+    // segment 컬럼이 없으면 프론트에서 계산
+    let rowsWithSegment: (string[] & { __segment?: SegmentType })[] = csvRows.slice(1).map(row => {
+      if (segmentIdx !== -1) {
+        return Object.assign([], row, { __segment: row[segmentIdx] as SegmentType });
+      } else if (watchTimeIdx !== -1) {
+        const hour = parseFloat(row[watchTimeIdx]);
+        let seg: SegmentType = "unknown";
+        if (!isNaN(hour)) {
+          if (hour < 30) seg = "Light User";
+          else if (hour < 60) seg = "Core User";
+          else seg = "Power User";
+        }
+        return Object.assign([], row, { __segment: seg });
+      } else {
+        return Object.assign([], row, { __segment: "unknown" as SegmentType });
+      }
+    });
+
+    const segments: Record<SegmentType, string[][]> = {
+      "Light User": [],
+      "Core User": [],
+      "Power User": [],
+      unknown: [],
+    };
+
+    rowsWithSegment.forEach(row => {
+      const seg = row.__segment || "unknown";
+      if (segments[seg]) segments[seg].push(row as string[]);
+      else segments.unknown.push(row as string[]);
+    });
+
+    return (Object.keys(segments) as SegmentType[]).map(seg => {
+      const rows = segments[seg];
+      if (rows.length === 0) return null;
+      return (
+        <div key={seg} className="mb-8">
+          <div className="font-bold text-lg mb-2">
+            {seg} ({rows.length}명)
+          </div>
+          <table className="min-w-full border text-sm mb-2">
+            <thead>
+              <tr>
+                {header.map((col, idx) => (
+                  <th key={idx} className="border px-2 py-1 bg-gray-100">{col}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.slice(0, 5).map((row, rIdx) => (
+                <tr key={rIdx}>
+                  {row.map((cell, cIdx) => (
+                    <td key={cIdx} className="border px-2 py-1">{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    });
+  })();
+
   return (
     <div className="min-h-screen w-screen bg-[#FFA726] text-gray-800">
       <Header />
@@ -103,33 +173,7 @@ export default function AnalysisWatchTimePage() {
             </div>
             <div className="font-bold text-base mb-4">분석 결과</div>
             <div className="overflow-x-auto">
-              {csvRows.length > 1 ? (
-                <>
-                  {csvRows.length > MAX_ROWS + 1 && (
-                    <div className="text-red-500 mb-2">
-                      {MAX_ROWS}행까지만 미리보기로 표시됩니다. 전체 데이터는 내보내기를 이용하세요.
-                    </div>
-                  )}
-                  <table className="min-w-full border text-sm">
-                    <thead>
-                      <tr>
-                        {csvRows[0].map((col, idx) => (
-                          <th key={idx} className="border px-2 py-1 bg-gray-100">{col}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {csvRows.slice(1, MAX_ROWS + 1).map((row, rIdx) => (
-                        <tr key={rIdx}>
-                          {row.map((cell, cIdx) => (
-                            <td key={cIdx} className="border px-2 py-1">{cell}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </>
-              ) : (
+              {segmentTables ? segmentTables : (
                 <pre style={{
                   whiteSpace: "pre-wrap",
                   background: "#111",
