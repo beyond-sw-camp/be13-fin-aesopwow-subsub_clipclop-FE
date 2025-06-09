@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import { PageBreadcrumb } from "@/presentation/components/molecules/PageBreadcrumb";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 import { StepProgress } from "@/presentation/components/molecules/StepProgress";
@@ -5,6 +6,8 @@ import { Header } from "@/presentation/layout/Header";
 import { CohortHistoryPanel } from "../components/organisms/CohortHistoryPanel";
 
 export default function AnalyticsCohortSingleUserDataPage() {
+  const [searchParams] = useSearchParams();
+  const clusterType = searchParams.get("clusterType") || "PCL";
 
   return (
     <div className="min-h-screen w-screen bg-primary text-gray-800">
@@ -26,7 +29,7 @@ export default function AnalyticsCohortSingleUserDataPage() {
               </div>
             </div>
             <div className="w-full">
-              <CohortHistoryPanel clusterType="PCL" />
+              <CohortHistoryPanel clusterType={clusterType} />
             </div>
           </div>
         </div>

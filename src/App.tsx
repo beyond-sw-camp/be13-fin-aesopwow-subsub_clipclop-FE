@@ -5,7 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useAuthStore } from "@/application/stores/AuthStore";
-import { useUserStore } from "@/application/stores/UserStore"; // ✅ 추가
+import { useUserStore } from "@/application/stores/UserStore";
 import ProtectedRoute from "./presentation/components/organisms/LoginProtectedRoute";
 
 // 페이지 컴포넌트 import
@@ -18,9 +18,10 @@ import AboutUsPage from "./presentation/pages/AboutUsPage";
 
 import AnalyticsCohortSingleClusterSelectPage from "./presentation/pages/AnalyticsCohortSingleClusterSelectPage";
 import AnalyticsCohortSingleRequireListPage from "./presentation/pages/AnalyticsCohortSingleRequireListPage";
-// import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
+import AnalyticsCohortSingleCohortResultPage from "./presentation/pages/AnalyticsCohortSingleCohortResultPage";
 import AnalyticsCohortDoubleClusterSelectPage from "./presentation/pages/AnalyticsCohortDoubleClusterSelectPage";
-// import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
+import AnalyticsCohortDoubleRequireListPage from "./presentation/pages/AnalyticsCohortDoubleRequireListPage";
+import AnalyticsCohortDoubleCohortResultPage from "./presentation/pages/AnalyticsCohortDoubleCohortResultPage";
 
 import QnaListPage from "./presentation/pages/QnaListPage";
 import QnaWritePage from "./presentation/pages/QnaWritePage";
@@ -35,13 +36,16 @@ import LastLoginPage from "@/presentation/pages/LastLoginPage";
 
 import AnalyticsShapPage from "./presentation/pages/AnalyticsShapPage";
 import AnalyticsShapFilterPage from "./presentation/pages/AnalyticsShapFilterPage";
+import AnalysisSubscriptionPage from "./presentation/pages/AnalysisSubscriptionPage";
+import AnalysisWatchTimePage from "./presentation/pages/AnalysisWatchTimePage";
+import AnalysisGenrePage from "./presentation/pages/AnalysisGenrePage";
+import AnalysisLastLoginPage from "./presentation/pages/AnalysisLastLoginPage";
 
 function App() {
   const initializeToken = useAuthStore((state) => state.initializeToken);
   const isInitialized = useAuthStore((state) => state.isInitialized);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
-  // 사용자 정보를 localStorage에서 UserStore로 복구
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (storedUser) {
@@ -74,16 +78,15 @@ function App() {
             <Routes>
                 {/* 인증/비인증 라우트 구분 */}
                 <Route path="/" element={isLoggedIn ? <DashBoardPage /> : <AboutUsPage />} />
-               {/*<Route path="//" element={<Navigate to={isLoggedIn ? "/dash-board" : "/aboutus"} />} />*/}
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/forgot/password" element={<ForgotPasswordPage />} />
         
-            <Route path="/dash-board" element={
-                <ProtectedRoute>
-                    <DashBoardPage />
-                </ProtectedRoute>
-            } />
+                <Route path="/dash-board" element={
+                    <ProtectedRoute>
+                        <DashBoardPage />
+                    </ProtectedRoute>
+                } />
             <Route path="/mypage" element={<MyPage />} />
         
 
@@ -98,8 +101,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/analytics/single/requirelist" element={<AnalyticsCohortSingleRequireListPage/>} />
-        {/* <Route path="/analytics/single/cohortresult" element={<AnalyticsCohortSingleCohortResultPage />} /> */}
+        <Route path="/analytics/single/requirelist" element={<AnalyticsCohortSingleRequireListPage />} />
+        <Route
+          path="/analytics/single/result"
+          element={
+            <ProtectedRoute>
+              <AnalyticsCohortSingleCohortResultPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/analytics/double/clusterselect"
@@ -109,7 +119,15 @@ function App() {
             </ProtectedRoute>
           }
         />
-        {/* <Route path="/analytics/double/cohortresult" element={<AnalyticsCohortDoubleCohortResultPage />} /> */}
+        <Route
+          path="/analytics/double/requirelist"
+          element={
+            <ProtectedRoute>
+              <AnalyticsCohortDoubleRequireListPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/analytics/double/result" element={<AnalyticsCohortDoubleCohortResultPage />} />
 
         <Route path="/qna" element={<QnaListPage />} />
         <Route path="/qna/write" element={<QnaWritePage />} />
@@ -123,6 +141,10 @@ function App() {
 
         <Route path="/analytics/shap/full" element={<AnalyticsShapPage />} />
         <Route path="/analytics/shap/filter" element={<AnalyticsShapFilterPage />} />
+        <Route path="/analysis/subscription/:s3Key" element={<AnalysisSubscriptionPage />} />
+        <Route path="/analysis/watchtime/:s3Key" element={<AnalysisWatchTimePage />} />
+        <Route path="/analysis/genre/:s3Key" element={<AnalysisGenrePage />} />
+        <Route path="/analysis/lastlogin/:s3Key" element={<AnalysisLastLoginPage  />} />
       </Routes>
     </>
   );

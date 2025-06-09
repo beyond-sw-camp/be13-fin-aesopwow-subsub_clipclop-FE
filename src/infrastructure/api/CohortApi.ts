@@ -1,4 +1,4 @@
-// 📁 /src/infrastructure/api/CohortApi.ts
+// /src/infrastructure/api/CohortApi.ts
 import axiosInstance from "@/infrastructure/api/Axios";
 import { CohortRequestDto, CohortFileInfo } from "@/core/model/CohortModels";
 
@@ -30,8 +30,8 @@ export const getCohortResultCsv = async ({
 }): Promise<string> => {
   const response = await axiosInstance.get("/analysis/cohort", {
     params: { infoDbNo, analysisNo, filename },
-    responseType: "text",
+    responseType: "arraybuffer",
   });
 
-  return response.data; // CSV 문자열
+  return new TextDecoder("utf-8").decode(response.data);
 };
