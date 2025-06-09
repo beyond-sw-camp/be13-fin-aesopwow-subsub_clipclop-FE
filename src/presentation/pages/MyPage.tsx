@@ -9,7 +9,7 @@ import profileImg from "@/assets/profileimg.png";
 import { fetchMyPageUserInfo } from "@/infrastructure/api/MypageApi";
 import { UserViewModel } from "@/application/viewModels/UserViewModel";
 import { MyPageCompany } from "@/presentation/pages/MyPageCompany";
-import { MyPageStaff } from "@/presentation/pages/MyPageStaff";
+// import { MyPageStaff } from "@/presentation/pages/MyPageStaff";
 import { MyPageRequest } from "@/presentation/pages/MyPageRequest";
 
 interface UserInfo {
