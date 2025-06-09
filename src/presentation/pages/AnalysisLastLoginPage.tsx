@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Papa from "papaparse";
 import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileListViewModel";
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
@@ -8,6 +9,8 @@ export default function AnalysisLastLoginPage() {
   const { s3Key } = useParams<{ s3Key: string }>();
   const [csvData, setCsvData] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const [csvRows, setCsvRows] = useState<string[][]>([]);
+  const MAX_ROWS = 100;
 
   useEffect(() => {
     if (!s3Key) return;
@@ -23,6 +26,19 @@ export default function AnalysisLastLoginPage() {
       })
       .catch(() => setCsvData("분석 데이터 로드 실패"));
   }, [s3Key]);
+
+  useEffect(() => {
+    if (csvData && !csvData.startsWith("분석 데이터 로드 실패")) {
+      const parsed = Papa.parse<string[]>(csvData, { skipEmptyLines: true });
+      if (parsed && parsed.data && parsed.data.length > 0) {
+        setCsvRows(parsed.data as string[][]);
+      } else {
+        setCsvRows([]);
+      }
+    } else {
+      setCsvRows([]);
+    }
+  }, [csvData]);
 
   const handleDownload = async () => {
     if (!s3Key) return alert("s3Key가 없습니다.");
@@ -87,18 +103,46 @@ export default function AnalysisLastLoginPage() {
             </div>
             <div className="font-bold text-base mb-4">분석 결과</div>
             <div className="overflow-x-auto">
-              <pre style={{
-                whiteSpace: "pre-wrap",
-                background: "#111",
-                color: "#fff",
-                borderRadius: "8px",
-                padding: "20px",
-                fontSize: "1rem",
-                border: "2px solid #2196f3",
-                minHeight: "300px"
-              }}>
-                {csvData || "로딩 중..."}
-              </pre>
+              {csvRows.length > 1 ? (
+                <>
+                  {csvRows.length > MAX_ROWS + 1 && (
+                    <div className="text-red-500 mb-2">
+                      {MAX_ROWS}행까지만 미리보기로 표시됩니다. 전체 데이터는 내보내기를 이용하세요.
+                    </div>
+                  )}
+                  <table className="min-w-full border text-sm">
+                    <thead>
+                      <tr>
+                        {csvRows[0].map((col, idx) => (
+                          <th key={idx} className="border px-2 py-1 bg-gray-100">{col}</th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {csvRows.slice(1, MAX_ROWS + 1).map((row, rIdx) => (
+                        <tr key={rIdx}>
+                          {row.map((cell, cIdx) => (
+                            <td key={cIdx} className="border px-2 py-1">{cell}</td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </>
+              ) : (
+                <pre style={{
+                  whiteSpace: "pre-wrap",
+                  background: "#111",
+                  color: "#fff",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  fontSize: "1rem",
+                  border: "2px solid #2196f3",
+                  minHeight: "300px"
+                }}>
+                  {csvData || "로딩 중..."}
+                </pre>
+              )}
             </div>
           </div>
         </div>
