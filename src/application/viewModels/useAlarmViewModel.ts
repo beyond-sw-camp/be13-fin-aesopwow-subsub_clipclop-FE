@@ -1,59 +1,3 @@
-// 이게 진짜임
-
-// import { useEffect, useState } from "react";
-// import {
-//   fetchAlarms,
-//   sendAlarm,
-//   markAlarmAsRead,
-//   AlarmItem,
-// } from "@/infrastructure/api/Alarm";
-
-// export const useAlarmViewModel = (userNo: number) => {
-//   const [alarms, setAlarms] = useState<AlarmItem[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   // ✅ 알림 전체 불러오기 (userNo는 필요 없음)
-//   const loadAlarms = async () => {
-//     try {
-//       const data = await fetchAlarms(); // ✅ 여기는 그대로 userNo 없이 호출
-//       setAlarms(data);
-//     } catch (e) {
-//       console.error("❌ 알림 불러오기 실패", e);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   // ✅ 알림 전송 (userNo 사용)
-//   const send = async (content: string) => {
-//     await sendAlarm(userNo, content); // ✅ userNo 유지
-//     await loadAlarms();
-//   };
-
-//   // ✅ 알림 읽음 처리
-//   const markAsRead = async (alarmId: string) => {
-//     try {
-//       await markAlarmAsRead(alarmId);
-//       await loadAlarms();
-//     } catch (e) {
-//       console.error("❌ 알림 읽음 처리 실패", e);
-//     }
-//   };
-
-//   useEffect(() => {
-//     loadAlarms(); // ✅ 여전히 userNo는 load에는 필요 없음
-//   }, [userNo]);
-
-//   return {
-//     alarms,
-//     loading,
-//     send,
-//     markAsRead,
-//   };
-// };
-
-//테스트좀 할게요
-
 import { useEffect, useState } from "react";
 import {
   fetchAlarms,
@@ -63,15 +7,24 @@ import {
 } from "@/infrastructure/api/Alarm";
 import { getUser } from "@/application/stores/UserStore";
 
+const PAGE_SIZE = 5;
+
 export const useAlarmViewModel = () => {
+  const [allAlarms, setAllAlarms] = useState<AlarmItem[]>([]);
   const [alarms, setAlarms] = useState<AlarmItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [userNo, setUserNo] = useState<number | null>(null);
+  const [hasMore, setHasMore] = useState(true);
 
+  // 전체 알림 불러오기 → 내부적으로 paging 분리
   const loadAlarms = async () => {
     try {
+      setLoading(true);
       const data = await fetchAlarms();
-      setAlarms(data);
+      setAllAlarms(data);
+      const firstPage = data.slice(0, PAGE_SIZE);
+      setAlarms(firstPage);
+      setHasMore(data.length > PAGE_SIZE);
     } catch (e) {
       console.error("알림 불러오기 실패", e);
     } finally {
@@ -79,6 +32,15 @@ export const useAlarmViewModel = () => {
     }
   };
 
+  // 추가 알림 로딩
+  const loadMore = () => {
+    const nextLength = alarms.length + PAGE_SIZE;
+    const next = allAlarms.slice(0, nextLength);
+    setAlarms(next);
+    setHasMore(allAlarms.length > next.length);
+  };
+
+  // 알림 전송
   const send = async (content: string) => {
     try {
       if (userNo === null) throw new Error("userNo 없음");
@@ -89,6 +51,7 @@ export const useAlarmViewModel = () => {
     }
   };
 
+  // 알림 읽음 처리
   const markAsRead = async (alarmId: string | number) => {
     try {
       await markAlarmAsRead(alarmId);
@@ -98,6 +61,7 @@ export const useAlarmViewModel = () => {
     }
   };
 
+  // 유저 정보 불러오기
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -107,7 +71,6 @@ export const useAlarmViewModel = () => {
         console.error("유저 정보 불러오기 실패", e);
       }
     };
-
     fetchUser();
   }, []);
 
@@ -120,6 +83,8 @@ export const useAlarmViewModel = () => {
   return {
     alarms,
     loading,
+    hasMore,
+    loadMore,
     send,
     markAsRead,
   };
