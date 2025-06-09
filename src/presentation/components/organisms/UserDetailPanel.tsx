@@ -23,7 +23,6 @@ export function UserDetailPanel({
 
     observerRef.current = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) {
-        console.log("bottomRef 감지됨");
         loadMore();
       }
     });
