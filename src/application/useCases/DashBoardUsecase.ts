@@ -8,7 +8,6 @@ import { User } from 'lucide-react';
 import { ChartData as ChartJSData } from 'chart.js';
 import { DashBoardCharts } from '@/application/stores/DashBoardStore';
 import axiosInstance from '@/infrastructure/api/Axios';
-import { userInfo } from 'os';
 
 interface SubscriptionTypeRow {
     month: string;
@@ -23,7 +22,7 @@ export class DashBoardUsecase {
         chartData: DashBoardCharts;
         statCards: StatCardData[];
     }> {
-        const { infoDbNo, originTable } = getUser();
+        const { infoDbNo, /*originTable*/ } = getUser();
 
         if (!infoDbNo) {
             throw new Error('대시보드 데이터를 요청하기 위한 파라미터가 유효하지 않습니다.');
