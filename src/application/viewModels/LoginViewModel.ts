@@ -62,7 +62,7 @@ export const useLoginViewModel = () => {
       }
 
       // basicInfo 불러오기
-      const basicInfo = await userRepository.getUserBasicInfo(userNo);
+      const basicInfo = await userRepository.getUserBasicInfo();
 
       console.log("basicInfo:", basicInfo);
       console.log("roleNo:", basicInfo.roleNo);
