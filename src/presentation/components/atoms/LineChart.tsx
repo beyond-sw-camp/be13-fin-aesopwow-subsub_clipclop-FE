@@ -17,7 +17,7 @@ export const LineChart: React.FC<ChartProps> = ({ chartData }) => {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { position: "top" },
-                    title: { display: true, text: "꺾은선 그래프" }
+                    title: { display: true, text: "최근 1년 월별 증감률 그래프" }
                 }
             }}
         />
