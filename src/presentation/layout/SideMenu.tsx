@@ -1,16 +1,13 @@
 import { SideMenuButton } from "@/presentation/components/atoms/SideMenuButton";
 import { CustomButton } from "@/presentation/components/atoms/CustomButton";
-import { useNavigate } from "react-router-dom";
 
 export function SideMenu() {
-  const navigate = useNavigate();
-
   return (
     <div className="w-60 bg-white p-4 flex flex-col justify-between shadow-md rounded-lg">
       <div>
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Home</h2>
-          <SideMenuButton label="Dash Board" onClick={() => navigate("/dash-board")} />
+          <SideMenuButton label="Dash Board" to="/dash-board" />
         </div>
 
         <div className="border-t border-gray-300 my-4" />
@@ -27,8 +24,8 @@ export function SideMenu() {
 
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Cohorts</h2>
-          <SideMenuButton label="단일 분석" onClick={() => navigate("/analytics/single/clusterselect")} />
-          <SideMenuButton label="양측 비교" onClick={() => navigate("/analytics/double/clusterselect")} />
+          <SideMenuButton label="단일 분석" to="/analytics/single/clusterselect" />
+          <SideMenuButton label="양측 비교" to="/analytics/double/clusterselect" />
           <SideMenuButton label="추천 액션" to="/cohorts/recommendation" />
         </div>
 
@@ -36,7 +33,7 @@ export function SideMenu() {
 
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">문의 게시판</h2>
-          <SideMenuButton label="문의 게시판" onClick={() => navigate("/qna")} />
+          <SideMenuButton label="문의 게시판" to="/qna" />
         </div>
       </div>
 
