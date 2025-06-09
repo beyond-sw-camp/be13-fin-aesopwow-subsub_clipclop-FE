@@ -1,7 +1,7 @@
-// /models/CompanyInfo.ts
+// // /models/CompanyInfo.ts
 
 export interface CompanyInfo {
     id: number;
-    title: string;
-    subtitle: string;
+    name: string;
+    departmentName: string;
 }

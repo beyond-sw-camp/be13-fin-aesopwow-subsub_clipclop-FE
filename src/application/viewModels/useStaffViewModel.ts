@@ -56,7 +56,7 @@ export function useStaffViewModel() {
             });
             setStaffList((prev) =>
                 prev.map((item) =>
-                    item.id === id ? { ...item, title: newTitle, subtitle: newSubtitle } : item
+                    item.userNo === id ? { ...item, title: newTitle, subtitle: newSubtitle } : item
                 )
             );
         } catch (error) {
@@ -70,7 +70,7 @@ export function useStaffViewModel() {
 
         try {
             await axiosInstance.delete(`/staffs/${id}`);
-            setStaffList((prev) => prev.filter((item) => item.id !== id));
+            setStaffList((prev) => prev.filter((item) => item.userNo !== id));
         } catch (err) {
             console.error("직원 삭제 실패:", err);
             alert("직원 삭제 중 오류가 발생했습니다.");
@@ -79,6 +79,7 @@ export function useStaffViewModel() {
 
     return {
         staffList,
+        setStaffList,
         isLoading,
         handleAdd,
         handleEdit,

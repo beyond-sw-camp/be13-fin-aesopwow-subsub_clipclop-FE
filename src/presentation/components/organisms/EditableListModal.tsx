@@ -3,21 +3,23 @@
 import { X } from 'lucide-react';
 import { EditableInfoItem } from '@/presentation/components/molecules/EditableInfoItem';
 import { AddButton } from '@/presentation/components/atoms/AddButton';
+import type { JSX } from "react";
 
 interface ItemData {
   id: number;
-  title: string;
-  subtitle: string;
+  name: string;
+  departmentName: string;
 }
 
 interface EditableListModalProps {
   title: string;
   data: ItemData[];
   onClose: () => void;
-  onEdit: (id: number, title: string, subtitle: string) => void;
+  onEdit: (id: number, name: string, departmentName: string) => void;
   onDelete: (id: number) => void;
   onAdd?: () => void;
   addLabel?: string;
+  renderFooter?: () => JSX.Element;
 }
 
 export function EditableListModal({
@@ -28,6 +30,7 @@ export function EditableListModal({
   onDelete,
   onAdd,
   addLabel = '추가',
+  renderFooter,
 }: EditableListModalProps) {
   return (
     <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
@@ -63,6 +66,12 @@ export function EditableListModal({
         {onAdd && (
           <div className="mt-4">
             <AddButton onClick={onAdd} label={addLabel} />
+          </div>
+        )}
+
+        {renderFooter && (
+          <div className="mt-6 flex justify-end">
+            {renderFooter()}
           </div>
         )}
       </div>

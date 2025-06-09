@@ -31,7 +31,11 @@ if (!isOpen) return null;
   return (
     <EditableListModal
       title="직원 관리"
-      data={staffList}
+      data={staffList.map((item) => ({
+        id: item.userNo,
+        name: item.name,
+        departmentName: item.departmentName || "",
+      }))}
       onEdit={handleEdit}
       onDelete={handleDelete}
       onAdd={handleAdd}
