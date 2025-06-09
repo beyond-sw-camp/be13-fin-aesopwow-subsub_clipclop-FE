@@ -3,16 +3,16 @@ import { useCompanyViewModel } from "@/application/viewModels/useCompanyViewMode
 
 export function MyPageCompany({
   isOpen,
-  onClose,
+  // onClose,
 }: {
   isOpen: boolean;
   onClose: () => void;
 }) {
   const {
-    companyList,
+    // companyList,
     isLoading,
-    handleEdit,
-    handleDelete,
+    // handleEdit,
+    // handleDelete,
   } = useCompanyViewModel();
 
   if (!isOpen) return null;
@@ -27,13 +27,14 @@ export function MyPageCompany({
   );
 }
 
-  return (
-    <EditableListModal
-      title="회사 정보"
-      data={companyList}
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-      onClose={onClose}
-    />
-  );
+  // return (
+  //   // <EditableListModal
+  //   //   title="회사 정보"
+  //   //   data={companyList}
+  //   //   onEdit={handleEdit}
+  //   //   onDelete={handleDelete}
+  //   //   onClose={onClose}
+  //   // />
+
+  // );
 }
