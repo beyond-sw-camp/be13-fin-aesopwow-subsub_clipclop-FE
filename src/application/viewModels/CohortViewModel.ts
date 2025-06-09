@@ -1,6 +1,7 @@
 // /src/application/viewModels/CohortViewModel.ts
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import axiosInstance from "@/infrastructure/api/Axios";
 import {
   RequestCohortAnalysisUseCase,
   GetCohortHistoryUseCase,
@@ -9,11 +10,13 @@ import {
 import { ChartData } from "chart.js";
 import { CohortSingleUserResponse } from "@/core/model/CohortModel";
 import { useUserStore } from "@/application/stores/UserStore";
+import { Insight } from "@/core/model/CohortModels";
 
 import { CohortRepository } from "@/infrastructure/repositories/CohortRepository";
 import { CohortRequestDto, CohortFileInfo } from "@/core/model/CohortModels";
 import { parseCsvToCohortResult } from "@/core/utils/csvParser";
 
+import { sendAlarm } from "@/infrastructure/api/Alarm";
 
 const clusterMap: Record<string, number> = {
   PCL: 1,
@@ -26,7 +29,10 @@ const clusterMap: Record<string, number> = {
 export function useSingleClusterViewModel() {
   const [selectedCluster, setSelectedCluster] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
   const infoDbNo = useUserStore((state) => state.infoDbNo);
+  const userNo = useUserStore((state) => state.userNo);
+
   const navigate = useNavigate();
 
   const requestAnalysis = async () => {
@@ -61,6 +67,16 @@ export function useSingleClusterViewModel() {
       setLoading(true);
       await useCase.execute(dto);
 
+      if (typeof userNo === "number") {
+        await sendAlarm(
+          userNo,
+          `선택하신 군집(${selectedCluster})에 대한 분석이 완료되었습니다.`
+        );
+      } else {
+        console.warn("userNo가 유효하지 않습니다:", userNo);
+      }
+
+      alert("분석이 완료되었습니다.");
       navigate(`/analytics/single/requirelist?clusterType=${encodeURIComponent(selectedCluster)}`);
     } catch (error) {
       console.error("분석 요청 실패:", error);
@@ -148,18 +164,19 @@ interface CohortResult {
   groupData: Record<string, number[]>;
 }
 
-export function useCohortSingleCsvResultViewModel({
-  clusterType,
-  infoDbNo,
-  filename,
-}: {
+interface Props {
   clusterType: string;
   infoDbNo: number;
   filename: string;
-}) {
+}
+
+export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filename }: Props) {
   const [result, setResult] = useState<CohortResult | null>(null);
+  const [rawCsv, setRawCsv] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
+
+  const [insightObj, setInsightObj] = useState<Insight | null>(null);
 
   useEffect(() => {
     const load = async () => {
@@ -169,11 +186,22 @@ export function useCohortSingleCsvResultViewModel({
         const useCase = new GetCohortResultCsvUseCase(new CohortRepository());
 
         const cleanFilename = filename.replace(/\.csv$/, "");
-
         const csvData = await useCase.execute(infoDbNo, analysisNo, cleanFilename);
-
         const parsed = parseCsvToCohortResult(csvData);
+
         setResult(parsed);
+        setRawCsv(csvData);
+
+        const insightPath = `${infoDbNo}/cohort/${clusterType}/${cleanFilename}.csv`;
+        try {
+          const insightResponse = await axiosInstance.get<Insight>("/analysis/cohort/insight", {
+            params: { filename: insightPath },
+          });
+          setInsightObj(insightResponse.data);
+        } catch (insightError) {
+          console.warn("인사이트 데이터 로딩 실패:", insightError);
+          setInsightObj(null);
+        }
       } catch (e) {
         setError(e instanceof Error ? e : new Error("CSV 분석 실패"));
       } finally {
@@ -186,14 +214,14 @@ export function useCohortSingleCsvResultViewModel({
     }
   }, [clusterType, infoDbNo, filename]);
 
-
   return {
     heatmap: result?.heatmap ?? [],
     doughnutChart: result?.doughnutChart ?? null,
     lineChart: result?.lineChart ?? null,
-    insight: result?.insight ?? "",
+    insight: insightObj,
     userData: result?.userData ?? [],
     groupData: result?.groupData ?? {},
+    rawCsv,
     isLoading,
     error,
   };
@@ -206,6 +234,7 @@ export function useDoubleClusterViewModel() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const infoDbNo = useUserStore((state) => state.infoDbNo);
+  const userNo = useUserStore((state) => state.userNo);
   const navigate = useNavigate();
 
   const requestAnalysis = async () => {
@@ -234,7 +263,6 @@ export function useDoubleClusterViewModel() {
 
     const useCase = new RequestCohortAnalysisUseCase(new CohortRepository());
 
-    // DTO 생성 헬퍼 함수
     const createCohortDto = (clusterName: string, analysisNo: number): CohortRequestDto => ({
       infoDbNo,
       analysisNo,
@@ -250,10 +278,19 @@ export function useDoubleClusterViewModel() {
       const dto1 = createCohortDto(firstCluster, analysisNo1);
       const dto2 = createCohortDto(secondCluster, analysisNo2);
 
-      // 병렬 분석 요청
       await Promise.all([useCase.execute(dto1), useCase.execute(dto2)]);
 
-      // 분석 이력 페이지로 이동
+      if (typeof userNo === "number") {
+        await sendAlarm(
+          userNo,
+          `선택하신 두 군집(${firstCluster}, ${secondCluster})에 대한 분석이 완료되었습니다.`
+        );
+      } else {
+        console.warn("userNo가 유효하지 않습니다:", userNo);
+      }
+
+      alert("분석이 완료되었습니다.");
+
       navigate(
         `/analytics/double/requirelist?` +
           `firstClusterType=${encodeURIComponent(firstCluster)}&` +

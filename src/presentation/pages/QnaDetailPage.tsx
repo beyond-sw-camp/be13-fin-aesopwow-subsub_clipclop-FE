@@ -1,4 +1,4 @@
-// 📁 src/pages/QnaDetailPage.tsx
+// src/pages/QnaDetailPage.tsx
 import { PageBreadcrumb } from "@/presentation/components/molecules/PageBreadcrumb";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 import { Header } from "@/presentation/layout/Header";
@@ -16,14 +16,11 @@ export default function QnaDetailPage() {
         </div>
 
         <div className="flex-1 flex flex-col min-h-screen">
-          <div className="flex flex-col p-8 flex-grow">
+          <div className="flex flex-col px-6 py-4 flex-grow">
             <div className="mb-4">
-              <PageBreadcrumb title="문의사항 상세" />
+              <PageBreadcrumb title="문의사항 게시판" />
             </div>
-
-            <div className="w-full mb-6">
               <QnaDetail />
-            </div>
           </div>
         </div>
       </main>

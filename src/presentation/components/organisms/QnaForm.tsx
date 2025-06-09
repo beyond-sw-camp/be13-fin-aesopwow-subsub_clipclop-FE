@@ -22,34 +22,44 @@ export default function QnaForm() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-6">문의 작성</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="제목을 입력하세요"
-          className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-500"
-          required
-        />
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="내용을 입력하세요"
-          rows={10}
-          className="w-full border border-gray-300 rounded px-4 py-2 resize-none focus:outline-none focus:ring focus:border-blue-500"
-          required
-        />
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
-          >
-            등록
-          </button>
+    <div className="min-h-screen bg-orange-500 flex justify-center items-start py-16 px-4">
+      <div className="bg-white w-full max-w-5xl p-10 rounded shadow-md">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">문의사항 작성</h2>
+          <div className="space-x-2">
+            <button
+              onClick={handleSubmit}
+              className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
+            >
+              등록
+            </button>
+            <button
+              onClick={() => navigate('/qna')}
+              className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+            >
+              취소
+            </button>
+          </div>
         </div>
-      </form>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력하세요"
+            className="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-500"
+            required
+          />
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="내용을 입력하세요"
+            rows={12}
+            className="w-full border border-gray-300 rounded px-4 py-2 resize-none focus:outline-none focus:ring focus:border-blue-500"
+            required
+          />
+        </form>
+      </div>
     </div>
   );
 }

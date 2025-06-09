@@ -1,4 +1,3 @@
-// 📁 src/presentation/components/organisms/QnaList.tsx
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQnaViewModel } from '@/application/viewModels/QnaViewModel';
@@ -24,10 +23,9 @@ export default function QnaList() {
   const goNext = () => currentPage < totalPages && setPage(currentPage + 1);
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="bg-white rounded-xl shadow-md p-8 w-full">
       {/* 상단 제목 + 글쓰기 */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">문의사항 게시판</h1>
+      <div className="flex justify-end mb-6">
         <Link
           to="/qna/write"
           className="bg-blue-600 text-white text-sm px-4 py-2 rounded hover:bg-blue-700"
@@ -45,7 +43,7 @@ export default function QnaList() {
             <Link
               to={`/qna/${post.qnaPostNo}`}
               key={post.qnaPostNo}
-              className="block border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition"
+              className="block rounded-lg p-4 bg-gray-100"
             >
               <div className="font-semibold text-lg text-gray-800">{post.title}</div>
               <div className="text-sm text-gray-500 mt-1">{post.createdAt}</div>
@@ -56,7 +54,6 @@ export default function QnaList() {
 
       {/* 페이지네이션 */}
       <div className="flex justify-center mt-6 space-x-1">
-        {/* ≪ 첫 페이지 */}
         <button
           onClick={goFirst}
           disabled={currentPage === 1}
@@ -64,8 +61,6 @@ export default function QnaList() {
         >
           ≪
         </button>
-
-        {/* ◀ 이전 */}
         <button
           onClick={goPrev}
           disabled={currentPage === 1}
@@ -74,7 +69,6 @@ export default function QnaList() {
           ◀
         </button>
 
-        {/* 페이지 번호 */}
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
           <button
             key={pageNum}
@@ -87,7 +81,6 @@ export default function QnaList() {
           </button>
         ))}
 
-        {/* ▶ 다음 */}
         <button
           onClick={goNext}
           disabled={currentPage === totalPages}
@@ -95,8 +88,6 @@ export default function QnaList() {
         >
           ▶
         </button>
-
-        {/* ≫ 마지막 페이지 */}
         <button
           onClick={goLast}
           disabled={currentPage === totalPages}

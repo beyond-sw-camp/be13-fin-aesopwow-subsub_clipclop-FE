@@ -1,33 +1,41 @@
-interface StepProgressProps {
-  currentStep: number;
-  steps: number[];
+import { CloudUpload, List, BarChart } from "@mui/icons-material";
+
+interface StepItem {
+  label: string;
+  Icon: React.ElementType;
 }
 
-export function StepProgress({ currentStep, steps }: StepProgressProps) {
+interface StepProgressProps {
+  currentStep: number;
+}
+
+const steps: StepItem[] = [
+  { label: "분석 군집 선택", Icon: CloudUpload },
+  { label: "요청 내역 리스트", Icon: List },
+  { label: "분석 결과", Icon: BarChart },
+];
+
+export function StepProgress({ currentStep }: StepProgressProps) {
   return (
     <div className="w-full flex justify-center px-6">
-      <div className="w-full max-w-3xl bg-white rounded-lg p-6 shadow">
-        <div className="flex items-center justify-between w-full">
-          {steps.map((step, index) => (
-            <div key={step} className="flex items-center w-full">
+      <div className="w-full max-w-3xl bg-white rounded-lg shadow p-2 flex justify-between border border-orange-300">
+        {steps.map((step, index) => {
+          const isActive = currentStep >= index + 1;
 
-              {index !== 0 && <div className="h-0.5 bg-gray-300 flex-1" />}
-
-              <div
-                className={`w-8 h-8 rounded-full text-sm font-bold flex items-center justify-center border z-10
-                  ${
-                    currentStep === step
-                      ? "bg-black text-white border-black"
-                      : "bg-gray-200 text-gray-600 border-gray-300"
-                  }`}
-              >
-                {step}
+          return (
+            <div
+              key={step.label}
+              className={`flex flex-col items-center justify-center w-full py-4 ${
+                isActive ? "text-orange-500" : "text-gray-500"
+              }`}
+            >
+              <step.Icon className={`mb-1 ${isActive ? "text-orange-500" : "text-gray-400"}`} />
+              <div className={`text-sm font-semibold ${isActive ? "text-orange-500" : "text-gray-500"}`}>
+                {step.label}
               </div>
-
-              {index !== steps.length - 1 && <div className="h-0.5 bg-gray-300 flex-1" />}
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ import { LinkText } from "../atoms/LinkText";
 
 export const LoginCard = () => {
     return (
-        <div className="bg-white rounded-lg p-7 h-[380px] w-80 text-center text-black shadow-md">
+        <div className="bg-white rounded-lg p-7 min-h-[400px] w-80 text-center text-black shadow-md">
             <Text size="sm" weight="normal" className="mb-3 text-gray-600">
                 Sign in with <br />
                 Or sign up with credentials

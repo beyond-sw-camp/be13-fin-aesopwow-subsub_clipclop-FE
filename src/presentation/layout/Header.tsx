@@ -1,21 +1,17 @@
 import { TopNav } from "@/presentation/components/atoms/TopNav";
 import { ProjectLogo } from "@/presentation/components/atoms/ProjectLogo";
 import { ProfileAvatar } from "@/presentation/components/atoms/ProfileAvatar";
-import { useLocation } from "react-router-dom";
 import { useAlarmViewModel } from "@/application/viewModels/useAlarmViewModel";
 
+
 export function Header() {
-  const location = useLocation();
-  const isLoginPage = location.pathname === "/";
 
   const { alarms } = useAlarmViewModel(); // ✅ userNo 전달
   const hasUnread = alarms.some((a) => !a.isRead);
 
   return (
     <>
-      {!isLoginPage && (
-        <ProfileAvatar hasUnread={hasUnread} /> // ✅ 알림 상태 전달
-      )}
+        <ProfileAvatar hasUnread={hasUnread} /> 
 
       <div className="w-full relative">
         <div className="absolute top-4 left-4 z-40 flex items-center">
