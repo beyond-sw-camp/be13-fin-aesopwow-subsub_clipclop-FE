@@ -193,10 +193,15 @@ export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filen
         setRawCsv(csvData);
 
         const insightPath = `${infoDbNo}/cohort/${clusterType}/${cleanFilename}.csv`;
-        const insightResponse = await axiosInstance.get<Insight>("/analysis/cohort/insight", {
-          params: { filename: insightPath },
-        });
-        setInsightObj(insightResponse.data);
+        try {
+          const insightResponse = await axiosInstance.get<Insight>("/analysis/cohort/insight", {
+            params: { filename: insightPath },
+          });
+          setInsightObj(insightResponse.data);
+        } catch (insightError) {
+          console.warn("인사이트 데이터 로딩 실패:", insightError);
+          setInsightObj(null);
+        }
       } catch (e) {
         setError(e instanceof Error ? e : new Error("CSV 분석 실패"));
       } finally {
