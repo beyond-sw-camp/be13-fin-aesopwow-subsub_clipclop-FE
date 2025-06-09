@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Papa from "papaparse";
 import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileListViewModel";
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
@@ -8,6 +9,7 @@ export default function AnalysisGenrePage() {
   const { s3Key } = useParams<{ s3Key: string }>();
   const [csvData, setCsvData] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
+  const [csvRows, setCsvRows] = useState<string[][]>([]);
 
   useEffect(() => {
     if (!s3Key) return;
@@ -23,6 +25,19 @@ export default function AnalysisGenrePage() {
       })
       .catch(() => setCsvData("분석 데이터 로드 실패"));
   }, [s3Key]);
+
+  useEffect(() => {
+    if (csvData && !csvData.startsWith("분석 데이터 로드 실패")) {
+      const parsed = Papa.parse<string[]>(csvData, { skipEmptyLines: true });
+      if (parsed && parsed.data && parsed.data.length > 0) {
+        setCsvRows(parsed.data as string[][]);
+      } else {
+        setCsvRows([]);
+      }
+    } else {
+      setCsvRows([]);
+    }
+  }, [csvData]);
 
   const handleDownload = async () => {
     if (!s3Key) return alert("s3Key가 없습니다.");
@@ -47,6 +62,49 @@ export default function AnalysisGenrePage() {
       setDownloading(false);
     }
   };
+
+  // 장르별로 데이터 분류
+  const genreTables = (() => {
+    if (csvRows.length < 2) return null;
+    const header = csvRows[0];
+    const genreIdx = header.indexOf("favorite_genre");
+    if (genreIdx === -1) return null;
+
+    // 장르별로 분류
+    const genres: Record<string, string[][]> = {};
+    csvRows.slice(1).forEach(row => {
+      const genre = row[genreIdx] || "unknown";
+      if (!genres[genre]) genres[genre] = [];
+      genres[genre].push(row);
+    });
+
+    // 장르별 표 생성
+    return Object.entries(genres).map(([genre, rows]) => (
+      <div key={genre} className="mb-8">
+        <div className="font-bold text-lg mb-2">
+          {genre} ({rows.length}명)
+        </div>
+        <table className="min-w-full border text-sm mb-2">
+          <thead>
+            <tr>
+              {header.map((col, idx) => (
+                <th key={idx} className="border px-2 py-1 bg-gray-100">{col}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.slice(0, 5).map((row, rIdx) => (
+              <tr key={rIdx}>
+                {row.map((cell, cIdx) => (
+                  <td key={cIdx} className="border px-2 py-1">{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ));
+  })();
 
   return (
     <div className="min-h-screen w-screen bg-[#FFA726] text-gray-800">
@@ -87,18 +145,20 @@ export default function AnalysisGenrePage() {
             </div>
             <div className="font-bold text-base mb-4">분석 결과</div>
             <div className="overflow-x-auto">
-              <pre style={{
-                whiteSpace: "pre-wrap",
-                background: "#111",
-                color: "#fff",
-                borderRadius: "8px",
-                padding: "20px",
-                fontSize: "1rem",
-                border: "2px solid #2196f3",
-                minHeight: "300px"
-              }}>
-                {csvData || "로딩 중..."}
-              </pre>
+              {genreTables ? genreTables : (
+                <pre style={{
+                  whiteSpace: "pre-wrap",
+                  background: "#111",
+                  color: "#fff",
+                  borderRadius: "8px",
+                  padding: "20px",
+                  fontSize: "1rem",
+                  border: "2px solid #2196f3",
+                  minHeight: "300px"
+                }}>
+                  {csvData || "로딩 중..."}
+                </pre>
+              )}
             </div>
           </div>
         </div>

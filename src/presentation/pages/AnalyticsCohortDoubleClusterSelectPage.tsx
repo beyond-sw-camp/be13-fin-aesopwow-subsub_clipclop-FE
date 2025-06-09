@@ -30,7 +30,7 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
             {/* StepProgress 중앙 정렬 및 하단 간격 조정 */}
             <div className="flex justify-center mb-4">
               <div className="w-full max-w-4xl">
-                <StepProgress currentStep={1} steps={[1, 2, 3]} />
+                <StepProgress currentStep={1} />
               </div>
             </div>
 

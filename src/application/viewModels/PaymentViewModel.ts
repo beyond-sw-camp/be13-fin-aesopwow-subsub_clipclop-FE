@@ -3,12 +3,14 @@ import { usePaymentStore } from "@/application/stores/PaymentStore";
 import { useUserStore } from "@/application/stores/UserStore";
 import { PaymentUseCase } from "@/application/useCases/PaymentUseCase";
 import type { PaymentRequest } from "@portone/browser-sdk/v2";
+import { useNavigate } from 'react-router-dom';
 
 export const usePaymentViewModel = () => {
     const { name, phone, email } = useUserStore();
     const customer = usePaymentStore((state) => state.customer);
     const setCustomer = usePaymentStore((state) => state.setCustomer);
     const useCase = new PaymentUseCase();
+    const navigate = useNavigate()
 
     useEffect(() => {
         setCustomer({
@@ -34,6 +36,7 @@ export const usePaymentViewModel = () => {
         };
         try {
             const response = await useCase.requestPayment(paymentRequest);
+            navigate("/dash-board");
             console.log(response);
         } catch (error) {
             console.error(error);

@@ -10,6 +10,7 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
     agree: false,
+    phone: ""
   });
 
   return (

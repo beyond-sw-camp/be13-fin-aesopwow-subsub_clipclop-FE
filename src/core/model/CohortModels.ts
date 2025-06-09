@@ -14,3 +14,8 @@ export interface CohortFileInfo {
   lastModified: string;
   size: number;
 }
+
+export interface Insight {
+  summary: string;
+  recommendations: string[];
+}

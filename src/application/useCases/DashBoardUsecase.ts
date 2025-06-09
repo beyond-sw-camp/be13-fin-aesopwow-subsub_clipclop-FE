@@ -63,14 +63,18 @@ export class DashBoardUsecase {
 
             const metricMap = Object.fromEntries(rows.map((r) => [r.metric?.trim(), r.value]));
 
-            const getMetric = (label: string): number => {
+            const getMetric = (label: string): string => {
                 const value = metricMap[label];
-                if (!value) return 0;
+                if (!value) return (0).toLocaleString(); // 값이 없으면 '0' (문자열) 반환
+            
+                // 숫자로 바로 변환 시도
                 const num = parseFloat(value);
-                if (!isNaN(num)) return num;
-                if (typeof value === 'string' && value.includes('Empty DataFrame')) return 0;
-                const lines = value.split('\n').filter((line: string) => /^\d+\s/.test(line));
-                return lines.length;
+                if (!isNaN(num)) {
+                    return num.toLocaleString();  // 천 단위 콤마 포함한 문자열 반환
+                }
+            
+                // fallback: '0' 문자열 반환
+                return (0).toLocaleString();
             };
 
             const statCards: StatCardData[] = [
@@ -78,8 +82,8 @@ export class DashBoardUsecase {
                 { title: '신규 가입자', value: getMetric('New Users'), icon: User },
                 { title: '활성 사용자', value: getMetric('Active Users'), icon: User },
                 { title: '휴면 사용자', value: getMetric('Dormant Users'), icon: User },
-                { title: '해지율', value: getMetric('Cancellation Rate'), icon: User },
-                { title: '증감률', value: getMetric('Increase Decrease Rate'), icon: User },
+                { title: '해지율', value: getMetric('Cancellation Rate') + '%', icon: User },
+                { title: '증감률', value: getMetric('Increase Decrease Rate') + '%', icon: User },
             ];
 
             // --- 꺾은선 그래프 파싱 --- //
@@ -111,9 +115,12 @@ export class DashBoardUsecase {
 
             if (donutBlock) {
                 const parsed = Papa.parse(donutBlock.trim(), { header: true, skipEmptyLines: true });
-                const monthAgo = new Date();
-                monthAgo.setMonth(monthAgo.getMonth() - 1);
-                const targetMonth = monthAgo.toISOString().slice(0, 7);
+                // const monthAgo = new Date();
+                // monthAgo.setMonth(monthAgo.getMonth() - 1);
+                // const targetMonth = monthAgo.toISOString().slice(0, 7);
+                const now = new Date();
+                const targetMonth = now.toISOString().slice(0, 7);
+
 
                 const targetRow = (parsed.data as SubscriptionTypeRow[]).find(
                     (row) => row.month === targetMonth && row.type === 'new'
@@ -170,22 +177,13 @@ export class DashBoardUsecase {
                     const standardData: number[] = [];
                     const premiumData: number[] = [];
 
-                    [...grouped.entries()].reverse().forEach(([month, types]) => {
+                    [...grouped.entries()].forEach(([month, types]) => {
                         if (types.active) {
-                            labels.push(`${month} Active`);
+                            labels.push(`${month}`);
                             basicData.push(parseFloat(types.active['basic(%)']));
                             standardData.push(parseFloat(types.active['standard(%)']));
                             premiumData.push(parseFloat(types.active['premium(%)']));
                         }
-                        if (types.cancelled) {
-                            labels.push(`${month} Cancelled`);
-                            basicData.push(parseFloat(types.cancelled['basic(%)']));
-                            standardData.push(parseFloat(types.cancelled['standard(%)']));
-                            premiumData.push(parseFloat(types.cancelled['premium(%)']));
-                        }
-                        basicData.push(0);
-                        standardData.push(0);
-                        premiumData.push(0);
                     });
 
                     return { labels, basicData, standardData, premiumData };

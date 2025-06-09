@@ -1,3 +1,4 @@
+import { useEffect, useRef, useCallback } from "react";
 import { InfoSection } from "@/presentation/components/molecules/InfoSection";
 import { useAlarmViewModel } from "@/application/viewModels/useAlarmViewModel";
 
@@ -14,7 +15,27 @@ export function UserDetailPanel({
   onRequestClick: () => void;
   onAlarmClick: () => void;
 }) {
-  const { alarms, loading, markAsRead } = useAlarmViewModel();
+  const { alarms, loading, markAsRead, hasMore, loadMore } = useAlarmViewModel();
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  const observeBottom = useCallback(() => {
+    if (!bottomRef.current || !hasMore) return;
+    if (observerRef.current) observerRef.current.disconnect();
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        loadMore();
+      }
+    });
+
+    observerRef.current.observe(bottomRef.current);
+  }, [hasMore, loadMore]);
+
+  useEffect(() => {
+    observeBottom();
+    return () => observerRef.current?.disconnect();
+  }, [alarms, observeBottom]);
 
   return (
     <div className="flex flex-col gap-6 w-1/2 mx-auto">
@@ -35,6 +56,7 @@ export function UserDetailPanel({
           },
         ]}
       />
+
       <InfoSection
         title="관리"
         items={[
