@@ -16,7 +16,7 @@ export const DoughnutChart: React.FC<ChartProps> = ({ chartData }) => {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { position: "top" },
-                    title: { display: true, text: "도넛 차트" }
+                    title: { display: true, text: "신규 유저 구독 유형" }
                 }
             }}
         />
