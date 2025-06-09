@@ -1,4 +1,4 @@
-import { EditableListModal } from "@/presentation/components/organisms/EditableListModal";
+// import { EditableListModal } from "@/presentation/components/organisms/EditableListModal";
 import { useCompanyViewModel } from "@/application/viewModels/useCompanyViewModel";
 
 export function MyPageCompany({
