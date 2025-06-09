@@ -5,12 +5,13 @@ import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileLi
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 
+type SegmentType = "Basic" | "Standard" | "Premium" | "unknown";
+
 export default function AnalysisSubscriptionPage() {
   const { s3Key } = useParams<{ s3Key: string }>();
+  const [csvRows, setCsvRows] = useState<string[][]>([]);
   const [csvData, setCsvData] = useState<string | null>(null);
   const [downloading, setDownloading] = useState(false);
-  const [csvRows, setCsvRows] = useState<string[][]>([]);
-  const MAX_ROWS = 100; // 표로 미리보기할 최대 행 수
 
   useEffect(() => {
     if (!s3Key) return;
@@ -29,7 +30,6 @@ export default function AnalysisSubscriptionPage() {
 
   useEffect(() => {
     if (csvData && !csvData.startsWith("분석 데이터 로드 실패")) {
-      // PapaParse를 사용해 robust하게 CSV 파싱
       const parsed = Papa.parse<string[]>(csvData, { skipEmptyLines: true });
       if (parsed && parsed.data && parsed.data.length > 0) {
         setCsvRows(parsed.data as string[][]);
@@ -64,6 +64,58 @@ export default function AnalysisSubscriptionPage() {
       setDownloading(false);
     }
   };
+
+  // segment별로 데이터 분류
+  const segmentTables = (() => {
+    if (csvRows.length < 2) return null;
+    const header = csvRows[0];
+    const segmentIdx = header.indexOf("segment");
+    if (segmentIdx === -1) return null;
+
+    const segments: Record<SegmentType, string[][]> = {
+      Basic: [],
+      Standard: [],
+      Premium: [],
+      unknown: [],
+    };
+
+    csvRows.slice(1).forEach(row => {
+      const seg = (row[segmentIdx] || "unknown") as SegmentType;
+      if (segments[seg]) segments[seg].push(row);
+      else segments["unknown"].push(row);
+    });
+
+    // segment별 표 생성
+    return (Object.keys(segments) as SegmentType[]).map(seg => {
+      const rows = segments[seg];
+      if (rows.length === 0) return null;
+      return (
+        <div key={seg} className="mb-8">
+          <div className="font-bold text-lg mb-2">
+            {seg} ({rows.length}명)
+          </div>
+          <table className="min-w-full border text-sm mb-2">
+            <thead>
+              <tr>
+                {header.map((col, idx) => (
+                  <th key={idx} className="border px-2 py-1 bg-gray-100">{col}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {rows.slice(0, 5).map((row, rIdx) => (
+                <tr key={rIdx}>
+                  {row.map((cell, cIdx) => (
+                    <td key={cIdx} className="border px-2 py-1">{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    });
+  })();
 
   return (
     <div className="min-h-screen w-screen bg-[#FFA726] text-gray-800">
@@ -104,33 +156,7 @@ export default function AnalysisSubscriptionPage() {
             </div>
             <div className="font-bold text-base mb-4">분석 결과</div>
             <div className="overflow-x-auto">
-              {csvRows.length > 1 ? (
-                <>
-                  {csvRows.length > MAX_ROWS + 1 && (
-                    <div className="text-red-500 mb-2">
-                      {MAX_ROWS}행까지만 미리보기로 표시됩니다. 전체 데이터는 내보내기를 이용하세요.
-                    </div>
-                  )}
-                  <table className="min-w-full border text-sm">
-                    <thead>
-                      <tr>
-                        {csvRows[0].map((col, idx) => (
-                          <th key={idx} className="border px-2 py-1 bg-gray-100">{col}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {csvRows.slice(1, MAX_ROWS + 1).map((row, rIdx) => (
-                        <tr key={rIdx}>
-                          {row.map((cell, cIdx) => (
-                            <td key={cIdx} className="border px-2 py-1">{cell}</td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </>
-              ) : (
+              {segmentTables ? segmentTables : (
                 <pre style={{
                   whiteSpace: "pre-wrap",
                   background: "#111",
