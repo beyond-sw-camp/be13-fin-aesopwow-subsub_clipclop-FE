@@ -16,7 +16,7 @@ export default function AboutUsPage() {
         <section className="flex flex-col md:flex-row max-w-screen-xl w-full bg-white shadow-lg rounded-xl overflow-hidden">
           <div className="w-full md:w-1/2 p-10 flex flex-col justify-center">
             <h2 className="text-3xl font-bold mb-6">
-          <span className="text-red-700">CICD 테스트중 입니다</span><br />
+          <span className="text-red-700">CICD 테스트 성공!!</span><br />
               황금알을 낳는 고객을 위한, <br /><span className="text-brown-700">다구독 다구독 
                 </span>
             </h2>
