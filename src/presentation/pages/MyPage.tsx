@@ -3,8 +3,6 @@ import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
-import { useAuthStore } from "@/application/stores/AuthStore";
-
 import { useMyInfoViewModel } from "@/application/viewModels/useMyInfoViewModel"
 import { useCompanyViewModel } from "@/application/viewModels/useCompanyViewModel";
 import { useStaffViewModel } from "@/application/viewModels/useStaffViewModel";
