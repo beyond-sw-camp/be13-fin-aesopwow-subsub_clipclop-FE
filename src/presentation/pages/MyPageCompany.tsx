@@ -1,18 +1,18 @@
-import { EditableListModal } from "@/presentation/components/organisms/EditableListModal";
+// import { EditableListModal } from "@/presentation/components/organisms/EditableListModal";
 import { useCompanyViewModel } from "@/application/viewModels/useCompanyViewModel";
 
 export function MyPageCompany({
   isOpen,
-  onClose,
+  // onClose,
 }: {
   isOpen: boolean;
   onClose: () => void;
 }) {
   const {
-    companyList,
+    // companyList,
     isLoading,
-    handleEdit,
-    handleDelete,
+    // handleEdit,
+    // handleDelete,
   } = useCompanyViewModel();
 
   if (!isOpen) return null;
@@ -27,13 +27,14 @@ export function MyPageCompany({
   );
 }
 
-  return (
-    <EditableListModal
-      title="회사 정보"
-      data={companyList}
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-      onClose={onClose}
-    />
-  );
+  // return (
+  //   // <EditableListModal
+  //   //   title="회사 정보"
+  //   //   data={companyList}
+  //   //   onEdit={handleEdit}
+  //   //   onDelete={handleDelete}
+  //   //   onClose={onClose}
+  //   // />
+
+  // );
 }

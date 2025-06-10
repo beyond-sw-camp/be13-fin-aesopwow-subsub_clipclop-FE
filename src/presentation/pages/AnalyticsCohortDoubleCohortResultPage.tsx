@@ -5,7 +5,10 @@ import { SideMenu } from "@/presentation/layout/SideMenu";
 import { StepProgress } from "@/presentation/components/molecules/StepProgress";
 import { Header } from "@/presentation/layout/Header";
 import { CustomButton } from "@/presentation/components/atoms/CustomButton";
-import { useCohortSingleCsvResultViewModel } from "@/application/viewModels/CohortViewModel";
+import {
+  useCohortSingleCsvResultViewModel,
+  useCohortSingleInsightViewModel,
+} from "@/application/viewModels/CohortViewModel";
 import { SingleRemainHeatmapPanel } from "@/presentation/components/organisms/SingleRemainHeatmapPanel";
 import { SingleInsightPanel } from "@/presentation/components/organisms/SingleInsightPanel";
 import { SingleVisualizationPanel } from "@/presentation/components/organisms/SingleVisualizationPanel";
@@ -39,25 +42,34 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
     heatmap: heatmap1,
     doughnutChart: doughnut1,
     lineChart: line1,
-    insight: insight1,
-    isLoading: isLoading1,
-    error: error1,
+    isLoadingMain: isLoading1,
+    errorMain: error1,
     groupData: groupData1,
-    rawCsv: rawCsv1, // ✅ 왼쪽 raw csv
+    rawCsv: rawCsv1,
   } = useCohortSingleCsvResultViewModel(parsed1);
+
+  const {
+    insight: insight1,
+    isLoadingInsight: isLoadingInsight1,
+    errorInsight: errorInsight1,
+  } = useCohortSingleInsightViewModel(parsed1);
 
   const {
     heatmap: heatmap2,
     doughnutChart: doughnut2,
     lineChart: line2,
-    insight: insight2,
-    isLoading: isLoading2,
-    error: error2,
+    isLoadingMain: isLoading2,
+    errorMain: error2,
     groupData: groupData2,
-    rawCsv: rawCsv2, // ✅ 오른쪽 raw csv
+    rawCsv: rawCsv2,
   } = useCohortSingleCsvResultViewModel(parsed2);
 
-  // ✅ 왼쪽 다운로드
+  const {
+    insight: insight2,
+    isLoadingInsight: isLoadingInsight2,
+    errorInsight: errorInsight2,
+  } = useCohortSingleInsightViewModel(parsed2);
+
   const handleDownload1 = useCallback(() => {
     if (!rawCsv1) return alert("왼쪽 데이터가 아직 로딩되지 않았습니다.");
     const blob = new Blob([rawCsv1], { type: "text/csv;charset=utf-8;" });
@@ -69,7 +81,6 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
     URL.revokeObjectURL(url);
   }, [rawCsv1, parsed1.filename]);
 
-  // ✅ 오른쪽 다운로드
   const handleDownload2 = useCallback(() => {
     if (!rawCsv2) return alert("오른쪽 데이터가 아직 로딩되지 않았습니다.");
     const blob = new Blob([rawCsv2], { type: "text/csv;charset=utf-8;" });
@@ -119,11 +130,12 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-20">
-            {/* 왼쪽 분석 결과 */}
+            {/* 왼쪽 */}
             <div className="space-y-6">
               <h2 className="text-xl font-bold text-center text-blue-700">
                 {parsed1.clusterType || "왼쪽 분석"}
               </h2>
+
               <SingleRemainHeatmapPanel heatmap={heatmap1} isLoading={isLoading1} error={error1} />
 
               {Object.keys(groupData1).length === 0 && !isLoading1 && !error1 ? (
@@ -141,14 +153,19 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
                 />
               )}
 
-              <SingleInsightPanel insight={insight1} isLoading={isLoading1} error={error1} />
+              <SingleInsightPanel
+                insight={insight1}
+                isLoading={isLoadingInsight1}
+                error={errorInsight1}
+              />
             </div>
 
-            {/* 오른쪽 분석 결과 */}
+            {/* 오른쪽 */}
             <div className="space-y-6">
               <h2 className="text-xl font-bold text-center text-red-700">
                 {parsed2.clusterType || "오른쪽 분석"}
               </h2>
+
               <SingleRemainHeatmapPanel heatmap={heatmap2} isLoading={isLoading2} error={error2} />
 
               {Object.keys(groupData2).length === 0 && !isLoading2 && !error2 ? (
@@ -166,7 +183,11 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
                 />
               )}
 
-              <SingleInsightPanel insight={insight2} isLoading={isLoading2} error={error2} />
+              <SingleInsightPanel
+                insight={insight2}
+                isLoading={isLoadingInsight2}
+                error={errorInsight2}
+              />
             </div>
           </div>
         </section>

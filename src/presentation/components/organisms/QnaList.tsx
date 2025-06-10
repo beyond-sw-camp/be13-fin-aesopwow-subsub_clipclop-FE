@@ -46,7 +46,15 @@ export default function QnaList() {
               className="block rounded-lg p-4 bg-gray-100"
             >
               <div className="font-semibold text-lg text-gray-800">{post.title}</div>
-              <div className="text-sm text-gray-500 mt-1">{post.createdAt}</div>
+              <div className="text-sm text-gray-500 mt-1">
+                {new Date(post.createdAt).toLocaleString('ko-KR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                })}</div>
             </Link>
           ))
         )}

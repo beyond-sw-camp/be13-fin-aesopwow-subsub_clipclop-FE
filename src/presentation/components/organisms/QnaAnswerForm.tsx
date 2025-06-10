@@ -37,15 +37,15 @@ export default function QnaAnswerForm({ qnaPostNo }: Props) {
         if (typeof targetUserNo === 'number') {
           await sendAlarm(targetUserNo, "문의하신 글에 관리자 댓글이 등록되었습니다.");
         } else {
-          console.warn("📛 유효하지 않은 userNo:", targetUserNo);
+          // console.warn("📛 유효하지 않은 userNo:", targetUserNo);
         }
       } catch (alarmErr) {
-        console.error("❌ 알림 전송 실패:", alarmErr);
+        // console.error("❌ 알림 전송 실패:", alarmErr);
       }
 
       alert('답변이 등록되었습니다.');
     } catch (error) {
-      console.error('❗답변 등록 실패:', error);
+      // console.error('❗답변 등록 실패:', error);
       alert('답변 등록 중 오류가 발생했습니다.');
     }
   };

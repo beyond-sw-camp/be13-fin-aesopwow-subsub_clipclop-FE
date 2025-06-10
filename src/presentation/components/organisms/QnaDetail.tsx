@@ -38,27 +38,34 @@ export default function QnaDetail() {
         alert('삭제되었습니다.');
         navigate('/qna');
       } catch (error) {
-        console.error('❗삭제 실패:', error);
+        // console.error('❗삭제 실패:', error);
         alert('삭제 중 오류가 발생했습니다.');
       }
     }
   };
 
   return (
-    <div className="min-h-screen bg-orange-500 flex justify-center items-start py-16 px-4">
+    <div className="min-h-screen flex justify-center items-start py-16 px-4">
       <div className="bg-white w-full max-w-6xl p-12 rounded-xl shadow-md space-y-8">
 
         {/* 문의 내용 */}
         <div className="border rounded p-6 shadow-sm bg-white">
           <h2 className="text-xl font-bold text-gray-800 mb-2">{selectedPost.title}</h2>
-          <p className="text-sm text-gray-500 mb-2">{selectedPost.createdAt}</p>
+          <p className="text-sm text-gray-500 mb-2">{new Date(selectedPost.createdAt).toLocaleString('ko-KR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+          })}</p>
           <p className="text-sm text-gray-700 mb-4">{selectedPost.content}</p>
 
           <div className="flex justify-end gap-2">
             {isAuthor && !hasAnswer && (
               <button
                 onClick={handleEdit}
-                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
               >
                 수정
               </button>

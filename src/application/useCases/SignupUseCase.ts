@@ -11,7 +11,7 @@ export class EmailCheckUseCase {
       const res: CheckEmailResponse = await SignupRepository.emailcheck(email);
       return { email: res.email, available: res.available }; // 이메일과 사용 가능 여부 반환
     } catch (error) {
-      console.error("이메일 중복 확인 실패", error);
+      // console.error("이메일 중복 확인 실패", error);
       throw error; // 에러가 발생하면 호출한 곳에서 처리하도록 던짐
     }
   }
