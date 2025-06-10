@@ -17,6 +17,7 @@ export interface UserBasicInfo {
   name: string;
   createdAt: Date;
   updatedAt: Date;
+  phone: string;
   email: string;
   companyName: string;
   departmentName: string;

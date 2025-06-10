@@ -20,6 +20,7 @@ interface JwtPayload {
 export const useLoginViewModel = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const navigate = useNavigate();
 
   const loginUseCase = new LoginUseCase();
