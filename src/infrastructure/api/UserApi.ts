@@ -43,7 +43,7 @@ export async function deleteUser(userNo: number, request: UserDeleteRequest): Pr
 //   return response.data;
 // } 
 
-export async function fetchUserBasicInfo(userNo: number): Promise<ApiResponse<UserBasicInfo>> {
+export async function fetchUserBasicInfo(): Promise<ApiResponse<UserBasicInfo>> {
   const response = await axiosInstance.get('/user/my');
   return response.data;
 }

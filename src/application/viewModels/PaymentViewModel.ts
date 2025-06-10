@@ -35,7 +35,7 @@ export const usePaymentViewModel = () => {
             customer,
         };
         try {
-            const response = await useCase.requestPayment(paymentRequest);
+            await useCase.requestPayment(paymentRequest);
             navigate("/dash-board");
             // console.log(response);
         } catch (error) {
