@@ -6,7 +6,10 @@ import { SideMenu } from "@/presentation/layout/SideMenu";
 import { StepProgress } from "@/presentation/components/molecules/StepProgress";
 import { Header } from "@/presentation/layout/Header";
 import { CustomButton } from "@/presentation/components/atoms/CustomButton";
-import { useCohortSingleCsvResultViewModel } from "@/application/viewModels/CohortViewModel";
+import {
+  useCohortSingleCsvResultViewModel,
+  useCohortSingleInsightViewModel,
+} from "@/application/viewModels/CohortViewModel";
 import { SingleRemainHeatmapPanel } from "@/presentation/components/organisms/SingleRemainHeatmapPanel";
 import { SingleInsightPanel } from "@/presentation/components/organisms/SingleInsightPanel";
 import { SingleVisualizationPanel } from "@/presentation/components/organisms/SingleVisualizationPanel";
@@ -33,12 +36,21 @@ export default function AnalyticsCohortSingleCohortResultPage() {
     heatmap,
     doughnutChart,
     lineChart,
-    insight,
-    isLoading,
-    error,
+    isLoadingMain,
+    errorMain,
     groupData,
     rawCsv,
   } = useCohortSingleCsvResultViewModel({
+    clusterType,
+    infoDbNo: parsedInfoDbNo,
+    filename,
+  });
+
+  const {
+    insight,
+    isLoadingInsight,
+    errorInsight,
+  } = useCohortSingleInsightViewModel({
     clusterType,
     infoDbNo: parsedInfoDbNo,
     filename,
@@ -91,9 +103,13 @@ export default function AnalyticsCohortSingleCohortResultPage() {
           </div>
 
           <div className="w-full pb-20 space-y-6">
-            <SingleRemainHeatmapPanel heatmap={heatmap} isLoading={isLoading} error={error} />
+            <SingleRemainHeatmapPanel
+              heatmap={heatmap}
+              isLoading={isLoadingMain}
+              error={errorMain}
+            />
 
-            {Object.keys(groupData).length === 0 && !isLoading && !error ? (
+            {Object.keys(groupData).length === 0 && !isLoadingMain && !errorMain ? (
               <div className="p-6 bg-white rounded-xl shadow w-full max-w-full overflow-hidden">
                 <h2 className="text-xl font-bold mb-2">시각화 결과</h2>
                 <p className="text-sm text-gray-500">그룹 데이터를 찾을 수 없습니다.</p>
@@ -102,13 +118,17 @@ export default function AnalyticsCohortSingleCohortResultPage() {
               <SingleVisualizationPanel
                 doughnutChart={doughnutChart as ChartData<"doughnut", number[]>}
                 lineChart={lineChart as ChartData<"line", number[]>}
-                isLoading={isLoading}
-                error={error}
+                isLoading={isLoadingMain}
+                error={errorMain}
                 groupData={groupData}
               />
             )}
 
-            <SingleInsightPanel insight={insight} isLoading={isLoading} error={error} />
+            <SingleInsightPanel
+              insight={insight}
+              isLoading={isLoadingInsight}
+              error={errorInsight}
+            />
           </div>
         </section>
       </main>

@@ -5,6 +5,18 @@ import { ClockIcon } from "@heroicons/react/24/outline";
 import { useEffect, useRef, useState } from "react";
 import useIntersectionObserver from "@/core/utils/useIntersectionObserver";
 
+const formatDateTime = (dateString: string | Date): string => {
+  try {
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) {
+      return "날짜 정보 없음";
+    }
+    return date.toISOString().slice(0, 19).replace("T", " ") + " UTC";
+  } catch (error) {
+    return "날짜 정보 없음";
+  }
+};
+
 interface Props {
   clusterType: string;
   selectedKeys?: string[];
@@ -64,7 +76,7 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
     if (parts.length < 4) return;
 
     if (!parts[0] || !parts[2] || !parts[3]) {
-      // console.warn("Invalid key format:", key);
+      console.warn("Invalid key format:", key);
       return;
     }
 
@@ -96,7 +108,7 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
                   />
                 )}
                 <div className="cursor-pointer" onClick={() => handleClick(item.key)}>
-                  <p className="text-sm font-medium">{item.lastModified}</p>
+                  <p className="text-sm font-medium">{formatDateTime(item.lastModified)}</p>
                   <p className="text-xs text-gray-500 break-all">{item.key}</p>
                 </div>
               </div>
