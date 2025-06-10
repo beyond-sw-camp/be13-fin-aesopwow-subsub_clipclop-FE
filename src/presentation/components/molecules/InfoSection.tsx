@@ -2,7 +2,7 @@ interface InfoItem {
   id: string;
   subtitle: string;
   content: string;
-  isRead?: boolean; // ✅ 알림의 읽음 여부 (선택적)
+  isRead?: boolean;
   onClick?: () => void;
 }
 

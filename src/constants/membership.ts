@@ -2,7 +2,7 @@ export const MEMBERSHIP_PLANS = {
   monthly: [
     {
       title: 'Basic',
-      price: 5000,
+      price: 50000,
       features: [
         '대시보드 요약 리포트',
         '세그먼트 분석 제공',
@@ -11,7 +11,7 @@ export const MEMBERSHIP_PLANS = {
     },
     {
       title: 'Premium',
-      price: 10000,
+      price: 100000,
       features: [
         'Basic 포함',
         '행동 코호트 분석',
@@ -21,7 +21,7 @@ export const MEMBERSHIP_PLANS = {
     },
     {
       title: 'Ultimate',
-      price: 15000,
+      price: 150000,
       features: [
         'Premium 포함',
         '구독 유지 예측 지표',
@@ -34,7 +34,7 @@ export const MEMBERSHIP_PLANS = {
   yearly: [
     {
       title: 'Basic',
-      price: 57000, // 5% 할인
+      price: 570000, // 5% 할인
       features: [
         '대시보드 요약 리포트',
         '세그먼트 분석 제공',
@@ -44,7 +44,7 @@ export const MEMBERSHIP_PLANS = {
     },
     {
       title: 'Premium',
-      price: 108000, // 10% 할인
+      price: 1080000, // 10% 할인
       features: [
         'Basic 포함',
         '행동 코호트 분석',
@@ -55,7 +55,7 @@ export const MEMBERSHIP_PLANS = {
     },
     {
       title: 'Ultimate',
-      price: 153000, // 15% 할인
+      price: 1530000, // 15% 할인
       features: [
         'Premium 포함',
         '구독 유지 예측 지표',
