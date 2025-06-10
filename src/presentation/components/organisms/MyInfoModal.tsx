@@ -26,7 +26,7 @@ export function MyInfoModal({
   onEdit,
   onDelete,
 }: MyInfoModalProps): JSX.Element {
-  const modalRef = useRef<HTMLDivElement>(null);
+  useRef<HTMLDivElement>(null);
   const [editState, setEditState] = useState<Record<number, boolean>>({});
   const [editName, setEditName] = useState<Record<number, string>>({});
   const [editDept, setEditDept] = useState<Record<number, string>>({});
