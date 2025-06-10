@@ -1,9 +1,9 @@
-// 📁 repository/QnaRepository.ts
+// repository/QnaRepository.ts
 import { QnaApi } from "../api/QnaApi";
 
 export const QnaRepository = {
   // 게시글 조회
-  fetchPosts: QnaApi.getPosts,
+  fetchPosts: (page?: number, size?: number) => QnaApi.getPosts(page, size),
   fetchPost: QnaApi.getPost,
 
   // 게시글 작성

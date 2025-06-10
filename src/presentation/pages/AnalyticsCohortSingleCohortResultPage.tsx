@@ -10,13 +10,14 @@ import { useCohortSingleCsvResultViewModel } from "@/application/viewModels/Coho
 import { SingleRemainHeatmapPanel } from "@/presentation/components/organisms/SingleRemainHeatmapPanel";
 import { SingleInsightPanel } from "@/presentation/components/organisms/SingleInsightPanel";
 import { SingleVisualizationPanel } from "@/presentation/components/organisms/SingleVisualizationPanel";
+import { useCallback } from "react";
 
 export default function AnalyticsCohortSingleCohortResultPage() {
   const [searchParams] = useSearchParams();
 
-  const clusterType = searchParams.get("clusterType");
+  const clusterType = searchParams.get("clusterType") || "";
   const infoDbNo = searchParams.get("infoDbNo");
-  const filename = searchParams.get("filename");
+  const filename = searchParams.get("filename") || "";
 
   const parsedInfoDbNo = infoDbNo ? Number(infoDbNo) : NaN;
 
@@ -36,11 +37,29 @@ export default function AnalyticsCohortSingleCohortResultPage() {
     isLoading,
     error,
     groupData,
+    rawCsv,
   } = useCohortSingleCsvResultViewModel({
     clusterType,
     infoDbNo: parsedInfoDbNo,
     filename,
   });
+
+  const handleDownload = useCallback(() => {
+    if (!rawCsv) {
+      alert("아직 데이터를 불러오고 있습니다.");
+      return;
+    }
+
+    const blob = new Blob([rawCsv], { type: "text/csv;charset=utf-8;" });
+    const blobUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = filename;
+    a.click();
+
+    URL.revokeObjectURL(blobUrl);
+  }, [rawCsv, filename]);
 
   return (
     <div className="w-screen bg-primary text-gray-800">
@@ -58,14 +77,14 @@ export default function AnalyticsCohortSingleCohortResultPage() {
           <div className="relative mb-6 w-full">
             <div className="flex justify-center">
               <div className="w-full max-w-4xl">
-                <StepProgress currentStep={3} steps={[1, 2, 3]} />
+                <StepProgress currentStep={3} />
               </div>
             </div>
             <div className="absolute right-0 -top-4 flex flex-col gap-2">
               <CustomButton
                 title="데이터 내보내기"
                 loading={false}
-                onClick={() => console.log("데이터 내보내기")}
+                onClick={handleDownload}
                 color="green"
               />
             </div>

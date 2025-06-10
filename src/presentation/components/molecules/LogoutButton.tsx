@@ -11,6 +11,7 @@ export const LogoutButton = () => {
           onClick={() => {
             logout(); // 이게바로 LogoutUseCase에서 넘어온 함수
           }}
+          className="w-full min-w-[6rem]"
 >
   로그아웃
 </CustomButton>

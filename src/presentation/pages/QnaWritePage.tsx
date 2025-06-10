@@ -18,7 +18,7 @@ export default function QnaWritePage() {
         <div className="flex-1 flex flex-col min-h-screen">
           <div className="flex flex-col p-8 flex-grow">
             <div className="mb-4">
-              <PageBreadcrumb title="문의사항 작성" />
+              <PageBreadcrumb title="문의사항 게시판" />
             </div>
 
             <div className="w-full mb-6">

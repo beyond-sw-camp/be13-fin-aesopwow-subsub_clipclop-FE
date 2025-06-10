@@ -18,6 +18,7 @@ export interface UserBasicInfo {
   createdAt: Date;
   updatedAt: Date;
   email: string;
+  phone: string;
   companyName: string;
   departmentName: string;
   roleName: UserRole;
@@ -32,8 +33,8 @@ export class UserRepository {
     return fetchMyPageUserInfo(userNo);
   }
 
-  async getUserBasicInfo(userNo: number): Promise<UserBasicInfo> {
-    const res = await fetchUserBasicInfo(userNo);
+  async getUserBasicInfo(): Promise<UserBasicInfo> {
+    const res = await fetchUserBasicInfo();
     return res.data;
   }
 }

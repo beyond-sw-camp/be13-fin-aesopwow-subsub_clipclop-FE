@@ -1,4 +1,4 @@
-// 📁 src/pages/QnaEditPage.tsx
+// src/pages/QnaEditPage.tsx
 import { PageBreadcrumb } from "@/presentation/components/molecules/PageBreadcrumb";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 import { Header } from "@/presentation/layout/Header";
