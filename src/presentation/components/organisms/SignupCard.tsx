@@ -43,10 +43,10 @@ export const SignupCard = ({ form, setForm }: Props) => {
     try {
       // console.log("OTP 검증 시작", email, otp);
 
-      const verifyResponse = await VerifyOtpApi(email, otp);
+      await VerifyOtpApi(email, otp);
       // console.log("OTP 검증 성공:", verifyResponse);
 
-      const signupResponse = await SignupApi(email, verifiedPassword, form.confirmPassword, form.name, form.phone);
+      await SignupApi(email, verifiedPassword, form.confirmPassword, form.name, form.phone);
       // console.log("회원가입 성공:", signupResponse);
       alert("회원가입 되셨습니다.")
 

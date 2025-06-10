@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 import dayjs from "dayjs";
-import axios from "axios";
 import { toast } from "react-toastify";
 import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
@@ -57,25 +56,27 @@ export default function MyPage() {
 
   const userViewModel = new UserViewModel();
 
+  // const {
+  //   myInfo,
+  //   myInfoList,
+  //   isLoading: myInfoLoading,
+  //   handleEdit,
+  //   refetch: refetchMyInfo,
+  // } = useMyInfoViewModel();
+
   const {
-    myInfo,
     myInfoList,
-    isLoading: myInfoLoading,
     handleEdit,
-    refetch: refetchMyInfo,
   } = useMyInfoViewModel();
 
   const {
     companyList,
-    isLoading: companyLoading,
     handleEdit: handleCompanyEdit,
     handleDelete: handleCompanyDelete,
   } = useCompanyViewModel();
 
   const {
     staffList,
-    setStaffList,
-    isLoading: staffLoading,
     handleAdd: handleStaffAdd,
     handleEdit: handleStaffEdit,
     handleDelete: handleStaffDelete,
@@ -108,12 +109,6 @@ export default function MyPage() {
       alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
     }
   };
-
-  const handleAddClick = () => {
-    setShowEmailModal(true); // 모달만 띄움
-  };
-
-  const token = useAuthStore.getState().token;
 
   const handleSubmitEmail = useCallback(
     async (email: string) => {
