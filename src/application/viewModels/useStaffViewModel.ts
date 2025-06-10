@@ -37,12 +37,14 @@ export function useStaffViewModel() {
 
     const handleAdd = async (email: string) => {
         try {
-            const res = await axiosInstance.post("/user/staffs/add", {
-              email,
-              title: "새 직원",
-              subtitle: "신규 팀",
+            await axiosInstance.post("/user/staffs/add", null, {
+                params: { userEmail: email },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
-            setStaffList((prev) => [...prev, res.data]);
+
+            await handleGetStaffList();
         } catch (err) {
             console.error("직원 추가 실패:", err);
             alert("직원 추가 중 오류가 발생했습니다.");
