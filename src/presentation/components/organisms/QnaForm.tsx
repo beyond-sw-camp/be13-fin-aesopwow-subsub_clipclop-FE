@@ -16,7 +16,7 @@ export default function QnaForm() {
       alert('문의가 등록되었습니다.');
       navigate('/qna');
     } catch (error) {
-      console.error('❗ 문의 등록 오류:', error);
+      // console.error('❗ 문의 등록 오류:', error);
       alert('문의 등록 중 오류가 발생했습니다.');
     }
   };

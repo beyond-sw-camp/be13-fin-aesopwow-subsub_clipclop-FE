@@ -9,7 +9,7 @@ interface ModalsProps {
 
 export function Modals({ open, setOpen, children }: ModalsProps) {
   const handleOpen = () => {
-    console.log("모달 닫기 동작 확인");
+    // console.log("모달 닫기 동작 확인");
     setOpen(false);
   }
 

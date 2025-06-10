@@ -73,7 +73,7 @@ export function parseCsvToCohortResult(csv: string): CohortResult {
 
     const month = Number(monthStr);
     if (isNaN(month)) {
-      console.warn(`무시된 행: 잘못된 월 값 '${monthStr}'`);
+      // console.warn(`무시된 행: 잘못된 월 값 '${monthStr}'`);
       continue;
     }
 

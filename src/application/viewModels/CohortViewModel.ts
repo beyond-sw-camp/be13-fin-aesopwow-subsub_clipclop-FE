@@ -73,13 +73,13 @@ export function useSingleClusterViewModel() {
           `선택하신 군집(${selectedCluster})에 대한 분석이 완료되었습니다.`
         );
       } else {
-        console.warn("userNo가 유효하지 않습니다:", userNo);
+        // console.warn("userNo가 유효하지 않습니다:", userNo);
       }
 
       alert("분석이 완료되었습니다.");
       navigate(`/analytics/single/requirelist?clusterType=${encodeURIComponent(selectedCluster)}`);
     } catch (error) {
-      console.error("분석 요청 실패:", error);
+      // console.error("분석 요청 실패:", error);
       alert("분석 요청 중 문제가 발생했습니다.");
     } finally {
       setLoading(false);
@@ -129,7 +129,7 @@ export function useCohortHistoryViewModel(clusterType: string) {
 
       setHistory((prev) => [...prev, ...newItems]);
     } catch (err) {
-      console.error("분석 이력 조회 실패:", err);
+      // console.error("분석 이력 조회 실패:", err);
     } finally {
       setLoading(false);
     }
@@ -323,7 +323,7 @@ export function useDoubleClusterViewModel() {
           `선택하신 두 군집(${firstCluster}, ${secondCluster})에 대한 분석이 완료되었습니다.`
         );
       } else {
-        console.warn("userNo가 유효하지 않습니다:", userNo);
+        // console.warn("userNo가 유효하지 않습니다:", userNo);
       }
 
       alert("분석이 완료되었습니다.");
@@ -334,7 +334,7 @@ export function useDoubleClusterViewModel() {
           `secondClusterType=${encodeURIComponent(secondCluster)}`
       );
     } catch (error) {
-      console.error("분석 요청 실패:", error);
+      // console.error("분석 요청 실패:", error);
       alert("분석 요청 중 문제가 발생했습니다.");
     } finally {
       setLoading(false);

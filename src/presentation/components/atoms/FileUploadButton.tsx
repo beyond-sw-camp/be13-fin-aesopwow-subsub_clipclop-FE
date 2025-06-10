@@ -26,7 +26,7 @@ export function FileUploadButton() {
           setBase64(reader.result as string);
         };
         reader.onerror = () => {
-          console.error("파일 읽기 오류");
+          // console.error("파일 읽기 오류");
         };
       } else {
         setBase64(null); // 이미지가 아니면 미리보기 제거

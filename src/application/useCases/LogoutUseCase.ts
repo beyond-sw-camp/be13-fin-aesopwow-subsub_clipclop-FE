@@ -7,7 +7,7 @@ export const LogoutUseCase = () => {
   const { logout } = useAuthStore();
 
  const logoutAndRedirect = async () => {
-  console.log("[LOG] LogoutUseCase 시작됨");
+  // console.log("[LOG] LogoutUseCase 시작됨");
 
   try {
     await LogoutApi();

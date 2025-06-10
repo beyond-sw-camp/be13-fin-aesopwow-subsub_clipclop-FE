@@ -37,9 +37,9 @@ export const usePaymentViewModel = () => {
         try {
             const response = await useCase.requestPayment(paymentRequest);
             navigate("/dash-board");
-            console.log(response);
+            // console.log(response);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             alert("결제 요청에 실패했습니다.");
         }
     };
