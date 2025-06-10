@@ -1,8 +1,8 @@
 interface InfoItem {
   id: string;
   subtitle: string;
-  content: string;
-  isRead?: boolean;
+  // content: string;
+  isRead?: boolean; // ✅ 알림의 읽음 여부 (선택적)
   onClick?: () => void;
 }
 
@@ -14,7 +14,6 @@ interface InfoSectionProps {
 export function InfoSection({ title, items }: InfoSectionProps) {
   return (
     <section className="mb-6 p-6 border rounded-md shadow-sm bg-white">
-      {/* 섹션 제목 */}
       <h2 className="text-base font-bold text-gray-800 border-b-2 border-purple-400 pb-1 mb-4">
         {title}
       </h2>
@@ -32,9 +31,9 @@ export function InfoSection({ title, items }: InfoSectionProps) {
             <div className="text-sm font-semibold text-gray-700 text-left w-full">
               {item.subtitle}
             </div>
-            <div className="text-sm text-gray-500 text-left w-full">
+            {/* <div className="text-sm text-gray-500 text-left w-full">
               {item.content}
-            </div>
+            </div> */}
           </div>
         ))}
       </div>

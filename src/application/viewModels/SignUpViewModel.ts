@@ -21,7 +21,7 @@ export const useSignupViewModel = () => {
       const res: CheckEmailResponse = await emailCheckUseCase.execute(email); // 이메일만 전달
       setEmailChecked(res.available); // 사용 가능 여부 상태 업데이트
     } catch (error) {
-      console.error("이메일 중복 확인 실패", error);
+      // console.error("이메일 중복 확인 실패", error);
       setEmailChecked(false); // 오류 발생 시 사용 불가로 설정
     }
   };
@@ -32,7 +32,7 @@ export const useSignupViewModel = () => {
       await createAccountUseCase.execute(email, password, name);
       setShowOtpModal(true);
     } catch (error) {
-      console.error("OTP 전송 실패", error);
+      // console.error("OTP 전송 실패", error);
     }
   };
 
@@ -44,7 +44,7 @@ export const useSignupViewModel = () => {
       setShowOtpModal(false);
     }
   } catch (error) {
-    console.error("OTP 인증 실패", error);
+    // console.error("OTP 인증 실패", error);
   }
 };
 

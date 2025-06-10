@@ -3,11 +3,13 @@ import { InfoSection } from "@/presentation/components/molecules/InfoSection";
 import { useAlarmViewModel } from "@/application/viewModels/useAlarmViewModel";
 
 export function UserDetailPanel({
+  onMyInfoClick,
   onCompanyClick,
   onStaffClick,
   onRequestClick,
   onAlarmClick,
 }: {
+  onMyInfoClick: () => void;
   onCompanyClick: () => void;
   onStaffClick: () => void;
   onRequestClick: () => void;
@@ -41,9 +43,15 @@ export function UserDetailPanel({
         title="정보"
         items={[
           {
+            id: "myinfo",
+            subtitle: "내 정보",
+            // content: "구독, 결제, 회사 정보",
+            onClick: onMyInfoClick,
+          },
+          {
             id: "company",
             subtitle: "회사 정보",
-            content: "구독, 결제, 회사 정보",
+            // content: "구독, 결제, 회사 정보",
             onClick: onCompanyClick,
           },
         ]}
@@ -55,44 +63,40 @@ export function UserDetailPanel({
           {
             id: "staff",
             subtitle: "직원 관리",
-            content: "유저 추가, 삭제, 수정",
+            // content: "유저 추가, 삭제, 수정",
             onClick: onStaffClick,
           },
           {
             id: "request",
             subtitle: "요청 내역 관리",
-            content: "분석 내역",
+            // content: "분석 내역",
             onClick: onRequestClick,
           },
         ]}
       />
-
-      <div className="max-h-64 overflow-y-auto pr-2">
-        <InfoSection
-          title="알림"
-          items={
-            loading
-              ? [
-                  {
-                    id: "loading",
-                    subtitle: "불러오는 중...",
-                    content: "알림 데이터를 가져오는 중입니다.",
-                  },
-                ]
-              : alarms.map((n) => ({
-                  id: String(n.id),
-                  subtitle: n.subtitle,
-                  content: n.content,
-                  isRead: n.isRead,
-                  onClick: () => {
-                    markAsRead(n.id);
-                    onAlarmClick();
-                  },
-                }))
-          }
-        />
-        <div ref={bottomRef} className="h-10 bg-transparent" />
-      </div>
+      <InfoSection
+        title="알림"
+        items={
+          loading
+            ? [
+                {
+                  id: "loading",
+                  subtitle: "불러오는중..",
+                  // content: "알림 데이터를 가져오는 중 입니다.",
+                },
+              ]
+            : alarms.map((n) => ({
+                id: n.id,
+                subtitle: n.subtitle,
+                content: n.content,
+                isRead: n.isRead,
+                onClick: () => {
+                  markAsRead(n.id);
+                  onAlarmClick();
+                },
+              }))
+        }
+      />
     </div>
   );
 }

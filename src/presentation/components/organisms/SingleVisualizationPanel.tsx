@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { PanelTitle } from "../atoms/PanelTitle";
 import { Chart } from "react-chartjs-2";
 import type { ChartData } from "chart.js";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
+
 
 interface Props {
   doughnutChart: ChartData<"doughnut", number[]> | null;
@@ -48,7 +50,7 @@ export function SingleVisualizationPanel({
     <div className="p-6 bg-white rounded-xl shadow w-full max-w-full overflow-hidden">
       <PanelTitle title="시각화 결과" className="text-xl font-bold mb-2" />
 
-      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <DotWaveLoader color="black" />}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
       {noData && <p className="text-sm text-gray-500">표시할 데이터가 없습니다.</p>}
 

@@ -73,13 +73,13 @@ export function useSingleClusterViewModel() {
           `선택하신 군집(${selectedCluster})에 대한 분석이 완료되었습니다.`
         );
       } else {
-        console.warn("userNo가 유효하지 않습니다:", userNo);
+        // console.warn("userNo가 유효하지 않습니다:", userNo);
       }
 
       alert("분석이 완료되었습니다.");
       navigate(`/analytics/single/requirelist?clusterType=${encodeURIComponent(selectedCluster)}`);
     } catch (error) {
-      console.error("분석 요청 실패:", error);
+      // console.error("분석 요청 실패:", error);
       alert("분석 요청 중 문제가 발생했습니다.");
     } finally {
       setLoading(false);
@@ -112,11 +112,16 @@ export function useCohortHistoryViewModel(clusterType: string) {
 
     try {
       setLoading(true);
+
       const result = await useCase.execute(infoDbNo, analysisNo);
+
+      const sorted = result.sort((a, b) =>
+        new Date(b.lastModified).getTime() - new Date(a.lastModified).getTime()
+      );
 
       const start = pageNumber * PAGE_SIZE;
       const end = start + PAGE_SIZE;
-      const newItems = result.slice(start, end);
+      const newItems = sorted.slice(start, end);
 
       if (newItems.length < PAGE_SIZE) {
         setHasMore(false);
@@ -124,7 +129,7 @@ export function useCohortHistoryViewModel(clusterType: string) {
 
       setHistory((prev) => [...prev, ...newItems]);
     } catch (err) {
-      console.error("분석 이력 조회 실패:", err);
+      // console.error("분석 이력 조회 실패:", err);
     } finally {
       setLoading(false);
     }
@@ -159,7 +164,6 @@ interface CohortResult {
   heatmap: any[];
   doughnutChart: ChartData<"doughnut", number[]> | null;
   lineChart: ChartData<"line", number[]> | null;
-  insight: string;
   userData: CohortSingleUserResponse[];
   groupData: Record<string, number[]>;
 }
@@ -173,14 +177,12 @@ interface Props {
 export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filename }: Props) {
   const [result, setResult] = useState<CohortResult | null>(null);
   const [rawCsv, setRawCsv] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
-
-  const [insightObj, setInsightObj] = useState<Insight | null>(null);
+  const [isLoadingMain, setIsLoadingMain] = useState(false);
+  const [errorMain, setErrorMain] = useState<Error | null>(null);
 
   useEffect(() => {
     const load = async () => {
-      setIsLoading(true);
+      setIsLoadingMain(true);
       try {
         const analysisNo = clusterMap[clusterType];
         const useCase = new GetCohortResultCsvUseCase(new CohortRepository());
@@ -191,21 +193,10 @@ export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filen
 
         setResult(parsed);
         setRawCsv(csvData);
-
-        const insightPath = `${infoDbNo}/cohort/${clusterType}/${cleanFilename}.csv`;
-        try {
-          const insightResponse = await axiosInstance.get<Insight>("/analysis/cohort/insight", {
-            params: { filename: insightPath },
-          });
-          setInsightObj(insightResponse.data);
-        } catch (insightError) {
-          console.warn("인사이트 데이터 로딩 실패:", insightError);
-          setInsightObj(null);
-        }
       } catch (e) {
-        setError(e instanceof Error ? e : new Error("CSV 분석 실패"));
+        setErrorMain(e instanceof Error ? e : new Error("CSV 분석 실패"));
       } finally {
-        setIsLoading(false);
+        setIsLoadingMain(false);
       }
     };
 
@@ -218,12 +209,58 @@ export function useCohortSingleCsvResultViewModel({ clusterType, infoDbNo, filen
     heatmap: result?.heatmap ?? [],
     doughnutChart: result?.doughnutChart ?? null,
     lineChart: result?.lineChart ?? null,
-    insight: insightObj,
     userData: result?.userData ?? [],
     groupData: result?.groupData ?? {},
     rawCsv,
-    isLoading,
-    error,
+    isLoadingMain,
+    errorMain,
+  };
+}
+
+interface InsightProps {
+  clusterType: string;
+  infoDbNo: number;
+  filename: string;
+}
+
+export function useCohortSingleInsightViewModel({
+  clusterType,
+  infoDbNo,
+  filename,
+}: InsightProps) {
+  const [insight, setInsight] = useState<Insight | null>(null);
+  const [isLoadingInsight, setIsLoadingInsight] = useState<boolean>(false);
+  const [errorInsight, setErrorInsight] = useState<Error | null>(null);
+
+  useEffect(() => {
+    const loadInsight = async () => {
+      setIsLoadingInsight(true);
+      try {
+        const cleanFilename = filename.replace(/\.csv$/, "");
+        const insightPath = `${infoDbNo}/cohort/${clusterType}/${cleanFilename}.csv`;
+
+        const response = await axiosInstance.get<Insight>("/analysis/cohort/insight", {
+          params: { filename: insightPath },
+        });
+
+        setInsight(response.data);
+      } catch (error) {
+        console.warn("인사이트 로딩 실패:", error);
+        setErrorInsight(error instanceof Error ? error : new Error("Insight 로딩 실패"));
+      } finally {
+        setIsLoadingInsight(false);
+      }
+    };
+
+    if (clusterType && infoDbNo && filename) {
+      loadInsight();
+    }
+  }, [clusterType, infoDbNo, filename]);
+
+  return {
+    insight,
+    isLoadingInsight,
+    errorInsight,
   };
 }
 
@@ -286,7 +323,7 @@ export function useDoubleClusterViewModel() {
           `선택하신 두 군집(${firstCluster}, ${secondCluster})에 대한 분석이 완료되었습니다.`
         );
       } else {
-        console.warn("userNo가 유효하지 않습니다:", userNo);
+        // console.warn("userNo가 유효하지 않습니다:", userNo);
       }
 
       alert("분석이 완료되었습니다.");
@@ -297,7 +334,7 @@ export function useDoubleClusterViewModel() {
           `secondClusterType=${encodeURIComponent(secondCluster)}`
       );
     } catch (error) {
-      console.error("분석 요청 실패:", error);
+      // console.error("분석 요청 실패:", error);
       alert("분석 요청 중 문제가 발생했습니다.");
     } finally {
       setLoading(false);

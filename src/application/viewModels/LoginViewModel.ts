@@ -56,7 +56,7 @@ export const useLoginViewModel = () => {
           try {
             await sendAlarm(userNo, "구독 만료가 임박했습니다.");
           } catch (alarmErr) {
-            console.error("❌ 알림 전송 실패:", alarmErr);
+            // console.error("❌ 알림 전송 실패:", alarmErr);
           }
         }
       }
@@ -64,8 +64,8 @@ export const useLoginViewModel = () => {
       // basicInfo 불러오기
       const basicInfo = await userRepository.getUserBasicInfo();
 
-      console.log("basicInfo:", basicInfo);
-      console.log("roleNo:", basicInfo.roleNo);
+      // console.log("basicInfo:", basicInfo);
+      // console.log("roleNo:", basicInfo.roleNo);
 
       // UserStore에 저장
       const store = useUserStore.getState();
@@ -96,12 +96,12 @@ export const useLoginViewModel = () => {
       };
       localStorage.setItem("user", JSON.stringify(userObject));
 
-      console.log("최종 UserStore 상태: ", useUserStore.getState());
+      // console.log("최종 UserStore 상태: ", useUserStore.getState());
       toast.success("로그인 성공!");
       navigate("/dash-board");
     } catch (err) {
-      console.error("로그인 실패:", err);
-      alert("로그인 실패: " + (err instanceof Error ? err.message : "알 수 없는 오류"));
+      // console.error("로그인 실패:", err);
+      alert("로그인에 실패했습니다.\n관리자에게 문의해주세요.");
       setError("로그인에 실패했습니다.");
     } finally {
       setLoading(false);

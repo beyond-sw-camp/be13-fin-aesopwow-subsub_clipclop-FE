@@ -38,7 +38,6 @@ interface CohortResult {
   heatmap: HeatmapCell[];
   doughnutChart: ChartData<"doughnut", number[]> | null;
   lineChart: ChartData<"line", number[]> | null;
-  insight: string;
   userData: CohortSingleUserResponse[];
   groupData: Record<string, number[]>;
 }
@@ -74,7 +73,7 @@ export function parseCsvToCohortResult(csv: string): CohortResult {
 
     const month = Number(monthStr);
     if (isNaN(month)) {
-      console.warn(`무시된 행: 잘못된 월 값 '${monthStr}'`);
+      // console.warn(`무시된 행: 잘못된 월 값 '${monthStr}'`);
       continue;
     }
 
@@ -136,13 +135,10 @@ export function parseCsvToCohortResult(csv: string): CohortResult {
     ],
   };
 
-  const insight = "각 그룹의 잔존율을 기반으로 월별 사용자 유지 현황을 확인할 수 있습니다.";
-
   return {
     heatmap,
     doughnutChart,
     lineChart,
-    insight,
     userData: [],
     groupData,
   };
