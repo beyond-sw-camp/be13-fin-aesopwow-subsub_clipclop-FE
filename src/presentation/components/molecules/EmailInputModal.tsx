@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 interface EmailInputModalProps {
   onClose: () => void;
@@ -12,7 +12,8 @@ export const EmailInputModal = React.memo(function EmailInputModal({
   const [email, setEmail] = useState("");
 
   const handleSubmit = () => {
-    if (!email.includes("@")) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       alert("유효한 이메일을 입력하세요.");
       return;
     }
@@ -20,10 +21,35 @@ export const EmailInputModal = React.memo(function EmailInputModal({
     onClose();
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onClose]);
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+    <div
+      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="email-modal-title"
+      tabIndex={-1}
+    >
       <div className="bg-white rounded-lg p-6 shadow-xl w-[400px]">
-        <h2 className="text-lg font-bold mb-4">직원 이메일 입력</h2>
+        <h2 id="email-modal-title" className="text-lg font-bold mb-4">직원 이메일 입력</h2>
         <input
           type="email"
           value={email}

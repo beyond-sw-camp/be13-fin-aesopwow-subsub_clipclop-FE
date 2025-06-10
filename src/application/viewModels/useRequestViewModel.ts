@@ -7,19 +7,19 @@ export interface RequestItem {
   departmentName: string;
 }
 
-export function useRequestViewModel() {
+export function useRequestViewModel(requestId?: number) {
   const [requestList, setRequestList] = useState<RequestItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        // 테스트용: ID 1번 요청 내역만 불러오는 예시
-        const res = await fetchRequestById(1);
+        if (!requestId) return;
+        const res = await fetchRequestById(requestId);
         setRequestList([{
           id: res.data.requireListNo,
-          name: `요청 ${res.data.requireListNo}`,
-          departmentName: `DB ${res.data.infoDbNo}`
+          name: res.data.title || `요청 ${res.data.requireListNo}`,
+          departmentName: res.data.department || `DB ${res.data.infoDbNo}`
         }]);
       } catch (error) {
         console.error("요청 내역 불러오기 실패", error);
@@ -29,7 +29,7 @@ export function useRequestViewModel() {
     };
 
     loadData();
-  }, []);
+  }, [requestId]);
 
   return {
     requestList,

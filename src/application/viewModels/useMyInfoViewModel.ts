@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { StaffItem } from "@/core/model/StaffItem";
+import { useEffect, useState, useCallback } from "react";
+// import { StaffItem } from "@/core/model/StaffItem";
 import axiosInstance from "@/infrastructure/api/Axios";
 import { useAuthStore } from "@/application/stores/AuthStore";
 
@@ -13,11 +13,11 @@ export interface MyInfoItem {
 }
 
 export function useMyInfoViewModel() {
-  const [myInfo, setMyInfo] = useState<StaffItem | null>(null);
+  const [myInfo, setMyInfo] = useState<MyInfoItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const token = useAuthStore.getState().token;
+  const token = useAuthStore((state) => state.token);
 
-  const fetchMyInfo = async () => {
+  const fetchMyInfo = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await axiosInstance.get("/user/my", {
@@ -32,9 +32,9 @@ export function useMyInfoViewModel() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [token]);
 
-  const handleEdit = async (updateData: Partial<StaffItem>) => {
+  const handleEdit = async (updateData: Partial<MyInfoItem>) => {
     try {
       await axiosInstance.put("/user/my/update", updateData, {
         headers: {
@@ -51,7 +51,7 @@ export function useMyInfoViewModel() {
   useEffect(() => {
     if (token) fetchMyInfo();
     else setIsLoading(false);
-  }, [token]);
+  }, [token, fetchMyInfo]);
 
   return {
     myInfo,

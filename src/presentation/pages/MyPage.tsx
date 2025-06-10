@@ -114,53 +114,17 @@ export default function MyPage() {
 
   const token = useAuthStore.getState().token;
 
-  const handleSubmitEmail = useCallback(async (email: string) => {
-  try {
-    const userData = JSON.parse(localStorage.getItem("user") || "{}");
-    const adminUserNo = userData.userNo;
-    
-    if (!adminUserNo) {
-      toast.error("로그인 정보가 올바르지 않습니다.");
-      return;
+  const handleSubmitEmail = useCallback(
+  async (email: string) => {
+    try {
+      await handleStaffAdd(email);
+      setShowEmailModal(false);
+    } catch (err) {
+      toast.error("직원 추가에 실패했습니다.");
     }
-
-    const res = await axios.post(
-      "/api/user/staffs/add",
-      null,
-      {
-        params: {
-          adminUserNo,
-          userEmail: email,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log("🔍 res 전체 확인:", res.data);
-
-    const newStaff = res.data?.data;
-
-    if (!newStaff || typeof newStaff !== "object") {
-      console.error("❌ 직원 데이터가 올바르지 않습니다:", newStaff);
-      toast.error("직원 추가 응답에 문제가 있습니다.");
-      return;
-    }
-
-    toast.success(res.data.message || "직원 추가 성공");
-
-    setStaffList((prev) => {
-      const safePrev = Array.isArray(prev) ? prev : [];
-      return [...safePrev, newStaff];
-    });
-
-    setShowEmailModal(false);
-  } catch (err) {
-    console.error("직원 추가 실패:", err);
-    toast.error("직원 추가 실패");
-  }
-}, [token]);
+  },
+  [handleStaffAdd]
+);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -230,7 +194,7 @@ export default function MyPage() {
               <MyInfoModal
                 title="내 정보"
                 data={myInfoList.map((item) => ({
-                  id: item.userNo,
+                  userNo: item.userNo,
                   name: item.name,
                   departmentName: item.departmentName || "",
                   email: item.email || "-",
@@ -242,30 +206,6 @@ export default function MyPage() {
                 onClose={() => setShowMyInfoModal(false)}
               />
             )}
-            {/* {showMyInfoModal && (
-              <EditableListModal
-                title="내 정보"
-                data={myInfoList.map((item) => ({
-                  id: item.userNo,
-                  name: item.name,
-                  departmentName: item.departmentName || "",
-                  email: item.email || "-",
-                  companyName: item.companyName || "-",
-                  roleName: item.roleName || "-",
-                }))}
-                onEdit={handleMyInfoEdit}
-                onDelete={() => {}}
-                onClose={() => setShowMyInfoModal(false)}
-                renderFooter={() => (
-                  <button
-                    onClick={handleDeleteAccount}
-                    className="mt-2 py-1 px-3 text-sm bg-red-600 hover:bg-red-700 text-white font-semibold rounded-md"
-                  >
-                    회원 탈퇴
-                  </button>
-                )}
-              />
-            )} */}
 
             {showCompanyModal && (
               <EditableListModal
@@ -309,12 +249,6 @@ export default function MyPage() {
               </>
             )}
 
-            {/* <button
-              onClick={handleDeleteAccount}
-              className="mt-4 py-2 px-4 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg self-end"
-            >
-              회원 탈퇴
-            </button> */}
           </div>
         </div>
       </div>

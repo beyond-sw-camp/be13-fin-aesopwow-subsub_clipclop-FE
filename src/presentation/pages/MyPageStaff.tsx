@@ -1,5 +1,10 @@
-import { EditableListModal } from "@/presentation/components/organisms/EditableListModal";
+import { useState } from "react";
+import { toast } from "react-toastify";
+
 import { useStaffViewModel } from "@/application/viewModels/useStaffViewModel";
+
+import { EmailInputModal } from "@/presentation/components/molecules/EmailInputModal";
+import { EditableListModal } from "@/presentation/components/organisms/EditableListModal";
 
 export function MyPageStaff({
   isOpen,
@@ -16,31 +21,50 @@ export function MyPageStaff({
     handleDelete,
   } = useStaffViewModel();
 
-if (!isOpen) return null;
+  const [showEmailModal, setShowEmailModal] = useState(false);
+
+  const handleSubmitEmail = async (email: string) => {
+    try {
+      await handleAdd(email);
+      setShowEmailModal(false);
+    } catch (err) {
+      toast.error("직원 추가에 실패했습니다.");
+    }
+  };
+
+  if (!isOpen) return null;
 
   if (isLoading) {
-  return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6">
-        <div className="text-gray-700">로딩 중...</div>
+    return (
+      <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <div className="text-gray-700">로딩 중...</div>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
-    <EditableListModal
-      title="직원 관리"
-      data={staffList.map((item) => ({
-        id: item.userNo,
-        name: item.name,
-        departmentName: item.departmentName || "",
-      }))}
-      onEdit={handleEdit}
-      onDelete={handleDelete}
-      onAdd={handleAdd}
-      addLabel="직원 추가"
-      onClose={onClose}
-    />
+    <>
+      <EditableListModal
+        title="직원 관리"
+        data={staffList.map((item) => ({
+          id: item.userNo,
+          name: item.name,
+          departmentName: item.departmentName || "",
+        }))}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+        onAdd={() => setShowEmailModal(true)}
+        addLabel="직원 추가"
+        onClose={onClose}
+      />
+      {showEmailModal && (
+        <EmailInputModal
+          onClose={() => setShowEmailModal(false)}
+          onSubmit={handleSubmitEmail}
+        />
+      )}
+    </>
   );
 }

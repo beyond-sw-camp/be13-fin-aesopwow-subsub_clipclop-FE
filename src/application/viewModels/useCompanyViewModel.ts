@@ -6,11 +6,15 @@ import { useAuthStore } from "@/application/stores/AuthStore";
 export function useCompanyViewModel() {
   const [companyList, setCompanyList] = useState<CompanyInfo[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const token = useAuthStore.getState().token;
+
+  const token = useAuthStore((state) => state.token);
+  const companyNo = useAuthStore((state) => state.companyNo);
 
   useEffect(() => {
+    if (!companyNo) return;
+
     axios
-      .get("/api/company/{companyNo}", {
+      .get(`/api/company/${companyNo}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -18,18 +22,18 @@ export function useCompanyViewModel() {
       .then((res) => setCompanyList(res.data))
       .catch((err) => console.error("회사 정보 로딩 실패:", err))
       .finally(() => setIsLoading(false));
-  }, [token]);
+  }, [token, companyNo]);
 
   const handleEdit = async (id: number, newTitle: string, newSubtitle: string) => {
     try {
       await axios.put(
         `/api/company/${id}`,
-        { title: newTitle, subtitle: newSubtitle },
+        { name: newTitle, departmentName: newSubtitle },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setCompanyList((prev) =>
         prev.map((item) =>
-          item.id === id ? { ...item, title: newTitle, subtitle: newSubtitle } : item
+          item.id === id ? { ...item, name: newTitle, departmentName: newSubtitle } : item
         )
       );
     } catch (error) {
