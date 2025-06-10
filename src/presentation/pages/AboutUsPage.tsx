@@ -10,7 +10,7 @@ import SplitText from "@/presentation/components/atoms/SplitText";
 import Orb from '@/presentation/components/atoms/BackgroundOrb';
 import BlurText from "@/presentation/components/atoms/BlurText";
 import SpotlightCard from '@/presentation/components/atoms/SpotlightCard';
-import ScrollDownButton from "@/presentation/components/atoms/ScrollDownButton";
+import ScrollDownIndicator from "@/presentation/components/atoms/ScrollDownIndicator";
 
 const handleAnimationComplete = () => {
   console.log('All letters have animated!');
@@ -182,7 +182,7 @@ export default function AboutUsPage() {
           </div>
         </section>
       </main>
-      <ScrollDownButton />
+      <ScrollDownIndicator />
     </div >
   );
 }
