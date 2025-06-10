@@ -18,4 +18,5 @@ export interface CohortFileInfo {
 export interface Insight {
   summary: string;
   recommendations: string[];
+  prediction: string;
 }
