@@ -33,8 +33,8 @@ export class UserRepository {
     return fetchMyPageUserInfo(userNo);
   }
 
-  async getUserBasicInfo(userNo: number): Promise<UserBasicInfo> {
-    const res = await fetchUserBasicInfo(userNo);
+  async getUserBasicInfo(): Promise<UserBasicInfo> {
+    const res = await fetchUserBasicInfo();
     return res.data;
   }
 }

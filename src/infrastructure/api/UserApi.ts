@@ -38,7 +38,7 @@ export async function deleteUser(userNo: number, request: UserDeleteRequest): Pr
   await axiosInstance.post(`/user/${userNo}`, request);
 }
 
-export async function fetchUserBasicInfo(userNo: number): Promise<ApiResponse<UserBasicInfo>> {
-  const response = await axiosInstance.get(`/user/basic-info/${userNo}`);
+export async function fetchUserBasicInfo(): Promise<ApiResponse<UserBasicInfo>> {
+  const response = await axiosInstance.get('/user/my');
   return response.data;
-} 
+}

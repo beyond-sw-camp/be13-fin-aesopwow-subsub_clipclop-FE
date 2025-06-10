@@ -9,7 +9,7 @@ import profileImg from "@/assets/profileimg.png";
 import { fetchMyPageUserInfo } from "@/infrastructure/api/MypageApi";
 import { UserViewModel } from "@/application/viewModels/UserViewModel";
 import { MyPageCompany } from "@/presentation/pages/MyPageCompany";
-import { MyPageStaff } from "@/presentation/pages/MyPageStaff";
+// import { MyPageStaff } from "@/presentation/pages/MyPageStaff";
 import { MyPageRequest } from "@/presentation/pages/MyPageRequest";
 
 interface UserInfo {
@@ -32,7 +32,7 @@ export default function MyPage() {
   const [error, setError] = useState<boolean>(false);
 
   const [showCompanyModal, setShowCompanyModal] = useState(false);
-  const [showStaffModal, setShowStaffModal] = useState(false);
+  const [/*showStaffModal*/, setShowStaffModal] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
 
   const userViewModel = new UserViewModel();
@@ -130,9 +130,9 @@ export default function MyPage() {
               <MyPageCompany isOpen={showCompanyModal} onClose={() => setShowCompanyModal(false)} />
             )}
 
-            {showStaffModal && (
+            {/* {showStaffModal && (
               <MyPageStaff isOpen={showStaffModal} onClose={() => setShowStaffModal(false)} />
-            )}
+            )} */}
 
             {showRequestModal && (
               <MyPageRequest isOpen={showRequestModal} onClose={() => setShowRequestModal(false)} />
