@@ -33,7 +33,7 @@ export const SignupCard = ({ form, setForm }: Props) => {
       return;
     }
 
-    console.log("OTP 발송 후 모달 열림");
+    // console.log("OTP 발송 후 모달 열림");
     setEmail(form.email); 
     setVerifiedPassword(password);
     setOtpOpen(true);
@@ -41,19 +41,19 @@ export const SignupCard = ({ form, setForm }: Props) => {
 
   const handleOtpVerify = async (otp: string) => {
     try {
-      console.log("OTP 검증 시작", email, otp);
+      // console.log("OTP 검증 시작", email, otp);
 
       const verifyResponse = await VerifyOtpApi(email, otp);
-      console.log("OTP 검증 성공:", verifyResponse);
+      // console.log("OTP 검증 성공:", verifyResponse);
 
       const signupResponse = await SignupApi(email, verifiedPassword, form.confirmPassword, form.name, form.phone);
-      console.log("회원가입 성공:", signupResponse);
+      // console.log("회원가입 성공:", signupResponse);
       alert("회원가입 되셨습니다.")
 
       setOtpOpen(false);
 
     } catch (error) {
-      console.error("OTP 확인 또는 회원가입 실패:", error);
+      // console.error("OTP 확인 또는 회원가입 실패:", error);
     }
   };
 

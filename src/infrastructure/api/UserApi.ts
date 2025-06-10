@@ -1,4 +1,5 @@
-// 📁 /infrastructure/api/UserApi.ts
+// /infrastructure/api/UserApi.ts
+
 import { UserRole } from "@/application/stores/UserStore";
 import axiosInstance from "@/infrastructure/api/Axios";
 
@@ -17,7 +18,6 @@ export interface UserBasicInfo {
   createdAt: Date;
   updatedAt: Date;
   email: string;
-  phone: string;
   companyName: string;
   departmentName: string;
   roleName: UserRole;
@@ -38,7 +38,12 @@ export async function deleteUser(userNo: number, request: UserDeleteRequest): Pr
   await axiosInstance.post(`/user/${userNo}`, request);
 }
 
-export async function fetchUserBasicInfo(): Promise<ApiResponse<UserBasicInfo>> {
-  const response = await axiosInstance.get('/user/my');
+// export async function fetchUserBasicInfo(userNo: number): Promise<ApiResponse<UserBasicInfo>> {
+//   const response = await axiosInstance.get(`/user/basic-info/${userNo}`);
+//   return response.data;
+// } 
+
+export async function fetchUserBasicInfo(userNo: number): Promise<ApiResponse<UserBasicInfo>> {
+  const response = await axiosInstance.get(`/user/my`);
   return response.data;
 }

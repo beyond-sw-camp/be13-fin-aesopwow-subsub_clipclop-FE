@@ -47,17 +47,10 @@ export const SignUpPasswordForm = ({ form, setForm, onOtpSent, emailCheckResult 
     }
 
     try {
-      // 여기서 전송되는 데이터 확인
-      console.log("전송할 데이터:", {
-        email: form.email,
-        password: form.password,
-        name: form.name,
-      });
-
       await SignupOtpApi(form.email, form.password, form.name);
       onOtpSent(form.password);
     } catch (err: any) {
-      console.error("회원가입 중 오류:", err);
+      // console.error("회원가입 중 오류:", err);
       alert(err?.response?.data?.message || "회원가입 중 오류가 발생했습니다.");
     }
   };

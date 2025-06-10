@@ -227,7 +227,7 @@ export class DashBoardUsecase {
 
             return { statCards, chartData };
         } catch (error) {
-            console.error('❌ Dashboard CSV 처리 실패:', error);
+            // console.error('❌ Dashboard CSV 처리 실패:', error);
             if (error instanceof Error) {
                 throw new Error(`CSV 파싱 실패: ${error.message}`);
             } else {

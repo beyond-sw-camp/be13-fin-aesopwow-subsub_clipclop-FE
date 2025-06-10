@@ -21,7 +21,7 @@ export const LogoutApi = async (): Promise<void> => {
     return;
   }
 
-  console.log("[LOG] 로그아웃 요청 보냄", accessToken);
+  // console.log("[LOG] 로그아웃 요청 보냄", accessToken);
 
   await axiosInstance.post("/auth/logout", null, {
     headers: {

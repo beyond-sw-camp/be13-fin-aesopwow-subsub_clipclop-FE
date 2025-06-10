@@ -66,7 +66,7 @@ export default function QnaEditForm() {
       alert('수정이 완료되었습니다.');
       navigate(`/qna/${selectedPost.qnaPostNo}`);
     } catch (error) {
-      console.error('❗수정 실패:', error);
+      // console.error('❗수정 실패:', error);
       alert('수정 중 오류가 발생했습니다.');
     } finally {
       setIsSubmitting(false);

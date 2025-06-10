@@ -52,11 +52,11 @@ export const SignUpUserInfoForm = ({ form, setForm, setEmailCheckResult, emailCh
 
     try {
       const result = await EmailCheckApi({ email: form.email });
-      console.log("API 응답:", result);
+      // console.log("API 응답:", result);
 
       setEmailCheckResult({ ...result, email: form.email });
     } catch (error: any) {
-      console.error("API 호출 오류:", error);
+      // console.error("API 호출 오류:", error);
       setEmailCheckResult({ email: form.email, available: false });
     } finally {
       setLoading(false);
