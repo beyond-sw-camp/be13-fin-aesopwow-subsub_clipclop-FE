@@ -101,7 +101,7 @@ export const useLoginViewModel = () => {
       navigate("/dash-board");
     } catch (err) {
       // console.error("로그인 실패:", err);
-      alert("로그인 실패: " + (err instanceof Error ? err.message : "알 수 없는 오류"));
+      alert("로그인에 실패했습니다.\n관리자에게 문의해주세요.");
       setError("로그인에 실패했습니다.");
     } finally {
       setLoading(false);
