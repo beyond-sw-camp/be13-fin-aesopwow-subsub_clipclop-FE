@@ -27,7 +27,7 @@ const PricingCard: React.FC<PricingCardProps> = ({
     return (
         <div
             onClick={onClick}
-            className={`relative rounded-2xl p-6 w-[320px] flex flex-col justify-between items-center cursor-pointer
+            className={`relative rounded-2xl p-6 w-[370px] h-[500px] flex flex-col justify-between items-center cursor-pointer
                 transition-all duration-300
                 ${
                     isSelected

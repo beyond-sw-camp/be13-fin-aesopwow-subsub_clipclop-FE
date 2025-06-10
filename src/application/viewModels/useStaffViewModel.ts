@@ -1,4 +1,5 @@
 // /viewmodels/useStaffViewModel.ts
+
 import { useEffect, useState } from "react";
 import { StaffItem } from "@/core/model/StaffItem";
 import axiosInstance from "@/infrastructure/api/Axios";
@@ -7,12 +8,11 @@ export function useStaffViewModel() {
     const [staffList, setStaffList] = useState<StaffItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // const token = localStorage.getItem("token"); // 저장된 JWT
     const token = sessionStorage.getItem("token"); // 저장된 JWT
 
     useEffect(() => {
         if (!token) {
-            console.error("토큰이 없습니다. 로그인 후 다시 시도해주세요.");
+            // console.error("토큰이 없습니다. 로그인 후 다시 시도해주세요.");
             setIsLoading(false);
             return;
         }
@@ -35,15 +35,18 @@ export function useStaffViewModel() {
         }
     };
 
-    const handleAdd = async () => {
+    const handleAdd = async (email: string) => {
         try {
-            const res = await axiosInstance.post("/user/staffs/add", {
-                title: "새 직원",
-                subtitle: "신규 팀",
+            await axiosInstance.post("/user/staffs/add", null, {
+                params: { userEmail: email },
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
-            setStaffList((prev) => [...prev, res.data]);
+
+            await handleGetStaffList();
         } catch (err) {
-            console.error("직원 추가 실패:", err);
+            // console.error("직원 추가 실패:", err);
             alert("직원 추가 중 오류가 발생했습니다.");
         }
     };
@@ -51,16 +54,16 @@ export function useStaffViewModel() {
     const handleEdit = async (id: number, newTitle: string, newSubtitle: string) => {
         try {
             await axiosInstance.put(`/user/staffs/${id}/update`, {
-                title: newTitle,
-                subtitle: newSubtitle,
+                name: newTitle,
+                departmentName: newSubtitle,
             });
             setStaffList((prev) =>
                 prev.map((item) =>
-                    item.id === id ? { ...item, title: newTitle, subtitle: newSubtitle } : item
+                    item.userNo === id ? { ...item, name: newTitle, departmentName: newSubtitle } : item
                 )
             );
         } catch (error) {
-            console.error("직원 정보 수정 실패:", error);
+            // console.error("직원 정보 수정 실패:", error);
             alert("직원 정보를 수정하는 데 실패했습니다.");
         }
     };
@@ -69,16 +72,17 @@ export function useStaffViewModel() {
         if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
         try {
-            await axiosInstance.delete(`/staffs/${id}`);
-            setStaffList((prev) => prev.filter((item) => item.id !== id));
+            await axiosInstance.delete(`/user/staffs/${id}`);
+            setStaffList((prev) => prev.filter((item) => item.userNo !== id));
         } catch (err) {
-            console.error("직원 삭제 실패:", err);
+            // console.error("직원 삭제 실패:", err);
             alert("직원 삭제 중 오류가 발생했습니다.");
         }
     };
 
     return {
         staffList,
+        setStaffList,
         isLoading,
         handleAdd,
         handleEdit,

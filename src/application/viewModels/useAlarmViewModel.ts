@@ -26,7 +26,7 @@ export const useAlarmViewModel = () => {
       setAlarms(firstPage);
       setHasMore(data.length > PAGE_SIZE);
     } catch (e) {
-      console.error("알림 불러오기 실패", e);
+      // console.error("알림 불러오기 실패", e);
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ export const useAlarmViewModel = () => {
       await sendAlarm(userNo, content);
       await loadAlarms();
     } catch (e) {
-      console.error("알림 전송 실패", e);
+      // console.error("알림 전송 실패", e);
     }
   };
 
@@ -57,7 +57,7 @@ export const useAlarmViewModel = () => {
       await markAlarmAsRead(alarmId);
       await loadAlarms();
     } catch (e) {
-      console.error("알림 읽음 처리 실패", e);
+      // console.error("알림 읽음 처리 실패", e);
     }
   };
 
@@ -68,7 +68,7 @@ export const useAlarmViewModel = () => {
         const user = await getUser();
         if (user?.userNo) setUserNo(user.userNo);
       } catch (e) {
-        console.error("유저 정보 불러오기 실패", e);
+        // console.error("유저 정보 불러오기 실패", e);
       }
     };
     fetchUser();

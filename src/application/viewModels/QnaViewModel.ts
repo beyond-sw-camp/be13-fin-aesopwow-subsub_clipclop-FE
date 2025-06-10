@@ -10,7 +10,7 @@ export const useQnaViewModel = () => {
 
   const getUserNoOrThrow = async (): Promise<number> => {
     const user = await getUser(); // await 필요
-    console.log("QnA 요청 시점의 사용자 상태:", user);
+    // console.log("QnA 요청 시점의 사용자 상태:", user);
     if (!user.userNo) throw new Error("로그인된 사용자 정보가 없습니다.");
     return user.userNo;
   };

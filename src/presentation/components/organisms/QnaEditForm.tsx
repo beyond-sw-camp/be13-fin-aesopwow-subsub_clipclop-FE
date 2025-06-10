@@ -66,7 +66,7 @@ export default function QnaEditForm() {
       alert('수정이 완료되었습니다.');
       navigate(`/qna/${selectedPost.qnaPostNo}`);
     } catch (error) {
-      console.error('❗수정 실패:', error);
+      // console.error('❗수정 실패:', error);
       alert('수정 중 오류가 발생했습니다.');
     } finally {
       setIsSubmitting(false);
@@ -74,7 +74,7 @@ export default function QnaEditForm() {
   };
 
   return (
-    <div className="min-h-screen bg-orange-500 flex justify-center items-start py-16 px-4">
+    <div className="min-h-screen bg-primary flex justify-center items-start py-16 px-4">
       <div className="bg-white w-full max-w-5xl p-10 rounded shadow-md">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-xl font-semibold">문의사항 수정</h2>

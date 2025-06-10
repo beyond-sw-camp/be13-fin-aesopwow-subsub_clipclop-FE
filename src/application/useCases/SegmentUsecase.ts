@@ -48,7 +48,7 @@ export class SegmentUsecase {
 
             return result;
         } catch (error) {
-            console.error("세그먼트 데이터 가져오기 오류:", error);
+            // console.error("세그먼트 데이터 가져오기 오류:", error);
             throw new Error("세그먼트 데이터를 가져오는 중 오류가 발생했습니다.");
         }
     }

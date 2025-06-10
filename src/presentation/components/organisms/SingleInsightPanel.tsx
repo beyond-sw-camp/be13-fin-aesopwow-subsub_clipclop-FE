@@ -24,6 +24,9 @@ export function SingleInsightPanel({ insight, isLoading, error }: Props) {
           <p className="font-semibold">요약:</p>
           <p className="whitespace-pre-line">{insight.summary}</p>
 
+          <p className="font-semibold">예측:</p>
+          <p className="whitespace-pre-line">{insight.prediction}</p>
+
           <p className="font-semibold mt-4">행동 추천:</p>
           <ul className="list-disc list-inside space-y-1">
             {insight.recommendations.map((rec, idx) => (

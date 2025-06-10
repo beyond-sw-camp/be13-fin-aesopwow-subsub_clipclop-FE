@@ -37,7 +37,7 @@ export function ProfileButton({ type, label }: ProfileButtonProps) {
 
   // 잘못된 타입 처리
   if (process.env.NODE_ENV !== "production") {
-    console.warn(`ProfileButton: 지원하지 않는 타입입니다. (type: ${type})`);
+    // console.warn(`ProfileButton: 지원하지 않는 타입입니다. (type: ${type})`);
   }
 
   return (

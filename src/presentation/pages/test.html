@@ -13,22 +13,22 @@
   const evtSource = new EventSource("http://localhost:8001/api/v1/alarms/subscribe?userNo=8");
 
   evtSource.onopen = () => {
-    console.log("SSE 연결됨");
+    // console.log("SSE 연결됨");
     document.getElementById("messages").innerHTML += "<p><b>연결됨</b></p>";
   };
 
   evtSource.onmessage = (event) => {
-    console.log("일반 메시지 받음:", event.data);
+    // console.log("일반 메시지 받음:", event.data);
     document.getElementById("messages").innerHTML += `<p>메시지: ${event.data}</p>`;
   };
 
   evtSource.addEventListener("alarm", (event) => {
-    console.log("알림 이벤트 받음:", event.data);
+    // console.log("알림 이벤트 받음:", event.data);
     document.getElementById("messages").innerHTML += `<p style="color:green;">알림: ${event.data}</p>`;
   });
 
   evtSource.onerror = (err) => {
-    console.error("SSE 에러:", err);
+    // console.error("SSE 에러:", err);
     document.getElementById("messages").innerHTML += "<p style='color:red;'>에러 발생</p>";
   };
 </script>

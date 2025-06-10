@@ -53,7 +53,7 @@ export class CSVChartDataRepository implements ChartDataRepository {
                 ],
             };
         } catch (error) {
-            console.error('CSV 데이터 파싱 중 오류 발생:', error);
+            // console.error('CSV 데이터 파싱 중 오류 발생:', error);
             throw new Error('CSV 데이터 파싱 중 오류가 발생했습니다: ' +
                 (error instanceof Error ? error.message : '알 수 없는 오류'));
         }
