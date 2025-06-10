@@ -34,8 +34,8 @@ import SubscriptionPage from "@/presentation/pages/SubscriptionPage";
 import GenrePage from "@/presentation/pages/GenrePage";
 import LastLoginPage from "@/presentation/pages/LastLoginPage";
 
-import AnalyticsShapPage from "./presentation/pages/AnalyticsShapPage";
-import AnalyticsShapFilterPage from "./presentation/pages/AnalyticsShapFilterPage";
+// import AnalyticsShapPage from "./presentation/pages/AnalyticsShapPage";
+// import AnalyticsShapFilterPage from "./presentation/pages/AnalyticsShapFilterPage";
 import AnalysisSubscriptionPage from "./presentation/pages/AnalysisSubscriptionPage";
 import AnalysisWatchTimePage from "./presentation/pages/AnalysisWatchTimePage";
 import AnalysisGenrePage from "./presentation/pages/AnalysisGenrePage";
@@ -139,8 +139,8 @@ function App() {
         <Route path="/segments/genre" element={<GenrePage />} />
         <Route path="/segments/lastlogin" element={<LastLoginPage />} />
 
-        <Route path="/analytics/shap/full" element={<AnalyticsShapPage />} />
-        <Route path="/analytics/shap/filter" element={<AnalyticsShapFilterPage />} />
+        {/* <Route path="/analytics/shap/full" element={<AnalyticsShapPage />} />
+        <Route path="/analytics/shap/filter" element={<AnalyticsShapFilterPage />} /> */}
         <Route path="/analysis/subscription/:s3Key" element={<AnalysisSubscriptionPage />} />
         <Route path="/analysis/watchtime/:s3Key" element={<AnalysisWatchTimePage />} />
         <Route path="/analysis/genre/:s3Key" element={<AnalysisGenrePage />} />

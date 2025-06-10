@@ -1,4 +1,5 @@
-// 📁 /infrastructure/api/UserApi.ts
+// /infrastructure/api/UserApi.ts
+
 import { UserRole } from "@/application/stores/UserStore";
 import axiosInstance from "@/infrastructure/api/Axios";
 
@@ -17,7 +18,6 @@ export interface UserBasicInfo {
   createdAt: Date;
   updatedAt: Date;
   email: string;
-  phone: string;
   companyName: string;
   departmentName: string;
   roleName: UserRole;

@@ -1,4 +1,5 @@
 // /viewmodels/useStaffViewModel.ts
+
 import { useEffect, useState } from "react";
 import { StaffItem } from "@/core/model/StaffItem";
 import axiosInstance from "@/infrastructure/api/Axios";
@@ -7,7 +8,6 @@ export function useStaffViewModel() {
     const [staffList, setStaffList] = useState<StaffItem[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // const token = localStorage.getItem("token"); // 저장된 JWT
     const token = sessionStorage.getItem("token"); // 저장된 JWT
 
     useEffect(() => {
@@ -35,11 +35,12 @@ export function useStaffViewModel() {
         }
     };
 
-    const handleAdd = async () => {
+    const handleAdd = async (email: string) => {
         try {
             const res = await axiosInstance.post("/user/staffs/add", {
-                title: "새 직원",
-                subtitle: "신규 팀",
+              email,
+              title: "새 직원",
+              subtitle: "신규 팀",
             });
             setStaffList((prev) => [...prev, res.data]);
         } catch (err) {
