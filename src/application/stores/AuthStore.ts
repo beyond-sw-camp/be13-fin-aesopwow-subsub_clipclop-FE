@@ -24,7 +24,6 @@ export const useAuthStore = create<AuthState>((set) => ({
   setCompanyNo: (companyNo: number) => set({ companyNo }),
   logout: () => {
     set({ token: null, companyNo: null, isLoggedIn: false });
-    set({ token: null, isLoggedIn: false });
     localStorage.removeItem("token");
     sessionStorage.removeItem("token");
   },
