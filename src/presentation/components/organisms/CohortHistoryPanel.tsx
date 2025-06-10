@@ -64,7 +64,7 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
     if (parts.length < 4) return;
 
     if (!parts[0] || !parts[2] || !parts[3]) {
-      console.warn("Invalid key format:", key);
+      // console.warn("Invalid key format:", key);
       return;
     }
 

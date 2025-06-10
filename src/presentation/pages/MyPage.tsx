@@ -103,7 +103,7 @@ export default function MyPage() {
       alert("회원 탈퇴가 완료되었습니다.");
       window.location.href = "/login";
     } catch (error) {
-      console.error("회원 탈퇴 실패:", error);
+      // console.error("회원 탈퇴 실패:", error);
       alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
     }
   };
@@ -225,7 +225,7 @@ export default function MyPage() {
                   name: item.name,
                   departmentName: item.departmentName || "",
                 }))}
-                onEdit={() => {}}
+                onEdit={handleStaffEdit}
                 onDelete={handleStaffDelete}
                 onAdd={() => setShowEmailModal(true)}
                 addLabel="추가"

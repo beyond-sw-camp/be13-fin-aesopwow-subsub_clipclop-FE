@@ -38,7 +38,7 @@ export default function QnaDetail() {
         alert('삭제되었습니다.');
         navigate('/qna');
       } catch (error) {
-        console.error('❗삭제 실패:', error);
+        // console.error('❗삭제 실패:', error);
         alert('삭제 중 오류가 발생했습니다.');
       }
     }
@@ -58,7 +58,7 @@ export default function QnaDetail() {
             {isAuthor && !hasAnswer && (
               <button
                 onClick={handleEdit}
-                className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
               >
                 수정
               </button>

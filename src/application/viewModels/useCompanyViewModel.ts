@@ -37,7 +37,7 @@ export function useCompanyViewModel() {
         )
       );
     } catch (error) {
-      console.error("회사 정보 수정 실패:", error);
+      // console.error("회사 정보 수정 실패:", error);
       alert("회사 정보를 수정하는 데 실패했습니다.");
     }
   };
@@ -53,7 +53,7 @@ export function useCompanyViewModel() {
       });
       setCompanyList((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
-      console.error("회사 정보 삭제 실패:", error);
+      // console.error("회사 정보 삭제 실패:", error);
       alert("회사 정보를 삭제하는 데 실패했습니다.");
     }
   };

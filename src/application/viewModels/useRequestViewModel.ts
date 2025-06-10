@@ -22,7 +22,7 @@ export function useRequestViewModel(requestId?: number) {
           departmentName: res.data.department || `DB ${res.data.infoDbNo}`
         }]);
       } catch (error) {
-        console.error("요청 내역 불러오기 실패", error);
+        // console.error("요청 내역 불러오기 실패", error);
       } finally {
         setIsLoading(false);
       }

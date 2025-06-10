@@ -27,7 +27,7 @@ export function useMyInfoViewModel() {
       });
       setMyInfo(res.data.data);
     } catch (error) {
-      console.error("내 정보 조회 실패:", error);
+      // console.error("내 정보 조회 실패:", error);
       alert("사용자 정보를 불러오는 데 실패했습니다.");
     } finally {
       setIsLoading(false);
@@ -36,14 +36,18 @@ export function useMyInfoViewModel() {
 
   const handleEdit = async (updateData: Partial<MyInfoItem>) => {
     try {
-      await axiosInstance.put("/user/my/update", updateData, {
+      await axiosInstance.put("/user/my/update", {
+        userNo: updateData.userNo,
+        userName: updateData.name,          
+        departmentName: updateData.departmentName,
+      }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
       await fetchMyInfo();
     } catch (error) {
-      console.error("내 정보 수정 실패:", error);
       alert("내 정보를 수정하는 데 실패했습니다.");
     }
   };

@@ -57,7 +57,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword, name
       await ResendOtpApi(email);
       setResendMessage("✅ OTP가 전송되었습니다.");
     } catch (error: any) {
-      console.error("OTP 재전송 실패", error);
+      // console.error("OTP 재전송 실패", error);
       const message =
         error?.response?.data || "❌ OTP 재전송 중 알 수 없는 오류가 발생했습니다.";
       setResendMessage(message);
@@ -87,7 +87,7 @@ export const OtpModal = ({ open, setOpen, email, password, confirmPassword, name
       setOpen(false); // 모달 닫기
       navigate("/login");
     } catch (error) {
-      console.error("OTP 확인 또는 회원가입 실패", error);
+      // console.error("OTP 확인 또는 회원가입 실패", error);
       alert("OTP 인증 또는 회원가입에 실패했습니다.");
     } finally {
       setLoading(false);
