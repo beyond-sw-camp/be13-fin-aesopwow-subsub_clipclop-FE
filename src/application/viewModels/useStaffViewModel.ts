@@ -52,12 +52,12 @@ export function useStaffViewModel() {
     const handleEdit = async (id: number, newTitle: string, newSubtitle: string) => {
         try {
             await axiosInstance.put(`/user/staffs/${id}/update`, {
-                title: newTitle,
-                subtitle: newSubtitle,
+                name: newTitle,
+                departmentName: newSubtitle,
             });
             setStaffList((prev) =>
                 prev.map((item) =>
-                    item.userNo === id ? { ...item, title: newTitle, subtitle: newSubtitle } : item
+                    item.userNo === id ? { ...item, name: newTitle, departmentName: newSubtitle } : item
                 )
             );
         } catch (error) {
@@ -70,7 +70,7 @@ export function useStaffViewModel() {
         if (!window.confirm("정말 삭제하시겠습니까?")) return;
 
         try {
-            await axiosInstance.delete(`/staffs/${id}`);
+            await axiosInstance.delete(`/user/staffs/${id}`);
             setStaffList((prev) => prev.filter((item) => item.userNo !== id));
         } catch (err) {
             console.error("직원 삭제 실패:", err);
