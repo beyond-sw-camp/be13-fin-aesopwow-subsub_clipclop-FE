@@ -3,6 +3,8 @@ import { useState } from "react";
 import { PanelTitle } from "../atoms/PanelTitle";
 import { Chart } from "react-chartjs-2";
 import type { ChartData } from "chart.js";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
+
 
 interface DoubleVisualizationPanelProps {
   firstClusterType: string;
@@ -28,10 +30,9 @@ export function DoubleVisualizationPanel({
   const [activeCluster, setActiveCluster] = useState<"A" | "B">("A");
 
   const getButtonStyle = (cluster: "A" | "B") =>
-    `px-4 py-2 text-sm font-semibold transition rounded-lg ${
-      activeCluster === cluster
-        ? "bg-orange-400 text-black"
-        : "bg-transparent text-black"
+    `px-4 py-2 text-sm font-semibold transition rounded-lg ${activeCluster === cluster
+      ? "bg-orange-400 text-black"
+      : "bg-transparent text-black"
     }`;
 
   const doughnutChart = activeCluster === "A" ? doughnutChartA : doughnutChartB;
@@ -58,7 +59,7 @@ export function DoubleVisualizationPanel({
         </button>
       </div>
 
-      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <DotWaveLoader color="black" />}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
       {noData && <p className="text-sm text-gray-500">표시할 데이터가 없습니다.</p>}
 

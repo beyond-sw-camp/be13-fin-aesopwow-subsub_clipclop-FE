@@ -4,6 +4,7 @@ import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileLi
 import { SideMenu } from "@/presentation/layout/SideMenu";
 import { Header } from "@/presentation/layout/Header";
 import { useUserStore } from "@/application/stores/UserStore";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
 // 파일 정보 타입
 export interface SegmentFileInfo {
@@ -111,7 +112,7 @@ export default function WatchTimePage() {
               {requesting ? "요청 중..." : "최신 데이터로 분석 요청하기"}
             </button>
             {loading ? (
-              <div className="flex justify-center items-center h-32">로딩 중...</div>
+              <DotWaveLoader color="black" />
             ) : files.length === 0 ? (
               <div className="text-gray-400 text-center py-4">
                 데이터가 없습니다.

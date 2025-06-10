@@ -3,6 +3,7 @@ import { Header } from "../layout/Header";
 import { SideMenu } from "../layout/SideMenu";
 import { DashBoardContent } from "../components/organisms/DashBoardContent";
 import { useDashBoardViewModel } from "@/application/viewModels/DashBoardViewModel";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
 export default function DashBoardPage() {
     const { statCards, chartData, isLoading, error } = useDashBoardViewModel();
@@ -21,7 +22,7 @@ export default function DashBoardPage() {
                         <div className="mb-4">
                             <PageBreadcrumb title="DashBoard" />
                         </div>
-                        {isLoading && <div>데이터 로딩 중...</div>}
+                        {isLoading && <DotWaveLoader color="black" />}
                         {error && <div style={{ color: 'red' }}>{error.message}</div>}
                         <DashBoardContent
                             cards={statCards}

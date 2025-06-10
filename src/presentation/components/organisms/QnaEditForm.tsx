@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQnaViewModel } from '@/application/viewModels/QnaViewModel';
 import { useUserStore } from '@/application/stores/UserStore';
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
+
 
 export default function QnaEditForm() {
   const { id } = useParams();
@@ -29,7 +31,7 @@ export default function QnaEditForm() {
     }
   }, [selectedPost]);
 
-  if (!selectedPost) return <p className="text-gray-500">데이터 로딩 중...</p>;
+  if (!selectedPost) return <DotWaveLoader color="black" />;
 
   const isAuthor = selectedPost.userNo === currentUserNo;
   const hasAnswer = !!comment;
@@ -82,9 +84,8 @@ export default function QnaEditForm() {
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className={`px-4 py-1 rounded text-white ${
-                isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
-              }`}
+              className={`px-4 py-1 rounded text-white ${isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'
+                }`}
             >
               {isSubmitting ? '수정 중...' : '수정'}
             </button>

@@ -1,5 +1,7 @@
 // 📁 /presentation/components/organisms/DoubleRemainHeatmapPanel.tsx
 import { PanelTitle } from "../atoms/PanelTitle";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
+
 
 interface DoubleRemainHeatmapPanelProps {
   heatmapA: { row: string; col: string; value: string }[];
@@ -77,11 +79,10 @@ function renderTable(title: string, columns: string[], rows: string[][]) {
                 {paddedRow.map((cell, cellIdx) => (
                   <td
                     key={cellIdx}
-                    className={`border px-2 py-1 text-xs whitespace-nowrap align-top ${
-                      cell === "__EMPTY__"
-                        ? "bg-white"
-                        : getSingleHeatmapColor(cell, cellIdx)
-                    }`}
+                    className={`border px-2 py-1 text-xs whitespace-nowrap align-top ${cell === "__EMPTY__"
+                      ? "bg-white"
+                      : getSingleHeatmapColor(cell, cellIdx)
+                      }`}
                   >
                     {cell === "__EMPTY__" ? <span className="invisible">0</span> : cell}
                   </td>
@@ -118,7 +119,7 @@ export function DoubleRemainHeatmapPanel({
         <p className="text-sm text-gray-500 mb-4">{insightA}</p>
       )}
 
-      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <DotWaveLoader color="black" />}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
       {noData && (
         <p className="text-sm text-gray-500">표시할 히트맵 데이터가 없습니다.</p>

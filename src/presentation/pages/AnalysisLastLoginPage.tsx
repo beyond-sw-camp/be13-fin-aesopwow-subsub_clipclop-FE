@@ -4,6 +4,7 @@ import Papa from "papaparse";
 import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileListViewModel";
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
 type SegmentType = "Frequent User" | "Dormant User" | "Forgotten User" | "unknown";
 
@@ -166,7 +167,7 @@ export default function AnalysisLastLoginPage() {
                   border: "2px solid #2196f3",
                   minHeight: "300px"
                 }}>
-                  {csvData || "로딩 중..."}
+                  {csvData || <DotWaveLoader color="black" />}
                 </pre>
               )}
             </div>
