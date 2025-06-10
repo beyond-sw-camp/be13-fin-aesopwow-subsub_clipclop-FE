@@ -64,7 +64,7 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
     if (parts.length < 4) return;
 
     if (!parts[0] || !parts[2] || !parts[3]) {
-      // console.warn("Invalid key format:", key);
+      console.warn("Invalid key format:", key);
       return;
     }
 
@@ -96,7 +96,9 @@ export function CohortHistoryPanel({ clusterType, selectedKeys, onSelect }: Prop
                   />
                 )}
                 <div className="cursor-pointer" onClick={() => handleClick(item.key)}>
-                  <p className="text-sm font-medium">{item.lastModified}</p>
+                  <p className="text-sm font-medium">
+                    {new Date(item.lastModified).toISOString().slice(0, 19).replace("T", " ") + " UTC"}
+                  </p>
                   <p className="text-xs text-gray-500 break-all">{item.key}</p>
                 </div>
               </div>
