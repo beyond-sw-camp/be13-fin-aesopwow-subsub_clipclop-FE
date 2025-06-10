@@ -142,7 +142,6 @@ function App() {
         <Route path="/segments/lastlogin" element={<LastLoginPage />} />
 
         <Route path="/error" element={<ErrorPage />} />
-        <Route path="/error" element={<ErrorPage />} />
         <Route path="/analysis/subscription/:s3Key" element={<AnalysisSubscriptionPage />} />
         <Route path="/analysis/watchtime/:s3Key" element={<AnalysisWatchTimePage />} />
         <Route path="/analysis/genre/:s3Key" element={<AnalysisGenrePage />} />
