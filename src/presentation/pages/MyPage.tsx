@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
 import { toast } from "react-toastify";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
 import { useAuthStore } from "@/application/stores/AuthStore";
 
@@ -57,12 +58,12 @@ export default function MyPage() {
   const userViewModel = new UserViewModel();
 
   const {
-  myInfo,
-  myInfoList,
-  isLoading: myInfoLoading,
-  handleEdit,
-  refetch: refetchMyInfo,
-} = useMyInfoViewModel();
+    myInfo,
+    myInfoList,
+    isLoading: myInfoLoading,
+    handleEdit,
+    refetch: refetchMyInfo,
+  } = useMyInfoViewModel();
 
   const {
     companyList,
@@ -115,16 +116,16 @@ export default function MyPage() {
   const token = useAuthStore.getState().token;
 
   const handleSubmitEmail = useCallback(
-  async (email: string) => {
-    try {
-      await handleStaffAdd(email);
-      setShowEmailModal(false);
-    } catch (err) {
-      toast.error("직원 추가에 실패했습니다.");
-    }
-  },
-  [handleStaffAdd]
-);
+    async (email: string) => {
+      try {
+        await handleStaffAdd(email);
+        setShowEmailModal(false);
+      } catch (err) {
+        toast.error("직원 추가에 실패했습니다.");
+      }
+    },
+    [handleStaffAdd]
+  );
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -152,7 +153,7 @@ export default function MyPage() {
     fetchUserInfo();
   }, []);
 
-  if (loading) return <div className="text-white p-8">로딩 중...</div>;
+  if (loading) return <DotWaveLoader color="black" />;
   if (error || !userInfo) return <div className="text-red-500 p-8">데이터를 불러오지 못했습니다.</div>;
 
   return (
@@ -187,7 +188,7 @@ export default function MyPage() {
               onCompanyClick={() => setShowCompanyModal(true)}
               onStaffClick={() => setShowStaffModal(true)}
               onRequestClick={() => setShowRequestModal(true)}
-              onAlarmClick={() => {}}
+              onAlarmClick={() => { }}
             />
 
             {showMyInfoModal && (

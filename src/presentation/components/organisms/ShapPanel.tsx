@@ -3,6 +3,8 @@ import { Chart } from "react-chartjs-2";
 import type { ChartData } from "chart.js";
 import { useState } from "react";
 import { ShapResultSummaryModal } from "./ShapResultSummaryModal";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
+
 
 import {
   Chart as ChartJS,
@@ -57,7 +59,7 @@ export function ShapPanel({
     <div className="p-6 bg-white rounded-xl shadow w-full max-w-full overflow-hidden">
       <div className="text-xl font-bold mb-4">SHAP 분석 결과</div>
 
-      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <DotWaveLoader color="black" />}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
       {noData && <p className="text-sm text-gray-500">표시할 데이터가 없습니다.</p>}
 

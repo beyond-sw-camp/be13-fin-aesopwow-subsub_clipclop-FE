@@ -1,6 +1,7 @@
 // /presentation/components/organisms/SingleInsightPanel.tsx
 import { Insight } from "@/core/model/CohortModels";
 import { PanelTitle } from "../atoms/PanelTitle";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
 interface Props {
   insight: Insight | null;
@@ -15,7 +16,7 @@ export function SingleInsightPanel({ insight, isLoading, error }: Props) {
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px]">
       <PanelTitle title="인사이트" className="text-xl font-bold mb-2" />
 
-      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <DotWaveLoader color="blue" />}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
       {noData && <p className="text-sm text-gray-400">도출된 인사이트가 없습니다.</p>}
 

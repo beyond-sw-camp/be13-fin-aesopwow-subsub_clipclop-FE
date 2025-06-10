@@ -1,5 +1,6 @@
 // /presentation/components/organisms/SingleRemainHeatmapPanel.tsx
 import { PanelTitle } from "../atoms/PanelTitle";
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
 
 interface HeatmapCell {
   row: string;
@@ -49,7 +50,7 @@ export function SingleRemainHeatmapPanel({ heatmap, isLoading, error }: Props) {
     <div className="p-6 bg-white rounded-xl shadow w-full min-h-[200px]">
       <PanelTitle title="잔존율 히트맵" className="text-xl font-bold mb-2" />
 
-      {isLoading && <p className="text-sm text-gray-500">로딩 중...</p>}
+      {isLoading && <DotWaveLoader color="blue" />}
       {error && <p className="text-sm text-red-500">{error.message}</p>}
       {!isLoading && heatmap.length === 0 && !error && (
         <p className="text-sm text-gray-500">표시할 데이터가 없습니다.</p>
