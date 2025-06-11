@@ -18,15 +18,16 @@ function getSingleHeatmapColor(value: string): string {
   const num = parseFloat(value.replace("%", ""));
   if (isNaN(num)) return "bg-white text-gray-500";
 
-  if (num >= 90) return "bg-blue-500 text-gray-700";
-  if (num >= 80) return "bg-blue-400 text-gray-700";
-  if (num >= 70) return "bg-blue-300 text-gray-700";
-  if (num >= 60) return "bg-blue-200 text-gray-700";
-  if (num >= 50) return "bg-blue-100 text-gray-700";
-  if (num >= 40) return "bg-blue-50 text-gray-700";
-  if (num >= 30) return "bg-blue-50 text-gray-700";
-  if (num >= 20) return "bg-blue-50 text-gray-700";
-  if (num >= 10) return "bg-blue-50 text-gray-700";
+  if (num >= 90) return "bg-blue-900 text-white";
+  if (num >= 80) return "bg-blue-800 text-white";
+  if (num >= 70) return "bg-blue-700 text-white";
+  if (num >= 60) return "bg-blue-600 text-white";
+  if (num >= 50) return "bg-blue-500 text-white";
+  if (num >= 40) return "bg-blue-400 text-gray-800";
+  if (num >= 30) return "bg-blue-300 text-gray-800";
+  if (num >= 20) return "bg-blue-200 text-gray-800";
+  if (num >= 10) return "bg-blue-100 text-gray-800";
+  if (num >= 1)  return "bg-blue-50 text-gray-800";
   return "bg-white text-gray-500";
 }
 
