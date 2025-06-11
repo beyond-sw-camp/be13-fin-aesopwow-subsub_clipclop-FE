@@ -5,12 +5,10 @@ import { useAlarmViewModel } from "@/application/viewModels/useAlarmViewModel";
 export function UserDetailPanel({
   onMyInfoClick,
   onStaffClick,
-  onRequestClick,
   onAlarmClick,
 }: {
   onMyInfoClick: () => void;
   onStaffClick: () => void;
-  onRequestClick: () => void;
   onAlarmClick: () => void;
 }) {
   const { alarms, loading, markAsRead, hasMore, loadMore } = useAlarmViewModel();
@@ -58,12 +56,7 @@ export function UserDetailPanel({
             // content: "유저 추가, 삭제, 수정",
             onClick: onStaffClick,
           },
-          {
-            id: "request",
-            subtitle: "요청 내역 관리",
-            // content: "분석 내역",
-            onClick: onRequestClick,
-          },
+          
         ]}
       />
       <InfoSection

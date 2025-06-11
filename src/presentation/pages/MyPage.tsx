@@ -158,7 +158,6 @@ export default function MyPage() {
             <UserDetailPanel
               onMyInfoClick={() => setShowMyInfoModal(true)}
               onStaffClick={() => setShowStaffModal(true)}
-              onRequestClick={() => setShowRequestModal(true)}
               onAlarmClick={() => {}}
             />
 
