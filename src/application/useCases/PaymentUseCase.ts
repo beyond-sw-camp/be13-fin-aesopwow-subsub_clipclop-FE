@@ -24,6 +24,7 @@ export class PaymentUseCase {
 
             // 결제 실패 처리 (필요시 추가)
             if (response.code === "FAILURE_TYPE_PG" || response.code === "CANCELED") {
+                console.log("")
                 alert("결제를 취소했습니다.");
                 return null;
             }
