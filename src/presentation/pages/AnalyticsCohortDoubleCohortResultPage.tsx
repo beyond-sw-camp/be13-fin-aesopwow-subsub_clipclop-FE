@@ -96,9 +96,11 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
     <div className="w-screen bg-primary text-gray-800">
       <Header />
       <main className="flex">
-        <aside className="w-[240px] shrink-0 pt-4 pl-4">
-          <SideMenu />
-        </aside>
+        <div className="pt-4 pl-4">
+          <div className="mt-4 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
+            <SideMenu />
+          </div>
+        </div>
 
         <section className="flex-1 flex flex-col p-8">
           <div className="mb-4">
