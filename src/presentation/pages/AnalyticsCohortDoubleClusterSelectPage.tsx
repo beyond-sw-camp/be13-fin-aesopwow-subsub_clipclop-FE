@@ -15,7 +15,7 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
         {/* Sidebar */}
         <div className="pt-4 pl-4">
           <div className="mt-4 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
-            <SideMenu />
+            <SideMenu isLoggedIn={true}/>
           </div>
         </div>
 
