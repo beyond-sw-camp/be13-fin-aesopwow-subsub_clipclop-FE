@@ -67,7 +67,7 @@ export default function SubscriptionPage() {
   const handleFileClick = (fileName: string) => {
     if (!infoDbNo || !fileName) return;
     const s3Key = `${infoDbNo}/segment/subscription/${fileName}`;
-    navigate(`/analysis/subscription/${encodeURIComponent(s3Key)}`);
+    navigate(`/segments/subscription/${encodeURIComponent(s3Key)}`);
   };
 
   return (

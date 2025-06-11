@@ -68,7 +68,7 @@ export default function LastLoginPage() {
   const handleFileClick = (fileName: string) => {
     if (!infoDbNo || !fileName) return;
     const s3Key = `${infoDbNo}/segment/last_login/${fileName}`;
-    navigate(`/analysis/lastlogin/${encodeURIComponent(s3Key)}`);
+    navigate(`/segments/lastlogin/${encodeURIComponent(s3Key)}`);
   };
 
   return (

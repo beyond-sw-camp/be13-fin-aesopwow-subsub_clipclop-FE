@@ -85,7 +85,7 @@ export default function AnalyticsCohortSingleCohortResultPage() {
 
         <section className="flex-1 flex flex-col p-8">
           <div className="mb-4">
-            <PageBreadcrumb title="Analysis/Cohort/Single" />
+            <PageBreadcrumb title="단일 코호트 분석" />
           </div>
 
           <div className="relative mb-6 w-full">
