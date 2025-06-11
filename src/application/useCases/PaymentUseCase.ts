@@ -30,7 +30,7 @@ export class PaymentUseCase {
             }
 
             // 결제 성공 판단
-            if (response.transactionType === "PAYMENT") {
+            if (response.code === "PG_PROVIDER_ERROR") {
                 alert("결제 완료되었습니다. 대시보드 페이지로 이동합니다.");
                 navigate("/dash-board");
                 return response;
