@@ -4,7 +4,7 @@ import '@/chart/ChartRegister';
 import { ChartData as DoughnutChartData } from '@/core/model/ChartData';
 import { StatCardData } from '@/application/stores/DashBoardStore';
 import { getUser } from '@/application/stores/UserStore';
-import { User } from 'lucide-react';
+import { Activity, BedSingle, RefreshCcw, Sprout, UserMinus, UsersRound } from 'lucide-react';
 import { ChartData as ChartJSData } from 'chart.js';
 import { DashBoardCharts } from '@/application/stores/DashBoardStore';
 import axiosInstance from '@/infrastructure/api/Axios';
@@ -77,12 +77,12 @@ export class DashBoardUsecase {
             };
 
             const statCards: StatCardData[] = [
-                { title: '총 구독자', value: getMetric('Entire Users'), icon: User },
-                { title: '신규 가입자', value: getMetric('New Users'), icon: User },
-                { title: '활성 사용자', value: getMetric('Active Users'), icon: User },
-                { title: '휴면 사용자', value: getMetric('Dormant Users'), icon: User },
-                { title: '해지율', value: getMetric('Cancellation Rate') + '%', icon: User },
-                { title: '증감률', value: getMetric('Increase Decrease Rate') + '%', icon: User },
+                { title: '총 구독자', value: getMetric('Entire Users'), icon: UsersRound },
+                { title: '신규 가입자', value: getMetric('New Users'), icon: Sprout },
+                { title: '활성 사용자', value: getMetric('Active Users'), icon: RefreshCcw },
+                { title: '휴면 사용자', value: getMetric('Dormant Users'), icon: BedSingle },
+                { title: '해지율', value: getMetric('Cancellation Rate') + '%', icon: UserMinus },
+                { title: '증감률', value: getMetric('Increase Decrease Rate') + '%', icon: Activity },
             ];
 
             // --- 꺾은선 그래프 파싱 --- //

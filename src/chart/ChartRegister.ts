@@ -1,4 +1,6 @@
 // src/chart/ChartRegister.ts (예시)
+import annotationPlugin from 'chartjs-plugin-annotation';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import {
   Chart as ChartJS,
@@ -22,5 +24,7 @@ ChartJS.register(
   ArcElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  annotationPlugin,
+  ChartDataLabels
 );

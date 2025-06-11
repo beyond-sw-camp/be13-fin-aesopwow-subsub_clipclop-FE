@@ -145,49 +145,51 @@ export default function AnalysisWatchTimePage() {
             <SideMenu />
           </div>
         </div>
-        {/* 메인 콘텐츠 */}
+
         <div className="flex-1 flex flex-col items-center">
-          {/* 상단 탭 카드 - 좌측으로 220px 이동 */}
-          <div
-            className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8"
-            style={{ marginLeft: '-220px' }}
-          >
-            <div className="flex flex-col items-center flex-1 cursor-pointer opacity-60 pb-2">
-              <span className="text-3xl mb-1">📋</span>
-              <span className="text-gray-400 font-semibold text-lg">요청 내역 리스트</span>
+          {/* 메인 콘텐츠 */}
+          <div className="flex-1 flex flex-col items-center">
+            {/* 상단 탭 카드 - 좌측으로 220px 이동 */}
+            <div
+              className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8"
+            >
+              <div className="flex flex-col items-center flex-1 cursor-pointer opacity-60 pb-2">
+                <span className="text-3xl mb-1">📋</span>
+                <span className="text-gray-400 font-semibold text-lg">요청 내역 리스트</span>
+              </div>
+              <div className="flex flex-col items-center flex-1 cursor-pointer border-b-4 border-[#FFA726] pb-2">
+                <span className="text-3xl mb-1 text-[#FFA726]">📊</span>
+                <span className="text-[#FFA726] font-semibold text-lg">분석 결과</span>
+              </div>
             </div>
-            <div className="flex flex-col items-center flex-1 cursor-pointer border-b-4 border-[#FFA726] pb-2">
-              <span className="text-3xl mb-1 text-[#FFA726]">📊</span>
-              <span className="text-[#FFA726] font-semibold text-lg">분석 결과</span>
-            </div>
-          </div>
-          {/* 분석 결과 카드만 (좌측 -220px 이동) */}
-          <div className="bg-white rounded-lg shadow p-6" style={{ minWidth: 650, marginLeft: '-220px' }}>
-            <div className="flex justify-end mb-4">
-              <button
-                className={`px-4 py-2 rounded text-white ${downloading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"}`}
-                onClick={handleDownload}
-                disabled={downloading}
-              >
-                {downloading ? "다운중..." : "데이터 내보내기"}
-              </button>
-            </div>
-            <div className="font-bold text-base mb-4">분석 결과</div>
-            <div className="overflow-x-auto">
-              {segmentTables ? segmentTables : (
-                <pre style={{
-                  whiteSpace: "pre-wrap",
-                  background: "#111",
-                  color: "#fff",
-                  borderRadius: "8px",
-                  padding: "20px",
-                  fontSize: "1rem",
-                  border: "2px solid #2196f3",
-                  minHeight: "300px"
-                }}>
-                  {csvData || <DotWaveLoader color="black" />}
-                </pre>
-              )}
+            {/* 분석 결과 카드만 (좌측 -220px 이동) */}
+            <div className="bg-white rounded-lg shadow p-6" style={{ minWidth: 650 }}>
+              <div className="flex justify-end mb-4">
+                <button
+                  className={`px-4 py-2 rounded text-white ${downloading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"}`}
+                  onClick={handleDownload}
+                  disabled={downloading}
+                >
+                  {downloading ? "다운중..." : "데이터 내보내기"}
+                </button>
+              </div>
+              <div className="font-bold text-base mb-4">분석 결과</div>
+              <div className="overflow-x-auto">
+                {segmentTables ? segmentTables : (
+                  <pre style={{
+                    whiteSpace: "pre-wrap",
+                    background: "#111",
+                    color: "#fff",
+                    borderRadius: "8px",
+                    padding: "20px",
+                    fontSize: "1rem",
+                    border: "2px solid #2196f3",
+                    minHeight: "300px"
+                  }}>
+                    {csvData || <DotWaveLoader color="black" />}
+                  </pre>
+                )}
+              </div>
             </div>
           </div>
         </div>
