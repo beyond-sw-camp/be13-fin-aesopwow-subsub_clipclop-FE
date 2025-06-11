@@ -42,23 +42,20 @@ export default function AnalyticsCohortDoubleRequireListPage() {
           </div>
         </aside>
 
-        <section className="flex-1 flex flex-col min-h-screen">
-          <div className="flex flex-col p-8 flex-grow">
-            {/* Breadcrumb */}
+        <section className="flex-1 flex flex-col min-h-screen px-8">
+          <div className="flex flex-col flex-grow">
             <div className="mb-4">
               <PageBreadcrumb title="Analysis/Cohort/Double/RequireList" />
             </div>
 
-            {/* Step Progress */}
             <div className="flex justify-center mb-6">
               <div className="w-full max-w-4xl">
                 <StepProgress currentStep={2} />
               </div>
             </div>
 
-            {/* 요청 내역 패널 */}
-            <div className="w-full space-y-6">
-              <div>
+            <div className="w-full flex flex-col md:flex-row gap-6">
+              <div className="flex-1">
                 <h2 className="text-xl font-bold mb-2">{firstClusterType} 요청 내역</h2>
                 <CohortHistoryPanel
                   clusterType={firstClusterType}
@@ -66,7 +63,7 @@ export default function AnalyticsCohortDoubleRequireListPage() {
                   onSelect={toggleSelection}
                 />
               </div>
-              <div>
+              <div className="flex-1">
                 <h2 className="text-xl font-bold mb-2">{secondClusterType} 요청 내역</h2>
                 <CohortHistoryPanel
                   clusterType={secondClusterType}
@@ -75,19 +72,18 @@ export default function AnalyticsCohortDoubleRequireListPage() {
                 />
               </div>
             </div>
-
-            {/* 비교 버튼 */}
-            {selectedKeys.length === 2 && (
-              <div className="mt-6 flex justify-end">
-                <button
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md"
-                  onClick={handleCompare}
-                >
-                  양측 비교 보기
-                </button>
-              </div>
-            )}
           </div>
+
+          {selectedKeys.length === 2 && (
+            <div className="fixed bottom-4 right-8 z-50">
+              <button
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md"
+                onClick={handleCompare}
+              >
+                양측 비교 보기
+              </button>
+            </div>
+          )}
         </section>
       </main>
     </div>
