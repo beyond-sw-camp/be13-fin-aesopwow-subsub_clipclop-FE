@@ -46,7 +46,7 @@ export default function AnalyticsCohortDoubleRequireListPage() {
           <div className="flex flex-col p-8 flex-grow">
             {/* Breadcrumb */}
             <div className="mb-4">
-              <PageBreadcrumb title="Analysis/Cohort/Double/RequireList" />
+              <PageBreadcrumb title="코호트 간 비교 분석 조건 목록" />
             </div>
 
             {/* Step Progress */}

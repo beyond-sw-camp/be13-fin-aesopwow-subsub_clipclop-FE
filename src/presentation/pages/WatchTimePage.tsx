@@ -68,7 +68,7 @@ export default function WatchTimePage() {
   const handleFileClick = (fileName: string) => {
     if (!infoDbNo || !fileName) return;
     const s3Key = `${infoDbNo}/segment/watch_time/${fileName}`;
-    navigate(`/analysis/watchtime/${encodeURIComponent(s3Key)}`);
+    navigate(`/segments/watchtime/${encodeURIComponent(s3Key)}`);
   };
 
   return (

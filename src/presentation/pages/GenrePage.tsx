@@ -69,7 +69,7 @@ export default function GenrePage() {
     if (!infoDbNo || !fileName) return;
     // S3의 실제 경로와 일치하도록 "favorite_genre" 사용
     const s3Key = `${infoDbNo}/segment/favorite_genre/${fileName}`;
-    navigate(`/analysis/genre/${encodeURIComponent(s3Key)}`);
+    navigate(`/segments/genre/${encodeURIComponent(s3Key)}`);
   };
 
   return (

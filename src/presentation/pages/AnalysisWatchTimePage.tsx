@@ -5,6 +5,7 @@ import { SegmentFileListViewModel } from "@/application/viewModels/SegmentFileLi
 import { Header } from "@/presentation/layout/Header";
 import { SideMenu } from "@/presentation/layout/SideMenu";
 import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
+import { PageBreadcrumb } from "../components/molecules/PageBreadcrumb";
 
 type SegmentType = "Light User" | "Core User" | "Power User" | "unknown";
 
@@ -145,7 +146,10 @@ export default function AnalysisWatchTimePage() {
             <SideMenu />
           </div>
         </div>
-
+          <div className="flex flex-col p-8 flex-grow">
+            <div className="mb-4">
+              <PageBreadcrumb title="누적 시청시간 기준 세그먼트 분석 결과" />
+            </div>
         <div className="flex-1 flex flex-col items-center">
           {/* 메인 콘텐츠 */}
           <div className="flex-1 flex flex-col items-center">
@@ -192,6 +196,7 @@ export default function AnalysisWatchTimePage() {
               </div>
             </div>
           </div>
+        </div>
         </div>
       </main>
     </div>

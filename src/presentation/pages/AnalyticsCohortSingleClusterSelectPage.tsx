@@ -23,7 +23,7 @@ export default function AnalyticsCohortSingleClusterSelectPage() {
           <div className="flex flex-col p-8 flex-grow">
             {/* PageBreadcrumb 먼저 출력 */}
             <div className="mb-4">
-              <PageBreadcrumb title="Analysis/Cohort/Single" />
+              <PageBreadcrumb title="단일 코호트 분석" />
             </div>
 
             {/* StepProgress 중앙 정렬 및 하단 간격 조정 */}

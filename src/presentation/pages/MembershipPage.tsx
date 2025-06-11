@@ -60,7 +60,7 @@ const MembershipPage: React.FC = () => {
                             title={plan.title}
                             price={plan.price}
                             features={plan.features}
-                            buttonText="가입하기"
+                            buttonText="구독하기"
                             // 가입하기 버튼 클릭 시 결제 요청 함수 실행 (수정된 부분)
                             onButtonClick={() => handleSubscribe(plan.title, plan.price)}
                             period={isMonthly ? '월' : '년'}

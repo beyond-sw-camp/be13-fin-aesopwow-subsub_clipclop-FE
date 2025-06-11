@@ -3,7 +3,7 @@ import { CustomButton } from "@/presentation/components/atoms/CustomButton";
 
 export function SideMenu() {
   return (
-    <div className="w-60 bg-white p-4 flex flex-col justify-between shadow-md rounded-lg">
+    <div className="w-60 bg-white p-4 flex flex-col justify-between shadow-md rounded-lg  mb-20">
       <div>
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Home</h2>
