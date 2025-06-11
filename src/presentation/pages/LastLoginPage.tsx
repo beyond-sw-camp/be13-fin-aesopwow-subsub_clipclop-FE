@@ -81,58 +81,61 @@ export default function LastLoginPage() {
             <SideMenu />
           </div>
         </div>
-        {/* 메인 콘텐츠 */}
+
         <div className="flex-1 flex flex-col items-center">
-          {/* 상단 탭 카드 - 좌측으로 220px 이동 */}
-          <div
-            className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8"
-            style={{ marginLeft: '-220px' }}
-          >
-            <div className="flex flex-col items-center flex-1 cursor-pointer border-b-4 border-[#FFA726] pb-2">
-              <span className="text-3xl mb-1 text-[#FFA726]">📋</span>
-              <span className="text-[#FFA726] font-semibold text-lg">요청 내역 리스트</span>
-            </div>
-            <div className="flex flex-col items-center flex-1 cursor-pointer opacity-60 pb-2">
-              <span className="text-3xl mb-1">📊</span>
-              <span className="text-gray-400 font-semibold text-lg">분석 결과</span>
-            </div>
-          </div>
-          {/* 리스트 카드 - 좌측으로 220px 이동 */}
-          <div
-            className="w-[525px] bg-white rounded-lg shadow p-6"
-            style={{ marginLeft: '-220px' }}
-          >
-            <div className="font-bold text-base mb-4">요청 내역 리스트</div>
-            <div className="border-b pb-2 font-semibold text-gray-700">요청 날짜</div>
-            <button
-              className="w-full bg-[#1976D2] text-white font-semibold rounded py-2 mt-4 mb-2 hover:bg-[#1565C0] transition"
-              onClick={handleRequestLatest}
-              disabled={requesting}
+          {/* 메인 콘텐츠 */}
+          <div className="flex-1 flex flex-col items-center">
+            {/* 상단 탭 카드 - 좌측으로 220px 이동 */}
+            <div
+              className="w-[700px] bg-white rounded-lg shadow flex items-center justify-between px-8 py-6 mt-10 mb-8"
+              style={{ marginLeft: '-220px' }}
             >
-              {requesting ? "요청 중..." : "최신 데이터로 분석 요청하기"}
-            </button>
-            {loading ? (
-              <DotWaveLoader color="black" />
-            ) : files.length === 0 ? (
-              <div className="text-gray-400 text-center py-4">
-                데이터가 없습니다.
+              <div className="flex flex-col items-center flex-1 cursor-pointer border-b-4 border-[#FFA726] pb-2">
+                <span className="text-3xl mb-1 text-[#FFA726]">📋</span>
+                <span className="text-[#FFA726] font-semibold text-lg">요청 내역 리스트</span>
               </div>
-            ) : (
-              <ul>
-                {files.map((file) =>
-                  file.fileName ? (
-                    <li
-                      key={file.fileName}
-                      className="py-2 border-b last:border-b-0 flex items-center cursor-pointer hover:text-blue-600"
-                      onClick={() => handleFileClick(file.fileName)}
-                      title="클릭하면 분석 결과 페이지로 이동"
-                    >
-                      <div className="font-medium break-all">{file.fileName}</div>
-                    </li>
-                  ) : null
-                )}
-              </ul>
-            )}
+              <div className="flex flex-col items-center flex-1 cursor-pointer opacity-60 pb-2">
+                <span className="text-3xl mb-1">📊</span>
+                <span className="text-gray-400 font-semibold text-lg">분석 결과</span>
+              </div>
+            </div>
+            {/* 리스트 카드 - 좌측으로 220px 이동 */}
+            <div
+              className="w-[525px] bg-white rounded-lg shadow p-6"
+              style={{ marginLeft: '-220px' }}
+            >
+              <div className="font-bold text-base mb-4">요청 내역 리스트</div>
+              <div className="border-b pb-2 font-semibold text-gray-700">요청 날짜</div>
+              <button
+                className="w-full bg-[#1976D2] text-white font-semibold rounded py-2 mt-4 mb-2 hover:bg-[#1565C0] transition"
+                onClick={handleRequestLatest}
+                disabled={requesting}
+              >
+                {requesting ? "요청 중..." : "최신 데이터로 분석 요청하기"}
+              </button>
+              {loading ? (
+                <DotWaveLoader color="black" />
+              ) : files.length === 0 ? (
+                <div className="text-gray-400 text-center py-4">
+                  데이터가 없습니다.
+                </div>
+              ) : (
+                <ul>
+                  {files.map((file) =>
+                    file.fileName ? (
+                      <li
+                        key={file.fileName}
+                        className="py-2 border-b last:border-b-0 flex items-center cursor-pointer hover:text-blue-600"
+                        onClick={() => handleFileClick(file.fileName)}
+                        title="클릭하면 분석 결과 페이지로 이동"
+                      >
+                        <div className="font-medium break-all">{file.fileName}</div>
+                      </li>
+                    ) : null
+                  )}
+                </ul>
+              )}
+            </div>
           </div>
         </div>
       </main>
