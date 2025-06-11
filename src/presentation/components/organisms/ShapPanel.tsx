@@ -4,7 +4,7 @@ import type { ChartData } from "chart.js";
 import { useState } from "react";
 import { ShapResultSummaryModal } from "./ShapResultSummaryModal";
 import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
-
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 import {
   Chart as ChartJS,
@@ -24,7 +24,8 @@ ChartJS.register(
   BarElement,
   Tooltip,
   Legend,
-  Title
+  Title,
+  annotationPlugin
 );
 
 interface Summary {
