@@ -16,8 +16,11 @@ export const StackedBarChart: React.FC<ChartProps> = ({ chartData }) => {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-            legend: { position: "top" },
-            title: { display: true, text: "최근 1년 월별 유저 구독 유형" },
+                legend: { position: "top" },
+                title: { display: true, text: "최근 1년 월별 유저 구독 유형" },
+                datalabels: {
+                    display: false, // 꺾은선 차트 레이블 숨김
+                },
             },
             layout: {
             padding: {

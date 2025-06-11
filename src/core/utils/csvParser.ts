@@ -1,5 +1,6 @@
 import { ChartData } from "chart.js";
 import { CohortSingleUserResponse } from "@/core/model/CohortModel";
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 import {
   Chart as ChartJS,
@@ -25,7 +26,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   ArcElement,
-  DoughnutController
+  DoughnutController,
+  annotationPlugin
 );
 
 interface HeatmapCell {
