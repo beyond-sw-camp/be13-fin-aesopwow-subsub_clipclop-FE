@@ -1,10 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
-import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader"
+import DotWaveLoader from "@/presentation/components/atoms/DotWaveLoader";
 
-import { useMyInfoViewModel } from "@/application/viewModels/useMyInfoViewModel"
-import { useCompanyViewModel } from "@/application/viewModels/useCompanyViewModel";
+import { useMyInfoViewModel } from "@/application/viewModels/useMyInfoViewModel";
 import { useStaffViewModel } from "@/application/viewModels/useStaffViewModel";
 import { UserViewModel } from "@/application/viewModels/UserViewModel";
 
@@ -23,8 +22,6 @@ import { MyInfoModal } from "@/presentation/components/organisms/MyInfoModal";
 import { MyPageRequest } from "@/presentation/pages/MyPageRequest";
 
 import profileImg from "@/assets/profileimg.png";
-
-
 
 interface UserInfo {
   name: string;
@@ -46,21 +43,11 @@ export default function MyPage() {
   const [error, setError] = useState(false);
 
   const [showMyInfoModal, setShowMyInfoModal] = useState(false);
-  const [showCompanyModal, setShowCompanyModal] = useState(false);
   const [showStaffModal, setShowStaffModal] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
-
   const [showEmailModal, setShowEmailModal] = useState(false);
 
   const userViewModel = new UserViewModel();
-
-  // const {
-  //   myInfo,
-  //   myInfoList,
-  //   isLoading: myInfoLoading,
-  //   handleEdit,
-  //   refetch: refetchMyInfo,
-  // } = useMyInfoViewModel();
 
   const {
     myInfoList,
@@ -68,17 +55,10 @@ export default function MyPage() {
   } = useMyInfoViewModel();
 
   const {
-    companyList,
-    handleEdit: handleCompanyEdit,
-    handleDelete: handleCompanyDelete,
-  } = useCompanyViewModel();
-
-  const {
     staffList,
     handleAdd: handleStaffAdd,
     handleEdit: handleStaffEdit,
     handleDelete: handleStaffDelete,
-    // fetchStaffList,
   } = useStaffViewModel();
 
   const handleMyInfoEdit = (id: number, name: string, departmentName: string) => {
@@ -103,7 +83,6 @@ export default function MyPage() {
       alert("회원 탈퇴가 완료되었습니다.");
       window.location.href = "/login";
     } catch (error) {
-      // console.error("회원 탈퇴 실패:", error);
       alert("회원 탈퇴에 실패했습니다. 다시 시도해주세요.");
     }
   };
@@ -178,10 +157,9 @@ export default function MyPage() {
 
             <UserDetailPanel
               onMyInfoClick={() => setShowMyInfoModal(true)}
-              onCompanyClick={() => setShowCompanyModal(true)}
               onStaffClick={() => setShowStaffModal(true)}
               onRequestClick={() => setShowRequestModal(true)}
-              onAlarmClick={() => { }}
+              onAlarmClick={() => {}}
             />
 
             {showMyInfoModal && (
@@ -198,16 +176,6 @@ export default function MyPage() {
                 onEdit={handleMyInfoEdit}
                 onDelete={handleDeleteAccount}
                 onClose={() => setShowMyInfoModal(false)}
-              />
-            )}
-
-            {showCompanyModal && (
-              <EditableListModal
-                title="회사 정보"
-                data={companyList}
-                onEdit={handleCompanyEdit}
-                onDelete={handleCompanyDelete}
-                onClose={() => setShowCompanyModal(false)}
               />
             )}
 
@@ -235,14 +203,11 @@ export default function MyPage() {
             )}
 
             {showEmailModal && (
-              <>
-                <EmailInputModal
-                  onClose={() => setShowEmailModal(false)}
-                  onSubmit={handleSubmitEmail}
-                />
-              </>
+              <EmailInputModal
+                onClose={() => setShowEmailModal(false)}
+                onSubmit={handleSubmitEmail}
+              />
             )}
-
           </div>
         </div>
       </div>

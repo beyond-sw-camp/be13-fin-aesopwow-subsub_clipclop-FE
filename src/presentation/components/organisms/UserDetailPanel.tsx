@@ -4,13 +4,11 @@ import { useAlarmViewModel } from "@/application/viewModels/useAlarmViewModel";
 
 export function UserDetailPanel({
   onMyInfoClick,
-  onCompanyClick,
   onStaffClick,
   onRequestClick,
   onAlarmClick,
 }: {
   onMyInfoClick: () => void;
-  onCompanyClick: () => void;
   onStaffClick: () => void;
   onRequestClick: () => void;
   onAlarmClick: () => void;
@@ -47,12 +45,6 @@ export function UserDetailPanel({
             subtitle: "내 정보",
             // content: "구독, 결제, 회사 정보",
             onClick: onMyInfoClick,
-          },
-          {
-            id: "company",
-            subtitle: "회사 정보",
-            // content: "구독, 결제, 회사 정보",
-            onClick: onCompanyClick,
           },
         ]}
       />
