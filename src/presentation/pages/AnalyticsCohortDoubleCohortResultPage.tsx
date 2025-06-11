@@ -104,7 +104,7 @@ export default function AnalyticsCohortDoubleCohortResultPage() {
 
         <section className="flex-1 flex flex-col p-8">
           <div className="mb-4">
-            <PageBreadcrumb title="Analysis/Cohort/Double/Result" />
+            <PageBreadcrumb title="코호트 간 비교 분석 결과" />
           </div>
 
           <div className="relative mb-6 w-full">

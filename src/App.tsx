@@ -143,10 +143,10 @@ function App() {
 
         <Route path="/shap" element={<ErrorPage />} />
         <Route path="/howto" element={<ErrorPage />} />
-        <Route path="/analysis/subscription/:s3Key" element={<AnalysisSubscriptionPage />} />
-        <Route path="/analysis/watchtime/:s3Key" element={<AnalysisWatchTimePage />} />
-        <Route path="/analysis/genre/:s3Key" element={<AnalysisGenrePage />} />
-        <Route path="/analysis/lastlogin/:s3Key" element={<AnalysisLastLoginPage  />} />
+        <Route path="/segments/subscription/:s3Key" element={<AnalysisSubscriptionPage />} />
+        <Route path="/segments/watchtime/:s3Key" element={<AnalysisWatchTimePage />} />
+        <Route path="/segments/genre/:s3Key" element={<AnalysisGenrePage />} />
+        <Route path="/segments/lastlogin/:s3Key" element={<AnalysisLastLoginPage  />} />
       </Routes>
     </>
   );

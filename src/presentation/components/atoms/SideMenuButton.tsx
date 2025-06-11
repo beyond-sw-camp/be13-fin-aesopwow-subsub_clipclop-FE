@@ -12,7 +12,8 @@ export function SideMenuButton({ label, to, onClick }: SideMenuButtonProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const isActive = to && location.pathname === to;
+  // const isActive = to && location.pathname === to;
+  const isActive = to && location.pathname.startsWith(to);
 
   const handleClick = () => {
     if (to) navigate(to);

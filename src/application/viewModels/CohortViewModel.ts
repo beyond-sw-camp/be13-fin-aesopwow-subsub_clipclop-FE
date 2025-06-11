@@ -17,6 +17,7 @@ import { CohortRequestDto, CohortFileInfo } from "@/core/model/CohortModels";
 import { parseCsvToCohortResult } from "@/core/utils/csvParser";
 
 import { sendAlarm } from "@/infrastructure/api/Alarm";
+import { toast } from "react-toastify";
 
 const clusterMap: Record<string, number> = {
   PCL: 1,
@@ -76,7 +77,7 @@ export function useSingleClusterViewModel() {
         // console.warn("userNo가 유효하지 않습니다:", userNo);
       }
 
-      alert("분석이 완료되었습니다.");
+      toast("분석이 완료되었습니다.");
       navigate(`/analytics/single/requirelist?clusterType=${encodeURIComponent(selectedCluster)}`);
     } catch (error) {
       // console.error("분석 요청 실패:", error);
@@ -326,7 +327,7 @@ export function useDoubleClusterViewModel() {
         // console.warn("userNo가 유효하지 않습니다:", userNo);
       }
 
-      alert("분석이 완료되었습니다.");
+      toast("분석이 완료되었습니다.");
 
       navigate(
         `/analytics/double/requirelist?` +
