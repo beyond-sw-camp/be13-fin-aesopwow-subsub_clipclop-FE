@@ -1,13 +1,24 @@
 import { SideMenuButton } from "@/presentation/components/atoms/SideMenuButton";
 import { CustomButton } from "@/presentation/components/atoms/CustomButton";
+import { useLocation } from "react-router-dom";
 
-export function SideMenu() {
+interface SideMenuProps {
+  isLoggedIn: boolean;
+}
+
+export function SideMenu({ isLoggedIn }: SideMenuProps) {
+  const location = useLocation();
+
+  const isDashBoardActive = isLoggedIn && 
+    (location.pathname === 
+      "/dash-board" || location.pathname.startsWith("/dash-board/") || location.pathname === "/");
+
   return (
     <div className="w-60 bg-white p-4 flex flex-col justify-between shadow-md rounded-lg  mb-20">
       <div>
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Home</h2>
-          <SideMenuButton label="Dash Board" to="/dash-board" />
+          <SideMenuButton label="Dash Board" to="/dash-board" isActive={isDashBoardActive} />
         </div>
 
         <div className="border-t border-gray-300 my-4" />

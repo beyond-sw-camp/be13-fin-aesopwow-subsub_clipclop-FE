@@ -49,7 +49,7 @@
 //       <Header />
 //       <main className="flex">
 //         <aside className="w-[240px] shrink-0 pt-4 pl-4">
-//           <SideMenu />
+//           <SideMenu isLoggedIn={true}/>
 //         </aside>
 
 //         <section className="flex-1 flex flex-col p-8">

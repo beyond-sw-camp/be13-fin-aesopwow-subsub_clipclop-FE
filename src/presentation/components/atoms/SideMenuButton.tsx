@@ -6,14 +6,21 @@ interface SideMenuButtonProps {
   label: string;
   to?: string;
   onClick?: () => void;
+  isActive?: boolean
 }
 
-export function SideMenuButton({ label, to, onClick }: SideMenuButtonProps) {
+export function SideMenuButton({ label, to, onClick, isActive }: SideMenuButtonProps) {
   const location = useLocation();
   const navigate = useNavigate();
 
   // const isActive = to && location.pathname === to;
-  const isActive = to && location.pathname.startsWith(to);
+  // const isActive = to && location.pathname.startsWith(to);
+
+  const active = isActive !== undefined
+    ? isActive
+    : to
+      ? location.pathname === to || location.pathname.startsWith(to + "/")
+      : false;
 
   const handleClick = () => {
     if (to) navigate(to);
@@ -23,7 +30,7 @@ export function SideMenuButton({ label, to, onClick }: SideMenuButtonProps) {
   const baseClass =
     "w-full py-2 px-2 text-sm border border-gray-300 rounded-md font-bold text-center mb-2 transition-colors duration-150";
 
-  const activeClass = isActive
+  const activeClass = active
     ? "bg-orange-400 text-white"
     : "bg-gray-100 text-black hover:border-blue-400 hover:bg-gray-200";
 

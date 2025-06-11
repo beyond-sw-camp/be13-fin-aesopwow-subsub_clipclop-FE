@@ -136,7 +136,7 @@ export default function MyPage() {
 
       <div className="flex flex-1">
         <div className="pt-4 pl-4 mt-4">
-          <SideMenu />
+          <SideMenu isLoggedIn={true}/>
         </div>
 
         <div className="flex-1 flex justify-start items-start p-8">
