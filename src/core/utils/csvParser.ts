@@ -131,7 +131,7 @@ export function parseCsvToCohortResult(csv: string): CohortResult {
     labels: ["잔존", "이탈"],
     datasets: [
       {
-        data: [lastValue, 100 - lastValue],
+        data: [parseFloat(lastValue.toFixed(1)), parseFloat((100 - lastValue).toFixed(1))],
         backgroundColor: ["#4CAF50", "#F44336"],
       },
     ],
