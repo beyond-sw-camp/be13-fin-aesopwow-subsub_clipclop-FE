@@ -143,7 +143,7 @@ export default function AnalysisWatchTimePage() {
         {/* 사이드 메뉴 */}
         <div className="w-64 pt-4 pl-4">
           <div className="mt-4 min-h-[calc(100vh-4rem)] flex flex-col justify-between">
-            <SideMenu />
+            <SideMenu isLoggedIn={true}/>
           </div>
         </div>
           <div className="flex flex-col p-8 flex-grow">
