@@ -81,6 +81,8 @@ export default function WatchTimePage() {
             <SideMenu />
           </div>
         </div>
+
+        
         {/* 메인 콘텐츠 */}
         <div className="flex-1 flex flex-col items-center">
           {/* 상단 탭 카드 - 좌측으로 220px 이동 */}
