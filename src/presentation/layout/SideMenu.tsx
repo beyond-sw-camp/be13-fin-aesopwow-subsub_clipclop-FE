@@ -32,7 +32,7 @@ export function SideMenu() {
 
         <div className="mb-6">
           <h2 className="font-bold text-sm mb-2">Shap</h2>
-          <SideMenuButton label="Shap 분석" to="/error" />
+          <SideMenuButton label="Shap 분석" to="/shap" />
         </div>
 
         <div className="border-t border-gray-300 my-4" />
