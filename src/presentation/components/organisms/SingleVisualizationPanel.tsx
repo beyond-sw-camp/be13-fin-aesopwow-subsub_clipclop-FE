@@ -38,7 +38,7 @@ export function SingleVisualizationPanel({
     labels: ["잔존", "이탈"],
     datasets: [
       {
-        data: [safeCurrentValue, 100 - safeCurrentValue],
+        data: [parseFloat((safeCurrentValue).toFixed(1)), parseFloat((100 - safeCurrentValue).toFixed(2))],
         backgroundColor: ["#4CAF50", "#F44336"],
       },
     ],
@@ -91,7 +91,15 @@ export function SingleVisualizationPanel({
               <Chart
                 type="line"
                 data={lineChart}
-                options={{ responsive: true, maintainAspectRatio: false }}
+                options={{ 
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    datalabels: {
+                      display: false,
+                    },
+                  }
+                }}
               />
             </div>
           )}

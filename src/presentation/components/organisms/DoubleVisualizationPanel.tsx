@@ -85,6 +85,11 @@ export function DoubleVisualizationPanel({
                 options={{
                   responsive: true,
                   maintainAspectRatio: false,
+                  plugins: {
+                    datalabels: {
+                      display: false,
+                    },
+                  }
                 }}
               />
             </div>
